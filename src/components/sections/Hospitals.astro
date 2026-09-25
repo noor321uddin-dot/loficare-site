@@ -1,0 +1,45 @@
+---
+import { t, type Locale } from '../../i18n';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const depts = [1, 2, 3, 4, 5, 6, 7, 8].map((i) => t(locale, `hospitals.dept.${i}`));
+---
+<section id="hospitals" class="section section-alt">
+  <div class="container split">
+    <div>
+      <div class="section-head">
+        <h2>{t(locale, 'hospitals.h2')}</h2>
+        <p class="lede">{t(locale, 'hospitals.body')}</p>
+      </div>
+      <div class="section-cta"><a class="btn btn-primary" href="#demo" data-track="section_cta_click" data-audience="facility">{t(locale, 'hospitals.cta')}</a></div>
+    </div>
+    <div class="ring-wrap">
+      <div class="ring" aria-hidden="true">
+        <div class="hub">{t(locale, 'hospitals.hub')}</div>
+        {depts.map((d, i) => <span class="node" style={`--a:${i * 45}deg`}>{d}</span>)}
+      </div>
+      <div class="list">
+        <div class="hub-card">{t(locale, 'hospitals.hub')}</div>
+        <ul class="dept-list">{depts.map((d) => <li>{d}</li>)}</ul>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .split { display: grid; gap: 28px; }
+  .ring { display: none; }
+  .list { display: grid; gap: 10px; }
+  .hub-card { justify-self: start; background: var(--ink-950); color: var(--aqua-200); border-radius: 999px; padding: 10px 16px; font-weight: 800; }
+  .dept-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .dept-list li { border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 8px 14px; font-weight: 600; }
+  @media (min-width: 768px) {
+    .split { grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: center; }
+    .list { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .ring-wrap { position: relative; display: grid; place-items: center; }
+    .ring { display: block; position: relative; width: 320px; height: 320px; --r: 122px; }
+    .ring::before { content: ""; position: absolute; inset: 14%; border: 2px solid var(--tile-line); border-radius: 50%; opacity: 0.55; }
+    .hub { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background: var(--ink-950); color: var(--aqua-200); border-radius: 999px; padding: 10px 16px; font-weight: 800; white-space: nowrap; }
+    .node { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(var(--a)) translate(var(--r)) rotate(calc(-1 * var(--a))); background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; font-weight: 600; font-size: 14px; white-space: nowrap; }
+  }
+  @media (min-width: 1024px) { .ring { width: 380px; height: 380px; --r: 146px; } }
+</style>

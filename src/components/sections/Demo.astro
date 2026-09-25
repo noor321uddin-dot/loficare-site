@@ -1,0 +1,110 @@
+---
+import Icon from '../Icon.astro';
+import { t, type Locale } from '../../i18n';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const phone = (import.meta.env.CONTACT_PHONE as string | undefined) ?? '+8801000000000';
+const wa = (import.meta.env.CONTACT_WHATSAPP as string | undefined) ?? '8801000000000';
+const waText = encodeURIComponent(locale === 'bn' ? 'আমি লফিকেয়ারের ডেমো বুক করতে চাই।' : 'I would like to book a LofiCare demo.');
+---
+<section id="demo" class="section section-alt">
+  <div class="container">
+    <div class="section-head">
+      <h2>{t(locale, 'demo.h2')}</h2>
+      <p class="lede">{t(locale, 'demo.anchor')}</p>
+    </div>
+    <div class="section-cta">
+      <a class="btn btn-primary" href="#demo-form" data-track="hero_cta_click" data-audience="facility">{t(locale, 'hero.cta1')}</a>
+      <a class="btn btn-secondary" href="#trial" data-track="hero_cta_click" data-audience="doctor">{t(locale, 'hero.cta2')}</a>
+    </div>
+    <div class="layout">
+      <form id="demo-form" class="demo card" action="/api/demo-request" method="post" novalidate
+        data-contact="either" data-form-name="demo" data-status-id="demo-status"
+        data-success={t(locale, 'form.success')} data-sending={t(locale, 'form.sending')} data-error-server={t(locale, 'form.error.server')}>
+        <h3>{t(locale, 'demo.form.h3')}</h3>
+        <div class="grid2">
+          <div class="field" data-field="name">
+            <label for="d-name">{t(locale, 'form.name')}</label>
+            <input id="d-name" name="name" type="text" autocomplete="name" required data-field="name" />
+            <p class="error" role="alert">{t(locale, 'form.error.required')}</p>
+          </div>
+          <div class="field" data-field="facility">
+            <label for="d-facility">{t(locale, 'form.facility')}</label>
+            <input id="d-facility" name="facility" type="text" autocomplete="organization" required data-field="facility" />
+            <p class="error" role="alert">{t(locale, 'form.error.required')}</p>
+          </div>
+        </div>
+        <fieldset class="field" data-field="facility_type">
+          <legend class="legend">{t(locale, 'form.type')}</legend>
+          <div class="choice">
+            <label><input type="radio" name="facility_type" value="diagnostic_centre" required data-field="facility_type" /> {t(locale, 'form.type.dc')}</label>
+            <label><input type="radio" name="facility_type" value="hospital" data-field="facility_type" /> {t(locale, 'form.type.hospital')}</label>
+          </div>
+          <p class="error" role="alert">{t(locale, 'form.error.required')}</p>
+        </fieldset>
+        <div class="grid2">
+          <div class="field" data-field="role">
+            <label for="d-role">{t(locale, 'form.role')}</label>
+            <input id="d-role" name="role" type="text" autocomplete="organization-title" required data-field="role" />
+            <p class="error" role="alert">{t(locale, 'form.error.required')}</p>
+          </div>
+          <div class="field" data-field="branches">
+            <label for="d-branches">{t(locale, 'form.branches')}</label>
+            <select id="d-branches" name="branches">
+              <option value="1">{t(locale, 'form.branches.1')}</option>
+              <option value="2-3">{t(locale, 'form.branches.2')}</option>
+              <option value="4+">{t(locale, 'form.branches.4')}</option>
+            </select>
+          </div>
+        </div>
+        <div class="field contact" data-field="contact">
+          <div class="grid2">
+            <div class="field" data-field="phone">
+              <label for="d-phone">{t(locale, 'form.phone')}</label>
+              <input id="d-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="01712 345678" />
+              <p class="error" role="alert">{t(locale, 'form.error.phone')}</p>
+            </div>
+            <div class="field" data-field="email">
+              <label for="d-email">{t(locale, 'form.email')}</label>
+              <input id="d-email" name="email" type="email" inputmode="email" autocomplete="email" />
+              <p class="error" role="alert">{t(locale, 'form.error.email')}</p>
+            </div>
+          </div>
+          <p class="help">{t(locale, 'form.contactHelp')}</p>
+          <p class="error" role="alert">{t(locale, 'form.error.contact')}</p>
+        </div>
+        <div class="field">
+          <label for="d-message">{t(locale, 'form.message')}</label>
+          <textarea id="d-message" name="message" rows="3"></textarea>
+        </div>
+        <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <input type="hidden" name="ts" value="" />
+        <input type="hidden" name="language" value={locale} />
+        <button class="btn btn-primary" type="submit" data-track="demo_submit" data-audience="facility">{t(locale, 'form.submit')}</button>
+      </form>
+      <p id="demo-status" class="form-status" hidden tabindex="-1" aria-live="polite"></p>
+      <aside class="channels">
+        <h3>{t(locale, 'demo.channels')}</h3>
+        <a class="btn btn-quiet" href={`https://wa.me/${wa}?text=${waText}`} rel="noopener" data-track="whatsapp_click" data-audience="facility" data-placeholder="contact"><Icon name="whatsapp-logo" size={20} /> {t(locale, 'demo.whatsapp')}</a>
+        <a class="btn btn-quiet" href={`tel:${phone}`} data-track="phone_click" data-audience="facility" data-placeholder="contact"><Icon name="phone" size={20} /> {t(locale, 'demo.call')} <span class="num">{phone}</span></a>
+      </aside>
+    </div>
+  </div>
+</section>
+<style>
+  .layout { display: grid; gap: 24px; margin-top: 28px; }
+  .demo { padding: 22px; display: grid; gap: 16px; }
+  .demo h3 { font-size: 20px; }
+  .grid2 { display: grid; gap: 14px; }
+  fieldset { border: 0; padding: 0; margin: 0; }
+  .demo .btn { justify-self: start; }
+  .channels { display: grid; gap: 12px; align-content: start; justify-items: start; }
+  .channels h3 { font-size: 17px; }
+  @media (min-width: 640px) { .grid2 { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 900px) { .layout { grid-template-columns: 1.4fr 0.6fr; gap: 40px; align-items: start; } }
+</style>
+<script>
+  import { enhanceForm } from '../../lib/forms';
+  const f = document.getElementById('demo-form') as HTMLFormElement | null;
+  if (f) enhanceForm(f);
+</script>

@@ -4,6 +4,18 @@ import Header from './Header.astro';
 import Hero from './Hero.astro';
 import Doors from './Doors.astro';
 import Trust from './Trust.astro';
+import Problem from './sections/Problem.astro';
+import Platform from './sections/Platform.astro';
+import Diagnostics from './sections/Diagnostics.astro';
+import Hospitals from './sections/Hospitals.astro';
+import Appointments from './sections/Appointments.astro';
+import Doctors from './sections/Doctors.astro';
+import Patients from './sections/Patients.astro';
+import DataTrust from './sections/DataTrust.astro';
+import Cohorts from './sections/Cohorts.astro';
+import Pricing from './sections/Pricing.astro';
+import Faq from './sections/Faq.astro';
+import Demo from './sections/Demo.astro';
 import StickyBar from './StickyBar.astro';
 import Footer from './Footer.astro';
 import { t, type Locale } from '../i18n';
@@ -17,6 +29,18 @@ const { locale } = Astro.props;
     <Hero locale={locale} />
     <Doors locale={locale} />
     <Trust locale={locale} />
+    <Problem locale={locale} />
+    <Platform locale={locale} />
+    <Diagnostics locale={locale} />
+    <Hospitals locale={locale} />
+    <Appointments locale={locale} />
+    <Doctors locale={locale} />
+    <Patients locale={locale} />
+    <DataTrust locale={locale} />
+    <Cohorts locale={locale} />
+    <Pricing locale={locale} />
+    <Faq locale={locale} />
+    <Demo locale={locale} />
   </main>
   <Footer locale={locale} />
   <StickyBar locale={locale} />
@@ -25,3 +49,7 @@ const { locale } = Astro.props;
   .skip { position: absolute; left: 16px; top: -60px; background: var(--cta); color: var(--cta-fg); padding: 10px 14px; border-radius: 10px; z-index: 60; font-weight: 700; }
   .skip:focus { top: 12px; }
 </style>
+<script>
+  import { bindTracking } from '../lib/track';
+  bindTracking();
+</script>

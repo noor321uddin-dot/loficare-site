@@ -5,7 +5,7 @@ const { locale } = Astro.props;
 ---
 <div class="sticky-bar" data-mode="demo">
   <a class="btn btn-primary" href="#demo" data-mode-link="demo" data-track="sticky_click" data-audience="facility">{t(locale, 'sticky.demo')}</a>
-  <a class="btn btn-primary" href="#appointments" data-mode-link="trial" data-track="sticky_click" data-audience="doctor">{t(locale, 'sticky.trial')}</a>
+  <a class="btn btn-primary" href="#trial" data-mode-link="trial" data-track="sticky_click" data-audience="doctor">{t(locale, 'sticky.trial')}</a>
 </div>
 <style>
   .sticky-bar { position: fixed; inset-inline: 0; bottom: 0; z-index: var(--z-bar); padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: color-mix(in srgb, var(--bg) 94%, transparent); backdrop-filter: blur(10px); border-top: 1px solid var(--line); display: grid; }

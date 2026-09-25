@@ -1,0 +1,33 @@
+---
+import { t, type Locale } from '../../i18n';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+---
+<section id="pricing" class="section section-alt">
+  <div class="container">
+    <div class="section-head"><h2>{t(locale, 'pricing.h2')}</h2></div>
+    <ol class="ladder">
+      {[1, 2, 3].map((i) => (
+        <li class="rung">
+          <span class="marker" aria-hidden="true"></span>
+          <div>
+            <h3>{t(locale, `pricing.r${i}.h3`)}</h3>
+            <p class="muted">{t(locale, `pricing.r${i}.p`)}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+    <div class="section-cta">
+      <a class="btn btn-secondary" href="#trial" data-track="section_cta_click" data-audience="doctor">{t(locale, 'pricing.cta1')}</a>
+      <a class="btn btn-primary" href="#demo" data-track="section_cta_click" data-audience="facility">{t(locale, 'pricing.cta2')}</a>
+    </div>
+  </div>
+</section>
+<style>
+  .ladder { list-style: none; margin: 28px 0 0; padding: 0; display: grid; gap: 0; max-width: 620px; }
+  .rung { display: grid; grid-template-columns: 28px 1fr; gap: 16px; padding: 18px 0; position: relative; }
+  .rung + .rung::before { content: ""; position: absolute; left: 13px; top: -18px; height: 36px; border-left: 1px solid var(--line); }
+  .marker { width: 28px; height: 28px; border-radius: 999px; border: 2px solid var(--accent-strong); background: var(--card); margin-top: 2px; }
+  .rung:last-child .marker { background: var(--aqua-400); }
+  .rung h3 { margin-bottom: 4px; }
+</style>

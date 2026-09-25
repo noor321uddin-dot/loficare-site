@@ -1,0 +1,66 @@
+---
+import { t, type Locale } from '../../i18n';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const times = ['08:12', '08:40', '11:05', '11:20', '11:26'];
+const barcode = (seed: number) => {
+  const rects: Array<{ x: number; w: number }> = [];
+  let x = 0;
+  for (let k = 0; k < 16; k++) { const w = 1 + ((seed * 7 + k * 3) % 3); rects.push({ x, w }); x += w + 1 + ((seed + k) % 2); }
+  return { rects, width: x };
+};
+const steps = [1, 2, 3, 4, 5].map((i) => ({ label: t(locale, `diagnostics.step.${i}`), d: t(locale, `diagnostics.step.${i}.d`), time: times[i - 1], bc: barcode(i) }));
+const statement = [
+  { who: 'Dr. Sultana', n: '42', earned: '18,900' },
+  { who: 'Dr. Karim', n: '27', earned: '12,450' },
+  { who: 'Dr. Nahar', n: '19', earned: '8,300' },
+];
+---
+<section id="diagnostics" class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>{t(locale, 'diagnostics.h2')}</h2>
+      <p class="lede">{t(locale, 'diagnostics.body')}</p>
+    </div>
+    <ol class="flow" aria-label="Sample to report">
+      {steps.map((s) => (
+        <li class="step card">
+          <svg class="bc" viewBox={`0 0 ${s.bc.width} 14`} aria-hidden="true" focusable="false">{s.bc.rects.map((r) => <rect x={r.x} y="0" width={r.w} height="14" />)}</svg>
+          <h3>{s.label}</h3>
+          <p class="muted">{s.d}</p>
+          <span class="num time">{s.time}</span>
+        </li>
+      ))}
+    </ol>
+    <div class="statement card">
+      <div class="st-head">
+        <h3>{t(locale, 'diagnostics.statement.h3')}</h3>
+        <span class="badges"><span class="badge badge-early">{t(locale, 'platform.early')}</span><span class="sample">{t(locale, 'diagnostics.sample')}</span></span>
+      </div>
+      <table>
+        <thead><tr><th scope="col">{t(locale, 'diagnostics.statement.referrer')}</th><th scope="col" class="r">{t(locale, 'diagnostics.statement.referrals')}</th><th scope="col" class="r">{t(locale, 'diagnostics.statement.earned')}</th></tr></thead>
+        <tbody>{statement.map((row) => <tr><td>{row.who}</td><td class="r num">{row.n}</td><td class="r num">{row.earned}</td></tr>)}</tbody>
+      </table>
+    </div>
+    <div class="section-cta"><a class="btn btn-primary" href="#demo" data-track="section_cta_click" data-audience="facility">{t(locale, 'diagnostics.cta')}</a></div>
+  </div>
+</section>
+<style>
+  .flow { list-style: none; margin: 28px 0 0; padding: 0; display: grid; gap: 10px; counter-reset: step; }
+  .step { padding: 16px; display: grid; gap: 6px; }
+  .bc { width: 96px; height: 14px; fill: var(--fg); margin-bottom: 6px; }
+  .step h3 { font-size: 17px; }
+  .time { color: var(--accent); }
+  .statement { margin-top: 24px; padding: 18px 20px; }
+  .st-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; }
+  .badges { display: inline-flex; gap: 10px; align-items: center; }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; font-size: 13px; color: var(--fg-muted); font-weight: 600; padding: 8px 0; border-bottom: 1px solid var(--line); }
+  td { padding: 10px 0; border-bottom: 1px solid var(--line); }
+  tr:last-child td { border-bottom: 0; }
+  .r { text-align: right; }
+  @media (min-width: 768px) {
+    .flow { grid-template-columns: repeat(5, 1fr); gap: 12px; }
+    .statement { max-width: 560px; }
+  }
+</style>

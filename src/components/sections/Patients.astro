@@ -1,0 +1,47 @@
+---
+import Icon from '../Icon.astro';
+import { t, localePath, type Locale } from '../../i18n';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const thread: Array<{ who: 'them' | 'me'; bn?: string; en?: string; text?: string }> = [
+  { who: 'them', bn: t(locale, 'patients.msg.1.bn'), en: t(locale, 'patients.msg.1.en') },
+  { who: 'me', text: t(locale, 'patients.msg.2') },
+  { who: 'them', bn: t(locale, 'patients.msg.3.bn'), en: t(locale, 'patients.msg.3.en') },
+  { who: 'them', bn: t(locale, 'patients.msg.4.bn'), en: t(locale, 'patients.msg.4.en') },
+  { who: 'them', bn: t(locale, 'patients.msg.5.bn'), en: t(locale, 'patients.msg.5.en') },
+];
+---
+<section id="patients" class="section">
+  <div class="container split">
+    <div>
+      <div class="section-head">
+        <h2>{t(locale, 'patients.h2')}</h2>
+        <p class="lede">{t(locale, 'patients.body')}</p>
+      </div>
+      <div class="section-cta">
+        <a class="btn btn-secondary" href={localePath(locale, '/patients/how-it-works')} data-track="find_doctor_click" data-audience="patient">{t(locale, 'patients.cta')} <Icon name="arrow-right" size={18} /></a>
+      </div>
+    </div>
+    <figure class="thread-wrap">
+      <ol class="thread" aria-label={t(locale, 'patients.sample')}>
+        {thread.map((m) => (
+          <li class:list={['msg', m.who]}>
+            {m.who === 'them' ? <><span lang="bn" class="bn-text">{m.bn}</span><span class="en-text" lang="en">{m.en}</span></> : <span class="num">{m.text}</span>}
+          </li>
+        ))}
+      </ol>
+      <figcaption class="sample">{t(locale, 'patients.sample')}</figcaption>
+    </figure>
+  </div>
+</section>
+<style>
+  .split { display: grid; gap: 28px; }
+  .thread-wrap { margin: 0; display: grid; gap: 10px; }
+  .thread { list-style: none; margin: 0; padding: 18px; display: grid; gap: 10px; background: var(--bg-alt); border: 1px solid var(--line); border-radius: var(--radius-tile); max-width: 460px; }
+  .msg { display: grid; gap: 4px; padding: 10px 14px; border-radius: 14px; max-width: 88%; }
+  .msg.them { background: var(--card); border: 1px solid var(--line); justify-self: start; border-bottom-left-radius: 4px; }
+  .msg.me { background: var(--ink-950); color: var(--aqua-200); justify-self: end; border-bottom-right-radius: 4px; font-size: 18px; }
+  .bn-text { font-weight: 600; line-height: 1.5; }
+  .en-text { color: var(--fg-muted); font-size: 13px; }
+  @media (min-width: 768px) { .split { grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; } .thread-wrap { justify-items: center; } }
+</style>

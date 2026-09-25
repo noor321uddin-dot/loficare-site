@@ -1,0 +1,33 @@
+---
+import { t, type Locale } from '../../i18n';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const times = ['11:26:02', '11:20:44', '11:05:31', '10:52:10', '09:14:07'];
+const rows = [1, 2, 3, 4, 5].map((i) => ({ time: times[i - 1], what: t(locale, `ledger.${i}`), who: t(locale, `ledger.${i}.who`) }));
+---
+<section id="data" class="section section-alt">
+  <div class="container split">
+    <div class="section-head">
+      <h2>{t(locale, 'data.h2')}</h2>
+      <p class="lede">{t(locale, 'data.body')}</p>
+    </div>
+    <div class="ledger card">
+      <div class="l-head"><h3>{t(locale, 'data.ledger.h3')}</h3><span class="sample">{t(locale, 'data.ledger.sample')}</span></div>
+      <ol class="rows">
+        {rows.map((r) => <li><span class="num time">{r.time}</span><span class="what">{r.what}</span><span class="who muted">{r.who}</span></li>)}
+      </ol>
+      <p class="note muted">{t(locale, 'ledger.note')}</p>
+    </div>
+  </div>
+</section>
+<style>
+  .split { display: grid; gap: 28px; }
+  .ledger { padding: 18px 20px; display: grid; gap: 12px; }
+  .l-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .rows { list-style: none; margin: 0; padding: 0; display: grid; }
+  .rows li { display: grid; grid-template-columns: 76px 1fr; gap: 4px 12px; padding: 10px 0; border-top: 1px solid var(--line); font-size: 15px; }
+  .time { color: var(--accent); }
+  .who { grid-column: 2; font-size: 13px; }
+  .note { font-size: 14px; }
+  @media (min-width: 768px) { .split { grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; } .rows li { grid-template-columns: 84px 1fr auto; } .who { grid-column: auto; } }
+</style>

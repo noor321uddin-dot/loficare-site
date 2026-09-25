@@ -1,0 +1,64 @@
+---
+import Icon from '../Icon.astro';
+import Mark from '../Mark.astro';
+import { t, type Locale } from '../../i18n';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+type Mod = { name: string; live?: boolean };
+const tiers: Array<{ key: string; modules: Mod[] }> = [
+  { key: 'core', modules: [
+    { name: 'Facility, people and access control' }, { name: 'Patient identity and registry' }, { name: 'Doctor, referrer and earnings' }, { name: 'Service catalogue and pricing' },
+    { name: 'Appointment, queue and front desk', live: true }, { name: 'Visit and order desk' }, { name: 'Billing, payments and counter' }, { name: 'Credit accounts: corporate, insurance, health card' },
+  ] },
+  { key: 'diagnostics', modules: [{ name: 'Sample, collection, barcode and QR' }, { name: 'Result entry, verification and quality control' }, { name: 'Imaging and radiology' }, { name: 'Report release, delivery and archive' }] },
+  { key: 'clinical', modules: [{ name: 'Clinical records, prescription and digital forms' }] },
+  { key: 'hospital', modules: [{ name: 'Inpatient: admission, ward, OT, emergency and ancillary' }] },
+  { key: 'supply', modules: [{ name: 'Pharmacy and inventory' }] },
+  { key: 'operations', modules: [{ name: 'Workforce, assets and compliance' }] },
+  { key: 'engagement', modules: [{ name: 'Communication, patient portal and service desk' }] },
+  { key: 'insight', modules: [{ name: 'Reporting, analytics and MIS' }] },
+];
+---
+<section id="platform" class="section section-alt">
+  <div class="container">
+    <div class="head">
+      <div class="section-head">
+        <h2>{t(locale, 'platform.h2')}</h2>
+        <p class="lede">{t(locale, 'platform.sub')}</p>
+      </div>
+      <Mark size={72} class="legend" />
+    </div>
+    <div class="tiers">
+      {tiers.map((tier) => (
+        <div class="tier">
+          <h3>{t(locale, `platform.tier.${tier.key}`)}</h3>
+          <ul class="chips">
+            {tier.modules.map((m) => (
+              <li class:list={['chip', { live: m.live }]} data-module={m.live ? 'appointments' : undefined}>
+                <span class="name">{m.name}</span>
+                {m.live
+                  ? <span class="badge badge-ok"><Icon name="check" size={14} /> {t(locale, 'platform.available')}</span>
+                  : <span class="badge badge-early">{t(locale, 'platform.early')}</span>}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+<style>
+  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+  .legend { display: none; flex: none; }
+  .tiers { margin-top: 28px; border-bottom: 1px solid var(--line); }
+  .tier { display: grid; gap: 10px; padding: 18px 0; border-top: 1px solid var(--line); }
+  .tier h3 { font-size: 15px; color: var(--accent); }
+  .chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap; border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 8px 14px; font-weight: 600; font-size: 15px; }
+  .chip.live { border-color: var(--ok); }
+  @media (min-width: 768px) {
+    .legend { display: block; }
+    .tier { grid-template-columns: 180px 1fr; gap: 16px; padding: 22px 0; }
+    .tier h3 { position: sticky; top: 88px; align-self: start; }
+  }
+</style>

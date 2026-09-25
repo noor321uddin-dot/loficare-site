@@ -1,0 +1,23 @@
+---
+import Icon from '../Icon.astro';
+import { t, type Locale } from '../../i18n';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+---
+<section id="faq" class="section">
+  <div class="container narrow">
+    <div class="section-head"><h2>{t(locale, 'faq.h2')}</h2></div>
+    <div class="items">
+      {[1, 2, 3, 4, 5, 6].map((i) => (
+        <details class="faq-item" name="faq">
+          <summary>{t(locale, `faq.q${i}`)} <Icon name="caret-down" size={20} /></summary>
+          <p class="a">{t(locale, `faq.a${i}`)}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+<style>
+  .narrow { max-width: 820px; }
+  .items { margin-top: 20px; }
+</style>
