@@ -4,7 +4,10 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --legacy-peer-deps
 COPY . .
-RUN npm run build
+# the public origin is prerendered into canonical, hreflang, Open Graph and sitemap tags
+ARG SITE_URL=http://localhost:8080
+ENV SITE_URL=$SITE_URL
+RUN npm run build && npm prune --omit=dev --legacy-peer-deps
 
 FROM node:24-alpine
 WORKDIR /app

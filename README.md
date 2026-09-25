@@ -53,14 +53,17 @@ The rate limiter is in memory and per process, which is right for one instance. 
 ## Deploy
 
 ```bash
+cp .env.example .env      # set SITE_URL to the public origin first: it is baked into the prerendered pages
 docker compose up -d --build
 ```
 
-One container, one volume (`leads-data`) for the SQLite file. Host it in whatever region the team chooses: the site promises patients' data stays in Bangladesh, so where this database lives is a documented decision, not an accident. If the site ever moves to a serverless host, swap `src/lib/db.mjs` to Turso or libSQL; the rest does not change.
+One container, one volume (`leads-data`) for the SQLite file, published on `HOST_PORT` (default 8080) in front of the app's port 4321. `docker compose ps` shows `healthy` once `/api/health` answers. Host it in whatever region the team chooses: the site promises patients' data stays in Bangladesh, so where this database lives is a documented decision, not an accident. If the site ever moves to a serverless host, swap `src/lib/db.mjs` to Turso or libSQL; the rest does not change.
 
-## Hero tiers
+Notes from the first deployment (2026-09-26, Docker Engine inside WSL Ubuntu on the build machine):
 
-The hero assembly always ships as SVG with GSAP: that is the first paint, the phone experience and the fallback. Desktops of 768 px and wider with WebGL2 and enough memory load `src/lib/webgl-hero.ts` after the page has loaded and hand the same animation over to it; the island bows out by itself if it cannot hold 42 fps. `npm run build` then `BASE=http://127.0.0.1:4399 node scripts/bench-webgl.mjs` against a served build re-runs the decision D3 benchmark.
+- `SITE_URL` is read at build time for canonical, hreflang, Open Graph and sitemap tags, so change it in `.env` and rebuild rather than only restarting.
+- The image is built on the host network (`build.network: host` in `compose.yaml`) because Docker's bridge network has no outbound route under WSL; a normal Linux host does not need it and can drop that line.
+- Useful commands: `docker compose logs -f web`, `docker compose exec web node scripts/leads-export.mjs /data/export.csv`, `docker compose exec web node scripts/leads-retry.mjs`.
 
 ## Fonts
 

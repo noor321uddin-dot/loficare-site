@@ -1,8 +1,13 @@
 services:
   web:
-    build: .
+    build:
+      context: .
+      network: host
+      args:
+        # baked into the prerendered pages (canonical, hreflang, Open Graph, sitemap); set it in .env before building
+        SITE_URL: "${SITE_URL:-http://localhost:8080}"
     ports:
-      - "4321:4321"
+      - "${HOST_PORT:-8080}:4321"
     env_file:
       - .env
     environment:
