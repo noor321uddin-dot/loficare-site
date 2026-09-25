@@ -1,0 +1,15 @@
+services:
+  web:
+    build: .
+    ports:
+      - "4321:4321"
+    env_file:
+      - .env
+    environment:
+      DATABASE_PATH: /data/leads.db
+    volumes:
+      - leads-data:/data
+    restart: unless-stopped
+
+volumes:
+  leads-data:

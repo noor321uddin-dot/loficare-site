@@ -1,0 +1,39 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import Icon from './Icon.astro';
+import { t, localePath, type Locale } from '../i18n';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const wa = (import.meta.env.CONTACT_WHATSAPP as string | undefined) ?? '8801000000000';
+---
+<Base title={`${t(locale, 'thanks.title.demo')}, LofiCare`} description={t(locale, 'thanks.body.demo')} locale={locale} path="/thank-you">
+  <Header locale={locale} />
+  <main id="main" class="section">
+    <div class="container narrow" data-form="demo">
+      <p class="ok"><Icon name="check" size={22} /> <span data-title-demo>{t(locale, 'thanks.title.demo')}</span><span data-title-trial hidden>{t(locale, 'thanks.title.trial')}</span></p>
+      <h1 data-body-demo>{t(locale, 'thanks.body.demo')}</h1>
+      <h1 data-body-trial hidden>{t(locale, 'thanks.body.trial')}</h1>
+      <div class="actions">
+        <a class="btn btn-primary" href={`https://wa.me/${wa}`} rel="noopener" data-track="whatsapp_click" data-placeholder="contact"><Icon name="whatsapp-logo" size={20} /> {t(locale, 'thanks.whatsapp')}</a>
+        <a class="btn btn-quiet" href={localePath(locale, '/')}>{t(locale, 'thanks.back')}</a>
+      </div>
+    </div>
+  </main>
+  <Footer locale={locale} />
+</Base>
+<style>
+  .narrow { max-width: 720px; }
+  .ok { display: inline-flex; align-items: center; gap: 8px; color: var(--ok); font-weight: 800; margin-bottom: 12px; }
+  h1 { font-size: clamp(26px, 3.6vw, 36px); }
+  .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+</style>
+<script>
+  /* The page is static; the form name arrives in the query string and switches the wording. */
+  const form = new URLSearchParams(location.search).get('form');
+  if (form === 'trial') {
+    document.querySelectorAll<HTMLElement>('[data-title-demo], [data-body-demo]').forEach((el) => (el.hidden = true));
+    document.querySelectorAll<HTMLElement>('[data-title-trial], [data-body-trial]').forEach((el) => (el.hidden = false));
+  }
+</script>

@@ -12,8 +12,9 @@
     "check:contrast": "node scripts/check-contrast.mjs",
     "check:i18n": "node scripts/check-i18n.mjs",
     "check:budget": "node scripts/check-budget.mjs",
-    "leads:export": "node scripts/leads-export.mjs",
-    "leads:retry": "node scripts/leads-retry.mjs"
+    "leads:export": "node --env-file-if-exists=.env scripts/leads-export.mjs",
+    "leads:retry": "node --env-file-if-exists=.env scripts/leads-retry.mjs",
+    "start": "node --env-file-if-exists=.env server/start.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
@@ -29,6 +30,7 @@
     "@types/three": "^0.186.0",
     "astro": "^7.3.5",
     "gsap": "^3.15.0",
+    "nodemailer": "^10.0.10",
     "qrcode": "^1.5.4",
     "tailwindcss": "^4.3.3",
     "three": "^0.186.1",

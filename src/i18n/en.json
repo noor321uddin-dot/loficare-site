@@ -229,5 +229,12 @@
   "how.step.2": "Pick a time.",
   "how.step.3": "Confirm your number with the code we text you.",
   "how.step.4": "Get your serial, and a reminder the day before.",
-  "how.back": "Back to LofiCare"
+  "how.back": "Back to LofiCare",
+
+  "thanks.title.demo": "Demo request received",
+  "thanks.body.demo": "We will call or message you within one working day to set a time.",
+  "thanks.title.trial": "You are on the list",
+  "thanks.body.trial": "We will message you today to set up your chamber and send the booking link.",
+  "thanks.whatsapp": "Message us on WhatsApp",
+  "thanks.back": "Back to LofiCare"
 }

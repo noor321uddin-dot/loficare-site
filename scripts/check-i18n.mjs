@@ -6,7 +6,7 @@ const en = JSON.parse(readFileSync(new URL('../src/i18n/en.json', import.meta.ur
 const bn = JSON.parse(readFileSync(new URL('../src/i18n/bn.json', import.meta.url), 'utf8'));
 
 // Brief §12: patient section and booking flow, primary CTAs, header, footer, sticky bar, form labels, trust and compliance lines.
-const mandatoryPrefixes = ['meta.', 'nav.', 'lang.', 'theme.', 'hero.cta', 'doors.', 'trust.', 'sticky.', 'footer.', 'patients.', 'demo.', 'form.', 'data.', 'trial.', 'how.'];
+const mandatoryPrefixes = ['meta.', 'nav.', 'lang.', 'theme.', 'hero.cta', 'doors.', 'trust.', 'sticky.', 'footer.', 'patients.', 'demo.', 'form.', 'data.', 'trial.', 'how.', 'thanks.'];
 
 const missing = Object.keys(en).filter((k) => !(k in bn));
 const mandatoryMissing = missing.filter((k) => mandatoryPrefixes.some((p) => k.startsWith(p)));
