@@ -43,16 +43,27 @@ const strands = ['M0 20C150 20 200 80 300 80', 'M0 50C150 50 200 80 300 80', 'M0
   }
 </style>
 <script>
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  /* The line drawing loads GSAP only when the figure comes within a screen of the viewport, so the library
+     never competes with the hero's first paint. Until then the strokes are hidden by their dash offset. */
   const fig = document.querySelector<HTMLElement>('#problem .join');
   const paths = fig ? Array.from(fig.querySelectorAll<SVGPathElement>('path.strand, path.main')) : [];
   const plus = fig?.querySelector<SVGPathElement>('path.plus');
-  if (fig && paths.length && plus && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    gsap.registerPlugin(ScrollTrigger);
+  if (fig && paths.length && plus && !matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
     for (const p of paths) { const len = p.getTotalLength(); p.style.strokeDasharray = `${len}`; p.style.strokeDashoffset = `${len}`; }
-    gsap.timeline({ scrollTrigger: { trigger: fig, start: 'top 85%', end: 'bottom 50%', scrub: 0.5 } })
-      .to(paths, { strokeDashoffset: 0, ease: 'none', stagger: 0.06 })
-      .fromTo(plus, { opacity: 0, scale: 0.6, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, ease: 'expo.out', duration: 0.3 }, '-=0.1');
+    plus.style.opacity = '0';
+    const reveal = () => { for (const p of paths) p.style.strokeDashoffset = '0'; plus.style.opacity = '1'; };
+    const io = new IntersectionObserver(async (entries) => {
+      if (!entries.some((e) => e.isIntersecting)) return;
+      io.disconnect();
+      try {
+        const [{ gsap }, { ScrollTrigger }] = await Promise.all([import('gsap'), import('gsap/ScrollTrigger')]);
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.timeline({ scrollTrigger: { trigger: fig, start: 'top 85%', end: 'bottom 50%', scrub: 0.5 } })
+          .to(paths, { strokeDashoffset: 0, ease: 'none', stagger: 0.06 })
+          .fromTo(plus, { opacity: 0, scale: 0.6, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, ease: 'expo.out', duration: 0.3 }, '-=0.1');
+        ScrollTrigger.refresh();
+      } catch { reveal(); }
+    }, { rootMargin: '0px 0px 30% 0px' });
+    io.observe(fig);
   }
 </script>

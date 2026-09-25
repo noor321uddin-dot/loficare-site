@@ -62,6 +62,10 @@ One container, one volume (`leads-data`) for the SQLite file. Host it in whateve
 
 The hero assembly always ships as SVG with GSAP: that is the first paint, the phone experience and the fallback. Desktops of 768 px and wider with WebGL2 and enough memory load `src/lib/webgl-hero.ts` after the page has loaded and hand the same animation over to it; the island bows out by itself if it cannot hold 42 fps. `npm run build` then `BASE=http://127.0.0.1:4399 node scripts/bench-webgl.mjs` against a served build re-runs the decision D3 benchmark.
 
+## Fonts
+
+Two families ship: Manrope for Latin and Anek Bangla for Bangla. `npm run fonts` (Python with fonttools and brotli) rebuilds the three small files in `public/fonts/`: a basic-Latin Manrope subset the headline renders from without waiting on a swap, and Anek Bangla as static 700 and 400 instances subset to every Bangla string found in `src/`. Run it after adding Bangla copy.
+
 ## Quality gates
 
 ```bash

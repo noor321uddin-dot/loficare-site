@@ -36,7 +36,7 @@
   color-scheme: light;
 
   --font-latin: 'Manrope Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-bangla: 'Anek Bangla Variable', 'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
+  --font-bangla: 'Anek Bangla Variable', 'Manrope Variable', 'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
 
   --radius-control: 10px;
   --radius-tile: 16px;

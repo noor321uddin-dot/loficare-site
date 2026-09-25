@@ -16,7 +16,9 @@
     "leads:retry": "node --env-file-if-exists=.env scripts/leads-retry.mjs",
     "start": "node --env-file-if-exists=.env server/start.mjs",
     "capture": "node scripts/capture.mjs",
-    "lighthouse": "node scripts/lighthouse.mjs"
+    "lighthouse": "node scripts/lighthouse.mjs",
+    "fonts": "python scripts/subset-fonts.py",
+    "bench:webgl": "node scripts/bench-webgl.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",

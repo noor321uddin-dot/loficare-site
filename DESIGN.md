@@ -165,7 +165,7 @@ Dark mode (`html[data-theme="dark"]`) remaps `--bg`, `--bg-alt`, `--fg`, `--fg-m
 
 ## Typography
 
-Two families, self-hosted, subset, `font-display: swap`: Manrope Variable for every Latin role, Anek Bangla Variable for Bangla. The Latin variable file is preloaded. Weights: 700 for display, headlines, titles, labels and numbers; 400 for body. Display tracks at -0.02em; Bangla never tracks.
+Two families, self-hosted and subset: Manrope Variable for every Latin role, Anek Bangla for Bangla. Basic Latin comes from a 14 KB Manrope subset with `font-display: optional`, preloaded, so headlines never wait on a swap; other Latin ranges use the full face with swap. Anek Bangla ships as static 700 and 400 instances (51 KB each) subset to the site's own text, preloaded on the Bangla route and added after load on the English route; Latin characters inside Bangla runs fall through to Manrope. Weights: 700 for display, headlines, titles, labels and numbers; 400 for body. Display tracks at -0.02em; Bangla never tracks.
 
 Scale: display 32 to 40 px, headline 26 to 34 px, title 20 to 22 px, lede 17 to 19 px, body 16 px, label 14 px. Body line height 1.5; display 1.08; Bangla headings 1.4 so matras and descenders never clip, and Bangla body runs 17 px against the Latin 16. Measure stays between 46 and 72 characters (`.lede` 46ch, legal body 70ch). Numbers use tabular figures and weight 700 (`.num`).
 

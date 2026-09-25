@@ -17,10 +17,10 @@ Build prompt phase 9. Every number below comes from a command run against the bu
 
 | Route | Performance | Accessibility | Best practices | SEO | FCP | LCP | TBT | CLS |
 |---|---|---|---|---|---|---|---|---|
-| `/` | 92 | 100 | 100 | 100 | 2.6 s | 2.9 s | 0 ms | 0 |
-| `/bn/` | 92 | 100 | 100 | 100 | 2.5 s | 2.9 s | 0 ms | 0.004 |
+| `/` | 100 | 100 | 100 | 100 | 1.1 s | 1.4 s | 0 ms | 0 |
+| `/bn/` | 98 | 100 | 100 | 100 | 1.7 s | 2.1 s | 0 ms | 0 |
 
-Before this round the same pages scored 82 and 83 with LCP at 3.8 and 3.6 s. Three changes moved them: the server now compresses in process and serves precompressed assets (the home page went from 75 KB to 25 KB on the wire), both stylesheets are inlined so nothing render-blocking is fetched, and the Latin font is preloaded. The 90 score budget is met. The LCP target of 2.5 s in the budget table is not: 2.9 s under simulated slow 4G, driven by the font swap on the headline. The honest next steps for LCP are a smaller Latin subset for the hero and deferring GSAP until after first paint; both are listed in open items.
+Three rounds got here. The pages started at 82 and 83 with LCP at 3.8 and 3.6 s. The first round (compression in process with precompressed assets, both stylesheets inlined, the Latin font preloaded) reached 92 and 92 with LCP at 2.9 s. The second round moved LCP itself: GSAP and ScrollTrigger now load half a second after the load event instead of before the first paint, the problem section loads them only when it comes into view, the headline's glyphs come from a 14 KB basic-Latin Manrope subset with `font-display: optional` so no swap repaints the LCP element, and the Bangla faces are added through the Font Loading API after load on the English route. That took the English home to 100 with LCP 1.4 s, and the Bangla home to 96 with LCP 2.6 s, still held by the 156 KB variable Bengali file its headline waits on. The third round replaced that file with two static instances at the only weights the site uses, 700 and 400, 51 KB each, built by `scripts/subset-fonts.py` from every Bangla string in the repository with full layout closure; the 700 file is preloaded on the Bangla route. Every conjunct on both routes was checked visually after the change. First-load JavaScript is now 4.8 KB gzipped.
 
 ## axe-core 4.13, all ten routes
 

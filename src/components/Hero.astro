@@ -102,9 +102,8 @@ const webgl = ((import.meta.env.PUBLIC_WEBGL_HERO as string | undefined) ?? 'on'
   }
 </style>
 <script>
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
   import type { TileSpec, PulseGroup } from '../lib/webgl-hero';
+  type Timeline = ReturnType<typeof import('gsap').gsap.timeline>;
 
   const root = document.documentElement;
   const hero = document.getElementById('hero');
@@ -116,31 +115,53 @@ const webgl = ((import.meta.env.PUBLIC_WEBGL_HERO as string | undefined) ?? 'on'
     const tiles = Array.from(svg.querySelectorAll<SVGGElement>('.tile'));
     const num = (el: Element, k: string) => Number((el as SVGGElement).dataset[k] ?? 0);
     const finish = () => { try { sessionStorage.setItem('lc-assembled', '1'); } catch {} };
-    let tl: gsap.core.Timeline | null = null;
+    let tl: Timeline | null = null;
+    let tlReady: Promise<Timeline | null> = Promise.resolve(null);
 
-    /* SVG tier: the mandatory assembly, scrubbed on desktop, on enter on phones */
+    /* SVG tier: the mandatory assembly, scrubbed on desktop, on enter on phones. GSAP loads after the first
+       paint so it never sits on the LCP path; if it arrives after the CSS fallback has revealed the tiles
+       (3.6 s), the assembly is skipped for this visit rather than replayed on an assembled mark. */
+    const REVEAL_MS = 3600;
+    const t0 = performance.now();
     if (root.getAttribute('data-assemble') === 'pending') {
-      gsap.registerPlugin(ScrollTrigger);
-      gsap.set(tiles, {
-        x: (_i: number, el: Element) => num(el, 'sx'),
-        y: (_i: number, el: Element) => num(el, 'sy'),
-        rotation: (_i: number, el: Element) => num(el, 'srot'),
-        scale: (_i: number, el: Element) => num(el, 'sscale'),
-        opacity: 0.35,
-        transformOrigin: '50% 50%',
+      tlReady = new Promise((resolve) => {
+        const go = async () => {
+          try {
+            const [{ gsap }, { ScrollTrigger }] = await Promise.all([import('gsap'), import('gsap/ScrollTrigger')]);
+            if (performance.now() - t0 > REVEAL_MS) { root.removeAttribute('data-assemble'); finish(); resolve(null); return; }
+            gsap.registerPlugin(ScrollTrigger);
+            gsap.set(tiles, {
+              x: (_i: number, el: Element) => num(el, 'sx'),
+              y: (_i: number, el: Element) => num(el, 'sy'),
+              rotation: (_i: number, el: Element) => num(el, 'srot'),
+              scale: (_i: number, el: Element) => num(el, 'sscale'),
+              opacity: 0.35,
+              transformOrigin: '50% 50%',
+            });
+            root.removeAttribute('data-assemble');
+            const timeline = gsap.timeline({ paused: true, defaults: { ease: 'expo.out' }, onComplete: finish });
+            timeline.to(tiles, { x: 0, y: 0, rotation: 0, scale: 1, opacity: 1, duration: 1.5, stagger: { each: 0.045, from: 'random' } });
+            if (matchMedia('(min-width: 768px)').matches) {
+              const st = ScrollTrigger.create({ trigger: hero, start: 'top top', end: '+=70%', scrub: 0.6, animation: timeline });
+              // kill(revert, allowAnimation): without the second flag ScrollTrigger kills the timeline too
+              window.setTimeout(() => { if (timeline.progress() < 0.05) { st.kill(false, true); timeline.play(); } }, 1200);
+            } else {
+              ScrollTrigger.create({ trigger: svg, start: 'top 85%', once: true, onEnter: () => timeline.play() });
+            }
+            tl = timeline;
+            if (import.meta.env.DEV) (window as any).__lc = { gsap, tl, ScrollTrigger };
+            resolve(timeline);
+          } catch {
+            root.removeAttribute('data-assemble');
+            resolve(null);
+          }
+        };
+        /* after the load event plus half a second: past the first paint on every connection we model */
+        const kick = () => window.setTimeout(go, 500);
+        if (document.readyState === 'complete') kick();
+        else window.addEventListener('load', kick, { once: true });
       });
-      root.removeAttribute('data-assemble');
-      tl = gsap.timeline({ paused: true, defaults: { ease: 'expo.out' }, onComplete: finish });
-      tl.to(tiles, { x: 0, y: 0, rotation: 0, scale: 1, opacity: 1, duration: 1.5, stagger: { each: 0.045, from: 'random' } });
-      if (matchMedia('(min-width: 768px)').matches) {
-        const st = ScrollTrigger.create({ trigger: hero, start: 'top top', end: '+=70%', scrub: 0.6, animation: tl });
-        // kill(revert, allowAnimation): without the second flag ScrollTrigger kills the timeline too
-        window.setTimeout(() => { if (tl && tl.progress() < 0.05) { st.kill(false, true); tl.play(); } }, 2200);
-      } else {
-        ScrollTrigger.create({ trigger: svg, start: 'top 85%', once: true, onEnter: () => tl?.play() });
-      }
     }
-    if (import.meta.env.DEV) (window as any).__lc = { gsap, tl, ScrollTrigger };
 
     /* WebGL tier: capable desktops only, loaded after the page has loaded, behind a runtime self-check */
     const mem = (navigator as any).deviceMemory as number | undefined;
@@ -155,6 +176,7 @@ const webgl = ((import.meta.env.PUBLIC_WEBGL_HERO as string | undefined) ?? 'on'
       const boot = async () => {
         try {
           const { mountHero } = await import('../lib/webgl-hero');
+          await tlReady;
           const specs: TileSpec[] = tiles
             .filter((el) => !el.classList.contains('tile-cross'))
             .map((el) => ({ x: num(el, 'x'), y: num(el, 'y'), rot: num(el, 'rot'), sx: num(el, 'sx'), sy: num(el, 'sy'), srot: num(el, 'srot'), sscale: num(el, 'sscale'), group: (el.dataset.group === 'l' ? 'l' : 'ring') }));

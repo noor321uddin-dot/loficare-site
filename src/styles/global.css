@@ -19,7 +19,7 @@
   --color-green: #167A5C;
   --color-red: #C43B3B;
   --font-sans: 'Manrope Variable', system-ui, sans-serif;
-  --font-bangla: 'Anek Bangla Variable', 'Hind Siliguri', sans-serif;
+  --font-bangla: 'Anek Bangla Variable', 'Manrope Variable', 'Hind Siliguri', sans-serif;
 }
 
 body {
@@ -73,7 +73,7 @@ h3 { font-size: clamp(20px, 2vw, 22px); line-height: 1.2; }
 .link-quiet:hover { color: var(--fg); }
 
 /* the assembly first paint: tiles hidden until the script places them, revealed by CSS if the script never runs */
-html[data-assemble="pending"] .assembly .tile { opacity: 0; animation: lc-reveal .5s ease-out 2.8s forwards; }
+html[data-assemble="pending"] .assembly .tile { opacity: 0; animation: lc-reveal .5s ease-out 3.6s forwards; }
 @keyframes lc-reveal { to { opacity: 1; } }
 
 /* section heads, badges, cards, forms, the board, accordion */

@@ -1,10 +1,21 @@
 ---
 import '../styles/global.css';
 import '@fontsource-variable/manrope';
-import '@fontsource-variable/anek-bangla';
+import '../styles/fonts.css';
 import Consent from '../components/Consent.astro';
-import manropeUrl from '@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url';
 import type { Locale } from '../i18n';
+const manropeUrl = '/fonts/manrope-basic-v1.woff2';
+/* Anek Bangla ships as two static weights built by scripts/subset-fonts.py (51 KB each instead of the 156 KB
+   variable file). On the Bangla route the headline needs the 700 face, so both faces are declared inline and the
+   700 file is preloaded. On the English route only the trust line and the patient thread use Bangla, so the faces
+   are added after the page has loaded (Font Loading API) and never compete with the headline's first paint.
+   Latin characters inside Bangla runs fall through to Manrope (see --font-bangla in tokens.css). */
+const BENGALI_RANGE = 'U+0980-09FF, U+1CD0-1CFA, U+200C-200D, U+20B9, U+25CC';
+const anek700 = '/fonts/anek-bangla-700-v1.woff2';
+const anek400 = '/fonts/anek-bangla-400-v1.woff2';
+const face = (url: string, weight: number) => `@font-face{font-family:'Anek Bangla Variable';font-style:normal;font-display:swap;font-weight:${weight};src:url(${url}) format('woff2');unicode-range:${BENGALI_RANGE}}`;
+const anekFaces = face(anek700, 700) + face(anek400, 400);
+const anekLazy = `window.addEventListener('load',function(){setTimeout(function(){if(!('FontFace' in window))return;[['${anek700}','700'],['${anek400}','400']].forEach(function(f){var face=new FontFace('Anek Bangla Variable','url('+f[0]+') format("woff2")',{weight:f[1],display:'swap',unicodeRange:'${BENGALI_RANGE}'});face.load().then(function(){document.fonts.add(face)}).catch(function(){})})},600)});`;
 interface Props { title: string; description?: string; locale?: Locale; path?: string; jsonLd?: Record<string, unknown>[]; noindex?: boolean }
 const { title, description = '', locale = 'en', path = '/', jsonLd = [], noindex = false } = Astro.props;
 const site = ((import.meta.env.SITE_URL as string | undefined) || 'http://127.0.0.1:4321').replace(/\/$/, '');
@@ -30,6 +41,8 @@ const ld: Record<string, unknown>[] = [
     {description && <meta name="description" content={description} />}
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="preload" as="font" type="font/woff2" href={manropeUrl} crossorigin />
+    {locale === 'bn' && <link rel="preload" as="font" type="font/woff2" href={anek700} crossorigin />}
+    {locale === 'bn' ? <style set:html={anekFaces} /> : <script is:inline set:html={anekLazy} />}
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang="en" href={enUrl} />
     <link rel="alternate" hreflang="bn" href={bnUrl} />
