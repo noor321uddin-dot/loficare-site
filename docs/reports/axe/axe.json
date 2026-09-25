@@ -1,0 +1,52 @@
+[
+  {
+    "route": "/",
+    "seriousCount": 0,
+    "violations": []
+  },
+  {
+    "route": "/bn/",
+    "seriousCount": 0,
+    "violations": []
+  },
+  {
+    "route": "/patients/how-it-works",
+    "seriousCount": 0,
+    "violations": []
+  },
+  {
+    "route": "/privacy",
+    "seriousCount": 0,
+    "violations": []
+  },
+  {
+    "route": "/terms",
+    "seriousCount": 0,
+    "violations": []
+  },
+  {
+    "route": "/thank-you?form=demo",
+    "seriousCount": 0,
+    "violations": []
+  },
+  {
+    "route": "/bn/patients/how-it-works",
+    "seriousCount": 0,
+    "violations": []
+  },
+  {
+    "route": "/bn/privacy",
+    "seriousCount": 0,
+    "violations": []
+  },
+  {
+    "route": "/bn/terms",
+    "seriousCount": 0,
+    "violations": []
+  },
+  {
+    "route": "/bn/thank-you?form=trial",
+    "seriousCount": 0,
+    "violations": []
+  }
+]

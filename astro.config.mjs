@@ -4,7 +4,8 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   output: 'server',
-  adapter: node({ mode: 'standalone' }),
+  adapter: node({ mode: 'middleware' }),
+  build: { inlineStylesheets: 'always' },
   site: 'https://loficare.example',
   i18n: {
     defaultLocale: 'en',

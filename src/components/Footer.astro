@@ -22,7 +22,7 @@ const wa = (import.meta.env.CONTACT_WHATSAPP as string | undefined) ?? '88010000
       <a href={localePath(locale, '/terms')}>{t(locale, 'footer.terms')}</a>
     </nav>
     <div class="controls">
-      <LangToggle locale={locale} />
+      <LangToggle locale={locale} nav={false} />
       <ThemeToggle toDark={t(locale, 'theme.toDark')} toLight={t(locale, 'theme.toLight')} />
     </div>
   </div>

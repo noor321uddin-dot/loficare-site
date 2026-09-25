@@ -7,3 +7,7 @@ data/*.db-*
 .impeccable/review/
 docs/reports/*.html
 docs/exports/
+docs/reports/lighthouse/*.report.json
+docs/reports/lighthouse/*.report.html
+data/*.log
+data/*.ttf

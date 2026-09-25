@@ -27,8 +27,8 @@ const modules = [
 ];
 type Tile = { x: number; y: number; rot: number; name: string; sx: number; sy: number; srot: number; sscale: number };
 const scatter = (i: number) => ({
-  sx: Math.round(Math.cos(i * 2.399) * (330 + (i % 3) * 80)),
-  sy: Math.round(Math.sin(i * 1.731) * (300 + (i % 4) * 60)),
+  sx: Math.round(Math.cos(i * 2.399) * (170 + (i % 3) * 45)),
+  sy: Math.round(Math.sin(i * 1.731) * (160 + (i % 4) * 40)),
   srot: ((i * 53) % 360) - 180,
   sscale: Math.round((0.7 + (i % 3) * 0.12) * 100) / 100,
 });
@@ -53,7 +53,7 @@ const r = (n: number) => Math.round(n * 10) / 10;
       </div>
     </div>
     <div class="visual">
-      <svg class="assembly" viewBox="0 0 1000 1000" role="img" aria-labelledby="assembly-title">
+      <svg class="assembly" viewBox="235 235 530 530" role="img" aria-labelledby="assembly-title">
         <title id="assembly-title">{t(locale, 'hero.assembly.alt')}</title>
         <defs>
           <linearGradient id="hero-cross" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#40E8E0" /><stop offset="1" stop-color="#A7FCF6" /></linearGradient>
@@ -80,14 +80,14 @@ const r = (n: number) => Math.round(n * 10) / 10;
   .lede { margin-top: 14px; }
   .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
   .visual { display: grid; place-items: center; }
-  .assembly { width: min(100%, 380px); height: auto; overflow: visible; }
+  .assembly { width: min(100%, 300px); height: auto; overflow: visible; }
   .tile rect { fill: var(--tile); stroke: var(--tile-line); stroke-width: 3; }
   .tile-cross path { fill: url(#hero-cross); stroke: var(--tile-line); stroke-width: 3; }
   :global(html[data-theme="dark"]) .tile-cross path { stroke: none; filter: drop-shadow(0 0 18px rgba(64, 232, 224, 0.45)); }
   @media (min-width: 768px) {
-    .hero { min-height: calc(100dvh - 68px); display: flex; align-items: center; padding-block: 48px 64px; }
-    .grid { grid-template-columns: 1.25fr 0.75fr; gap: 48px; align-items: center; }
-    .assembly { width: min(100%, 520px); }
+    .hero { min-height: min(calc(100dvh - 68px), 720px); display: flex; align-items: center; padding-block: 40px 56px; }
+    .grid { grid-template-columns: 1.2fr 0.8fr; gap: 48px; align-items: center; }
+    .assembly { width: min(100%, 480px); }
   }
 </style>
 <script>

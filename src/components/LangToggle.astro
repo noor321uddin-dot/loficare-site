@@ -1,12 +1,14 @@
 ---
 import { t, localePath, type Locale } from '../i18n';
-interface Props { locale: Locale; path?: string }
-const { locale, path = '/' } = Astro.props;
+interface Props { locale: Locale; path?: string; nav?: boolean }
+const { locale, path = '/', nav = true } = Astro.props;
+/* The header instance is a navigation landmark; the footer repeat is a plain group so landmarks stay unique. */
+const Tag = nav ? 'nav' : 'div';
 ---
-<nav class="lang" aria-label={t(locale, 'lang.switch')}>
+<Tag class="lang" role={nav ? undefined : 'group'} aria-label={t(locale, 'lang.switch')}>
   <a href={localePath('en', path)} aria-current={locale === 'en' ? 'page' : undefined} lang="en">{t(locale, 'lang.en')}</a>
   <a href={localePath('bn', path)} aria-current={locale === 'bn' ? 'page' : undefined} lang="bn">{t(locale, 'lang.bn')}</a>
-</nav>
+</Tag>
 <style>
   .lang { display: inline-flex; border: 1.5px solid var(--line); border-radius: var(--radius-control); overflow: hidden; height: 44px; }
   .lang a { display: inline-flex; align-items: center; justify-content: center; padding: 0 12px; min-width: 44px; text-decoration: none; color: var(--fg-muted); font-weight: 700; font-size: 14px; }

@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-26",
+  "source": "src/styles/tokens.css, src/styles/global.css, src/components/**",
+  "colorMeta": {
+    "ink-950": { "displayName": "Ink 950", "role": "dark ground for objects on the light page, page ground in dark mode" },
+    "aqua-400": { "displayName": "Aqua 400", "role": "the mark's light; large shapes and text on ink only, never text on paper" },
+    "teal-700": { "displayName": "Teal 700", "role": "links and accents on paper, 6.0:1" },
+    "marigold": { "displayName": "Marigold", "role": "the one action colour; ink label, one primary per screen" },
+    "green": { "displayName": "Calm Green (AA)", "role": "Available now badge only, with icon and words; darkened from #1F9D74 to pass 4.5:1" },
+    "red": { "displayName": "Signal Red (AA)", "role": "errors only; darkened from #D64545 to pass 4.5:1" },
+    "mist-on-ink": { "displayName": "Mist on ink", "role": "the only secondary text on ink, 8.4:1" }
+  },
+  "typographyMeta": {
+    "display": { "role": "h1", "notes": "two lines maximum at desktop; 40 px cap keeps the hero headline on two lines at 1280" },
+    "bangla-heading": { "role": "h1 to h3 on the Bangla route", "notes": "line height 1.4 protects matras and descenders; no tracking" }
+  },
+  "extensions": {
+    "shadows": {
+      "floating": "0 12px 32px rgba(4, 26, 26, 0.18)",
+      "signboard-light": "inset 0 0 40px rgba(64, 232, 224, 0.18), 0 12px 32px rgba(4, 26, 26, 0.18)",
+      "rule": "shadows only on things that float or emit light; the page itself is flat with hairlines"
+    },
+    "motion": {
+      "micro": "150ms to 300ms, ease-out",
+      "assembly": "1.5s expo.out, stagger 45ms random, scroll-scrubbed over 70 percent of a viewport on desktop, on enter on phones, once per session",
+      "line-drawing": "stroke-dashoffset scrubbed from 85 percent to 50 percent viewport",
+      "reduced-motion": "every animation collapses to its end state",
+      "rule": "one authored motion moment per section; transform and opacity only; no scroll listeners"
+    },
+    "breakpoints": { "sm": 480, "md": 640, "lg": 768, "xl": 900, "xxl": 1024 },
+    "layers": { "overlay": 10, "header": 20, "sticky-bar": 30, "consent": 40, "dialog": 50 },
+    "darkMode": "html[data-theme=dark] remaps --bg, --bg-alt, --fg, --fg-muted, --line, --accent, --accent-strong, --tile, --tile-line, --card onto the ink and aqua ramps; light is the default regardless of OS preference"
+  },
+  "components": {
+    "button-primary": {
+      "html": "<a class=\"btn btn-primary\" href=\"#demo\">Book a demo</a>",
+      "css": ".btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border-radius:10px;font-weight:700;border:1.5px solid transparent;white-space:nowrap}.btn-primary{background:#F5871F;color:#041A1A;border-color:#F5871F}.btn-primary:hover{background:#E8801B;border-color:#E8801B}.btn:active{transform:translateY(1px)}"
+    },
+    "badge-available": {
+      "html": "<span class=\"badge badge-ok\"><svg width=\"14\" height=\"14\" viewBox=\"0 0 256 256\" fill=\"currentColor\"><path d=\"M232.49 80.49l-128 128a12 12 0 0 1-17 0l-56-56a12 12 0 1 1 17-17L96 183l119.51-119.5a12 12 0 0 1 17 17Z\"/></svg> Available now, free</span>",
+      "css": ".badge{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:2px 10px;font-size:13px;font-weight:700;line-height:1.5}.badge-ok{color:#167A5C;border:1.5px solid #167A5C;background:#fff}"
+    },
+    "board": {
+      "html": "<div class=\"board\"><span class=\"label\">Now serving</span><div class=\"big\">9</div></div>",
+      "css": ".board{background:#041A1A;color:#A7FCF6;border:1px solid #0B3534;border-radius:12px;padding:14px 16px;font-variant-numeric:tabular-nums}.board .label{color:#9CB7B5;font-size:12px;font-weight:600}.board .big{font-size:40px;font-weight:800;color:#40E8E0;line-height:1}"
+    }
+  },
+  "narrative": {
+    "northStar": "A light room with one dark screen in it. Numbers as facts. One warm colour that asks.",
+    "rules": [
+      "Only the appointment module is Available now; every other module is Early access in mist.",
+      "Marigold appears once per screen, with an ink label.",
+      "Aqua is light, not ink: on the mark and on dark grounds, never as text on paper.",
+      "No eyebrows, section numbers, scroll cues, gradient text, glows on paper, em dashes.",
+      "One motion moment per section, static under reduced motion."
+    ],
+    "notCanonized": "The variants board (src/pages/variants.astro) and its grid-line background are a working document deleted before launch, not part of the system."
+  }
+}

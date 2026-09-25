@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev --host 127.0.0.1 --port 4321",
-    "build": "astro build",
+    "build": "astro build && node scripts/precompress.mjs",
     "preview": "astro preview",
     "typecheck": "astro check",
     "check:copy": "node scripts/check-copy.mjs",
@@ -14,7 +14,9 @@
     "check:budget": "node scripts/check-budget.mjs",
     "leads:export": "node --env-file-if-exists=.env scripts/leads-export.mjs",
     "leads:retry": "node --env-file-if-exists=.env scripts/leads-retry.mjs",
-    "start": "node --env-file-if-exists=.env server/start.mjs"
+    "start": "node --env-file-if-exists=.env server/start.mjs",
+    "capture": "node scripts/capture.mjs",
+    "lighthouse": "node scripts/lighthouse.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
@@ -29,9 +31,11 @@
     "@tailwindcss/vite": "^4.3.3",
     "@types/three": "^0.186.0",
     "astro": "^7.3.5",
+    "compression": "^1.8.2",
     "gsap": "^3.15.0",
     "nodemailer": "^10.0.10",
     "qrcode": "^1.5.4",
+    "sirv": "^3.0.2",
     "tailwindcss": "^4.3.3",
     "three": "^0.186.1",
     "typescript": "^6.0.3",
@@ -39,6 +43,9 @@
   },
   "devDependencies": {
     "@types/node": "^26.6.2",
-    "@types/qrcode": "^1.5.6"
+    "@types/qrcode": "^1.5.6",
+    "axe-core": "^4.13.0",
+    "lighthouse": "^13.5.0",
+    "puppeteer-core": "^25.12.0"
   }
 }

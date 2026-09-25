@@ -19,7 +19,7 @@ const qr = await QRCode.toString('https://' + link, { type: 'svg', margin: 0, co
         <h3>{t(locale, 'trial.h3')}</h3>
         <div class="field" data-field="contact">
           <label for="trial-contact">{t(locale, 'trial.label')}</label>
-          <input id="trial-contact" name="contact" type="text" inputmode="email" autocomplete="tel email" required />
+          <input id="trial-contact" name="contact" type="text" inputmode="email" autocomplete="on" required />
           <p class="help">{t(locale, 'trial.help')}</p>
           <p class="error" role="alert">{t(locale, 'trial.error')}</p>
         </div>
