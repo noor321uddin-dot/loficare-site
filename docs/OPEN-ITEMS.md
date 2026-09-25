@@ -19,7 +19,5 @@ Everything that ships marked as a placeholder or awaits the LofiCare team. Build
 | Native review of every Bangla string | `src/i18n/bn.json`; `npm run check:i18n` lists the 114 keys still falling back to English | Native reviewer |
 | Module names in Bangla | `src/components/sections/Platform.astro` (English only) and `Hero.astro` tile titles | Native reviewer |
 | Real module statuses | only appointments is "Available now"; move a badge only with the team's confirmation | LofiCare product |
-| Variants board | `src/pages/variants.astro` and the six extra font packages it imports; delete before launch | Build |
-| WebGL hero tier | behind the D3 benchmark, not yet built; the SVG tier ships | Build |
 | LCP under 2.5 s on simulated slow 4G | 2.9 s today with a performance score of 92; next levers are a smaller Latin subset for the hero headline and loading GSAP after first paint | Build |
 | Test database | `data/leads.db` holds test rows; delete before the first deployment | Build |

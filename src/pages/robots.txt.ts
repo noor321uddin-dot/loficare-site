@@ -8,7 +8,6 @@ export const GET: APIRoute = () =>
     `User-agent: *
 Allow: /
 Disallow: /api/
-Disallow: /variants
 Disallow: /thank-you
 Disallow: /bn/thank-you
 

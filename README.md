@@ -12,7 +12,7 @@ cp .env.example .env
 npm run dev
 ```
 
-The site is at http://127.0.0.1:4321 (English) and /bn/ (Bangla). The variants board at /variants is a working document and is deleted before launch.
+The site is at http://127.0.0.1:4321 (English) and /bn/ (Bangla).
 
 ## Build and start
 
@@ -37,6 +37,7 @@ Every variable is listed in `.env.example`. Nothing is required to run: without 
 | `ANALYTICS_DOMAIN` | Plausible-compatible analytics, loaded only after consent |
 | `CONTACT_PHONE`, `CONTACT_WHATSAPP` | The numbers behind the call and WhatsApp links |
 | `RATE_LIMIT_PER_10MIN` | Per-IP submissions per form per ten minutes (default 10) |
+| `PUBLIC_WEBGL_HERO` | `off` ships the SVG hero alone; by default capable desktops load the WebGL tier after the page has loaded |
 
 ## Leads
 
@@ -56,6 +57,10 @@ docker compose up -d --build
 ```
 
 One container, one volume (`leads-data`) for the SQLite file. Host it in whatever region the team chooses: the site promises patients' data stays in Bangladesh, so where this database lives is a documented decision, not an accident. If the site ever moves to a serverless host, swap `src/lib/db.mjs` to Turso or libSQL; the rest does not change.
+
+## Hero tiers
+
+The hero assembly always ships as SVG with GSAP: that is the first paint, the phone experience and the fallback. Desktops of 768 px and wider with WebGL2 and enough memory load `src/lib/webgl-hero.ts` after the page has loaded and hand the same animation over to it; the island bows out by itself if it cannot hold 42 fps. `npm run build` then `BASE=http://127.0.0.1:4399 node scripts/bench-webgl.mjs` against a served build re-runs the decision D3 benchmark.
 
 ## Quality gates
 

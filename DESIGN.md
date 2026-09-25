@@ -198,6 +198,7 @@ One radius system: 10 px on controls (buttons, inputs, toggles), 16 px on tiles 
 - **Forms**: label above input, helper below, error below in red text and a red border, radio choices as bordered pills that fill with wash when checked, 48 px inputs, honeypot off-screen.
 - **Accordion**: native `details`, hairline between items, caret rotates when open.
 - **Booking widget**: a real component with three states (pick, code, done), sample data labelled.
+- **Hero assembly**: SVG tiles animated with GSAP on every device; on capable desktops a WebGL tier renders the same geometry in three dimensions with the cross lit, pointer parallax and a pulse when a door is hovered.
 - **Toggles**: language as a two-segment pill, colour mode as a 44 px icon button with sun and moon from Phosphor.
 - **Icons**: Phosphor regular only, `currentColor`, 18 to 22 px inline.
 

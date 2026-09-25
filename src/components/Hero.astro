@@ -4,7 +4,9 @@ interface Props { locale: Locale }
 const { locale } = Astro.props;
 
 /* The mark's geometry in a 1000-unit box (see docs/DECISIONS.md and public/brand/loficare-mark.svg).
-   Thirteen tiles sit on the ring's centreline, four make the L, the cross is the appointment module. */
+   Thirteen tiles sit on the ring's centreline, four make the L, the cross is the appointment module.
+   The SVG tier below is the first paint and the fallback; capable desktops hand over to the WebGL tier
+   in src/lib/webgl-hero.ts, which reads the same tile data from the data attributes. */
 const CX = 501, CY = 499, R = 187.5, A1 = 188, SPAN = 276, N = 13, S = 66;
 const modules = [
   'Facility, people and access control',
@@ -25,7 +27,7 @@ const modules = [
   'Communication, patient portal and service desk',
   'Reporting, analytics and MIS',
 ];
-type Tile = { x: number; y: number; rot: number; name: string; sx: number; sy: number; srot: number; sscale: number };
+type Tile = { x: number; y: number; rot: number; name: string; group: 'ring' | 'l'; sx: number; sy: number; srot: number; sscale: number };
 const scatter = (i: number) => ({
   sx: Math.round(Math.cos(i * 2.399) * (170 + (i % 3) * 45)),
   sy: Math.round(Math.sin(i * 1.731) * (160 + (i % 4) * 40)),
@@ -36,11 +38,12 @@ const tiles: Tile[] = [];
 for (let i = 0; i < N; i++) {
   const deg = A1 + (i + 0.5) * (SPAN / N);
   const rad = (deg * Math.PI) / 180;
-  tiles.push({ x: CX + R * Math.cos(rad), y: CY + R * Math.sin(rad), rot: deg + 90, name: modules[i], ...scatter(i) });
+  tiles.push({ x: CX + R * Math.cos(rad), y: CY + R * Math.sin(rad), rot: deg + 90, name: modules[i], group: 'ring', ...scatter(i) });
 }
 const lTiles: Array<[number, number]> = [[311.5, 540.5], [311.5, 612.5], [311.5, 684.5], [393, 684.5]];
-lTiles.forEach(([x, y], k) => tiles.push({ x, y, rot: 0, name: modules[N + k], ...scatter(N + k) }));
+lTiles.forEach(([x, y], k) => tiles.push({ x, y, rot: 0, name: modules[N + k], group: 'l', ...scatter(N + k) }));
 const r = (n: number) => Math.round(n * 10) / 10;
+const webgl = ((import.meta.env.PUBLIC_WEBGL_HERO as string | undefined) ?? 'on') !== 'off';
 ---
 <section id="hero" class="hero">
   <div class="container grid">
@@ -53,22 +56,25 @@ const r = (n: number) => Math.round(n * 10) / 10;
       </div>
     </div>
     <div class="visual">
-      <svg class="assembly" viewBox="235 235 530 530" role="img" aria-labelledby="assembly-title">
-        <title id="assembly-title">{t(locale, 'hero.assembly.alt')}</title>
-        <defs>
-          <linearGradient id="hero-cross" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#40E8E0" /><stop offset="1" stop-color="#A7FCF6" /></linearGradient>
-        </defs>
-        {tiles.map((tile) => (
-          <g class="tile" data-sx={tile.sx} data-sy={tile.sy} data-srot={tile.srot} data-sscale={tile.sscale}>
-            <title>{tile.name}. {t(locale, 'hero.early')}</title>
-            <rect x={r(tile.x - S / 2)} y={r(tile.y - S / 2)} width={S} height={S} rx="12" transform={`rotate(${r(tile.rot)} ${r(tile.x)} ${r(tile.y)})`} />
+      <div class="stage" data-webgl={webgl ? 'on' : 'off'}>
+        <svg class="assembly" viewBox="235 235 530 530" role="img" aria-labelledby="assembly-title">
+          <title id="assembly-title">{t(locale, 'hero.assembly.alt')}</title>
+          <defs>
+            <linearGradient id="hero-cross" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#40E8E0" /><stop offset="1" stop-color="#A7FCF6" /></linearGradient>
+          </defs>
+          {tiles.map((tile) => (
+            <g class="tile" data-x={r(tile.x)} data-y={r(tile.y)} data-rot={r(tile.rot)} data-group={tile.group} data-sx={tile.sx} data-sy={tile.sy} data-srot={tile.srot} data-sscale={tile.sscale}>
+              <title>{tile.name}. {t(locale, 'hero.early')}</title>
+              <rect x={r(tile.x - S / 2)} y={r(tile.y - S / 2)} width={S} height={S} rx="12" transform={`rotate(${r(tile.rot)} ${r(tile.x)} ${r(tile.y)})`} />
+            </g>
+          ))}
+          <g class="tile tile-cross" data-sx="40" data-sy="-320" data-srot="-28" data-sscale="0.85">
+            <title>{t(locale, 'hero.available')}</title>
+            <path d="M456 406h82v58h58v82h-58v58h-82v-58h-58v-82h58z" />
           </g>
-        ))}
-        <g class="tile tile-cross" data-sx="40" data-sy="-320" data-srot="-28" data-sscale="0.85">
-          <title>{t(locale, 'hero.available')}</title>
-          <path d="M456 406h82v58h58v82h-58v58h-82v-58h-58v-82h58z" />
-        </g>
-      </svg>
+        </svg>
+        <div class="webgl" aria-hidden="true"></div>
+      </div>
     </div>
   </div>
 </section>
@@ -80,48 +86,106 @@ const r = (n: number) => Math.round(n * 10) / 10;
   .lede { margin-top: 14px; }
   .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
   .visual { display: grid; place-items: center; }
-  .assembly { width: min(100%, 300px); height: auto; overflow: visible; }
+  .stage { position: relative; width: min(100%, 300px); }
+  .assembly { width: 100%; height: auto; overflow: visible; transition: opacity .45s ease; }
   .tile rect { fill: var(--tile); stroke: var(--tile-line); stroke-width: 3; }
   .tile-cross path { fill: url(#hero-cross); stroke: var(--tile-line); stroke-width: 3; }
   :global(html[data-theme="dark"]) .tile-cross path { stroke: none; filter: drop-shadow(0 0 18px rgba(64, 232, 224, 0.45)); }
+  .webgl { position: absolute; inset: -20%; opacity: 0; transition: opacity .45s ease; pointer-events: none; }
+  .webgl :global(canvas) { display: block; width: 100%; height: 100%; }
+  .stage[data-tier="webgl"] .assembly { opacity: 0; }
+  .stage[data-tier="webgl"] .webgl { opacity: 1; }
   @media (min-width: 768px) {
     .hero { min-height: min(calc(100dvh - 68px), 720px); display: flex; align-items: center; padding-block: 40px 56px; }
     .grid { grid-template-columns: 1.2fr 0.8fr; gap: 48px; align-items: center; }
-    .assembly { width: min(100%, 480px); }
+    .stage { width: min(100%, 480px); }
   }
 </style>
 <script>
   import { gsap } from 'gsap';
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import type { TileSpec, PulseGroup } from '../lib/webgl-hero';
 
   const root = document.documentElement;
   const hero = document.getElementById('hero');
-  const svg = hero?.querySelector<SVGSVGElement>('.assembly');
+  const stage = hero?.querySelector<HTMLElement>('.stage');
+  const svg = stage?.querySelector<SVGSVGElement>('.assembly');
+  const host = stage?.querySelector<HTMLElement>('.webgl');
 
-  if (hero && svg && root.getAttribute('data-assemble') === 'pending') {
-    gsap.registerPlugin(ScrollTrigger);
+  if (hero && stage && svg && host) {
     const tiles = Array.from(svg.querySelectorAll<SVGGElement>('.tile'));
     const num = (el: Element, k: string) => Number((el as SVGGElement).dataset[k] ?? 0);
-    gsap.set(tiles, {
-      x: (_i: number, el: Element) => num(el, 'sx'),
-      y: (_i: number, el: Element) => num(el, 'sy'),
-      rotation: (_i: number, el: Element) => num(el, 'srot'),
-      scale: (_i: number, el: Element) => num(el, 'sscale'),
-      opacity: 0.35,
-      transformOrigin: '50% 50%',
-    });
-    root.removeAttribute('data-assemble');
     const finish = () => { try { sessionStorage.setItem('lc-assembled', '1'); } catch {} };
-    const tl = gsap.timeline({ paused: true, defaults: { ease: 'expo.out' }, onComplete: finish });
-    tl.to(tiles, { x: 0, y: 0, rotation: 0, scale: 1, opacity: 1, duration: 1.5, stagger: { each: 0.045, from: 'random' } });
+    let tl: gsap.core.Timeline | null = null;
 
+    /* SVG tier: the mandatory assembly, scrubbed on desktop, on enter on phones */
+    if (root.getAttribute('data-assemble') === 'pending') {
+      gsap.registerPlugin(ScrollTrigger);
+      gsap.set(tiles, {
+        x: (_i: number, el: Element) => num(el, 'sx'),
+        y: (_i: number, el: Element) => num(el, 'sy'),
+        rotation: (_i: number, el: Element) => num(el, 'srot'),
+        scale: (_i: number, el: Element) => num(el, 'sscale'),
+        opacity: 0.35,
+        transformOrigin: '50% 50%',
+      });
+      root.removeAttribute('data-assemble');
+      tl = gsap.timeline({ paused: true, defaults: { ease: 'expo.out' }, onComplete: finish });
+      tl.to(tiles, { x: 0, y: 0, rotation: 0, scale: 1, opacity: 1, duration: 1.5, stagger: { each: 0.045, from: 'random' } });
+      if (matchMedia('(min-width: 768px)').matches) {
+        const st = ScrollTrigger.create({ trigger: hero, start: 'top top', end: '+=70%', scrub: 0.6, animation: tl });
+        // kill(revert, allowAnimation): without the second flag ScrollTrigger kills the timeline too
+        window.setTimeout(() => { if (tl && tl.progress() < 0.05) { st.kill(false, true); tl.play(); } }, 2200);
+      } else {
+        ScrollTrigger.create({ trigger: svg, start: 'top 85%', once: true, onEnter: () => tl?.play() });
+      }
+    }
     if (import.meta.env.DEV) (window as any).__lc = { gsap, tl, ScrollTrigger };
-    if (matchMedia('(min-width: 768px)').matches) {
-      const st = ScrollTrigger.create({ trigger: hero, start: 'top top', end: '+=70%', scrub: 0.6, animation: tl });
-      // kill(revert, allowAnimation): without the second flag ScrollTrigger kills the timeline too
-      window.setTimeout(() => { if (tl.progress() < 0.05) { st.kill(false, true); tl.play(); } }, 2200);
-    } else {
-      ScrollTrigger.create({ trigger: svg, start: 'top 85%', once: true, onEnter: () => tl.play() });
+
+    /* WebGL tier: capable desktops only, loaded after the page has loaded, behind a runtime self-check */
+    const mem = (navigator as any).deviceMemory as number | undefined;
+    const capable =
+      stage.dataset.webgl === 'on' &&
+      matchMedia('(min-width: 768px)').matches &&
+      !matchMedia('(prefers-reduced-motion: reduce)').matches &&
+      (mem === undefined || mem >= 4) &&
+      !!document.createElement('canvas').getContext('webgl2');
+
+    if (capable) {
+      const boot = async () => {
+        try {
+          const { mountHero } = await import('../lib/webgl-hero');
+          const specs: TileSpec[] = tiles
+            .filter((el) => !el.classList.contains('tile-cross'))
+            .map((el) => ({ x: num(el, 'x'), y: num(el, 'y'), rot: num(el, 'rot'), sx: num(el, 'sx'), sy: num(el, 'sy'), srot: num(el, 'srot'), sscale: num(el, 'sscale'), group: (el.dataset.group === 'l' ? 'l' : 'ring') }));
+          const theme = () => (root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+          const island = mountHero(host, specs, theme());
+          const current = () => (tl ? tl.progress() : 1);
+          island.setProgress(current());
+          await new Promise((res) => setTimeout(res, 450));
+          const fps = island.getFps();
+          if (fps && fps < 42) { island.destroy(); stage.dataset.tier = 'svg'; return; }
+          stage.dataset.tier = 'webgl';
+          if (tl) tl.eventCallback('onUpdate', () => island.setProgress(tl!.progress()));
+          island.setProgress(current());
+          new MutationObserver(() => island.setTheme(theme())).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+          const groups: Record<string, PulseGroup> = { facility: 'ring', doctor: 'cross', patient: 'l' };
+          document.querySelectorAll<HTMLElement>('#doors .door').forEach((door) => {
+            const g = groups[door.dataset.audience || ''];
+            if (!g) return;
+            door.addEventListener('pointerenter', () => island.pulse(g));
+            door.addEventListener('focusin', () => island.pulse(g));
+          });
+          (window as any).__lcHero = island;
+        } catch (err) {
+          stage.dataset.tier = 'svg';
+          if (import.meta.env.DEV) console.warn('[hero] webgl tier skipped', err);
+        }
+      };
+      const w = window as any;
+      const idle = (cb: () => void) => (typeof w.requestIdleCallback === 'function' ? w.requestIdleCallback(cb, { timeout: 1500 }) : w.setTimeout(cb, 300));
+      if (document.readyState === 'complete') idle(boot);
+      else window.addEventListener('load', () => idle(boot), { once: true });
     }
   }
 </script>

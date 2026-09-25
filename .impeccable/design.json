@@ -3,17 +3,44 @@
   "generatedAt": "2026-09-26",
   "source": "src/styles/tokens.css, src/styles/global.css, src/components/**",
   "colorMeta": {
-    "ink-950": { "displayName": "Ink 950", "role": "dark ground for objects on the light page, page ground in dark mode" },
-    "aqua-400": { "displayName": "Aqua 400", "role": "the mark's light; large shapes and text on ink only, never text on paper" },
-    "teal-700": { "displayName": "Teal 700", "role": "links and accents on paper, 6.0:1" },
-    "marigold": { "displayName": "Marigold", "role": "the one action colour; ink label, one primary per screen" },
-    "green": { "displayName": "Calm Green (AA)", "role": "Available now badge only, with icon and words; darkened from #1F9D74 to pass 4.5:1" },
-    "red": { "displayName": "Signal Red (AA)", "role": "errors only; darkened from #D64545 to pass 4.5:1" },
-    "mist-on-ink": { "displayName": "Mist on ink", "role": "the only secondary text on ink, 8.4:1" }
+    "ink-950": {
+      "displayName": "Ink 950",
+      "role": "dark ground for objects on the light page, page ground in dark mode"
+    },
+    "aqua-400": {
+      "displayName": "Aqua 400",
+      "role": "the mark's light; large shapes and text on ink only, never text on paper"
+    },
+    "teal-700": {
+      "displayName": "Teal 700",
+      "role": "links and accents on paper, 6.0:1"
+    },
+    "marigold": {
+      "displayName": "Marigold",
+      "role": "the one action colour; ink label, one primary per screen"
+    },
+    "green": {
+      "displayName": "Calm Green (AA)",
+      "role": "Available now badge only, with icon and words; darkened from #1F9D74 to pass 4.5:1"
+    },
+    "red": {
+      "displayName": "Signal Red (AA)",
+      "role": "errors only; darkened from #D64545 to pass 4.5:1"
+    },
+    "mist-on-ink": {
+      "displayName": "Mist on ink",
+      "role": "the only secondary text on ink, 8.4:1"
+    }
   },
   "typographyMeta": {
-    "display": { "role": "h1", "notes": "two lines maximum at desktop; 40 px cap keeps the hero headline on two lines at 1280" },
-    "bangla-heading": { "role": "h1 to h3 on the Bangla route", "notes": "line height 1.4 protects matras and descenders; no tracking" }
+    "display": {
+      "role": "h1",
+      "notes": "two lines maximum at desktop; 40 px cap keeps the hero headline on two lines at 1280"
+    },
+    "bangla-heading": {
+      "role": "h1 to h3 on the Bangla route",
+      "notes": "line height 1.4 protects matras and descenders; no tracking"
+    }
   },
   "extensions": {
     "shadows": {
@@ -26,10 +53,23 @@
       "assembly": "1.5s expo.out, stagger 45ms random, scroll-scrubbed over 70 percent of a viewport on desktop, on enter on phones, once per session",
       "line-drawing": "stroke-dashoffset scrubbed from 85 percent to 50 percent viewport",
       "reduced-motion": "every animation collapses to its end state",
-      "rule": "one authored motion moment per section; transform and opacity only; no scroll listeners"
+      "rule": "one authored motion moment per section; transform and opacity only; no scroll listeners",
+      "webgl-tier": "on capable desktops the same assembly renders in three dimensions (src/lib/webgl-hero.ts): rounded tiles with teal outlines, the cross lit with an additive halo, gentle bob at idle, pointer parallax around the mark's centre, a pulse on door hover; never on phones, never under reduced motion"
     },
-    "breakpoints": { "sm": 480, "md": 640, "lg": 768, "xl": 900, "xxl": 1024 },
-    "layers": { "overlay": 10, "header": 20, "sticky-bar": 30, "consent": 40, "dialog": 50 },
+    "breakpoints": {
+      "sm": 480,
+      "md": 640,
+      "lg": 768,
+      "xl": 900,
+      "xxl": 1024
+    },
+    "layers": {
+      "overlay": 10,
+      "header": 20,
+      "sticky-bar": 30,
+      "consent": 40,
+      "dialog": 50
+    },
     "darkMode": "html[data-theme=dark] remaps --bg, --bg-alt, --fg, --fg-muted, --line, --accent, --accent-strong, --tile, --tile-line, --card onto the ink and aqua ramps; light is the default regardless of OS preference"
   },
   "components": {

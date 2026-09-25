@@ -38,6 +38,10 @@ The review (`docs/reports/finish-review.md`) returned `disposition: fix` with th
 
 `docs/screens/home-desktop.png` and `home-mobile.png` (full page, both routes), `home-mobile-viewport.png`, and the reviewer's `.impeccable/review/hero-repro.png`, all with reduced motion so nothing is hidden by animation timing.
 
-## Not in this round
+## WebGL tier, added after the round
 
-The WebGL hero tier was not attempted; decision D3 lets the SVG tier ship alone, and it does. Email delivery and Turnstile are configured but were not exercised (no SMTP or Turnstile keys in the test environment).
+Built as `src/lib/webgl-hero.ts`, loaded lazily after the page has loaded on desktops of 768 px and wider with WebGL2, at least 4 GB of device memory and no reduced-motion preference, and only kept if its first half second renders above 42 fps. One instanced mesh for the seventeen tiles, one for their outlines, an extruded cross with an additive glow sprite: five draw calls, no post-processing, pixel ratio capped at 1.5, rendering paused off-screen and in hidden tabs. The island weighs 140.8 KB gzipped against the 160 KB budget and is a separate chunk, so first load is unchanged at 47 KB. The D3 benchmark (`scripts/bench-webgl.mjs`, 1024 px, CPU throttled 4x, real GPU) passed at over 200 fps while assembling and at idle; report in `docs/reports/webgl-bench.md`, captures in `docs/screens/hero-webgl-1024.png` and `hero-webgl-1440.png`. The variants board was deleted in the same change, with its four extra font packages.
+
+## Not exercised
+
+Email delivery and Turnstile are configured but were not exercised (no SMTP or Turnstile keys in the test environment).

@@ -16,7 +16,7 @@ const walk = (dir, filter) => {
 };
 walk(path.join(root, 'src/i18n'), (p) => p.endsWith('.json'));
 walk(path.join(root, 'src/content'), (p) => p.endsWith('.md') || p.endsWith('.json'));
-walk(path.join(root, 'dist/client'), (p) => p.endsWith('.html') && !p.includes('variants') && !p.includes('board-export'));
+walk(path.join(root, 'dist/client'), (p) => p.endsWith('.html'));
 
 const rules = [
   { name: 'em dash', re: /—/g },

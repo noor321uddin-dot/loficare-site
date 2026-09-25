@@ -32,14 +32,20 @@ const staticGraph = (entries) => {
   return [...seen];
 };
 const firstLoadFiles = staticGraph(scripts.filter((s) => !/three/i.test(s)));
-const islandFiles = staticGraph(scripts.filter((s) => /three/i.test(s)));
+/* the WebGL island is a dynamic import, so it never appears in the HTML: find its chunks by name */
+const { readdirSync } = await import('node:fs');
+const islandEntries = readdirSync(path.join(root, '_astro')).filter((f) => /webgl-hero|three/i.test(f) && f.endsWith('.js')).map((f) => '/_astro/' + f);
+const islandFiles = staticGraph(islandEntries).filter((f) => !firstLoadFiles.includes(f));
 const jsFirstLoad = firstLoadFiles.reduce((a, p) => a + gz(p), 0);
 const jsIsland = islandFiles.reduce((a, p) => a + gz(p), 0);
-const css = styles.reduce((a, p) => a + gz(p), 0);
+/* stylesheets are inlined at build (astro.config build.inlineStylesheets), so measure the inline blocks too */
+const inlineCss = [...html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)].map((m) => m[1]).join('\n');
+const css = styles.reduce((a, p) => a + gz(p), 0) + (inlineCss ? gzipSync(inlineCss).length : 0);
 const htmlGz = gzipSync(html).length;
 
 const fontFiles = new Set();
-for (const s of styles) for (const m of readFileSync(path.join(root, s), 'utf8').matchAll(/url\(([^)]+\.woff2?)\)/g)) fontFiles.add(m[1].replace(/['"]/g, ''));
+const cssSources = [inlineCss, ...styles.map((s) => readFileSync(path.join(root, s), 'utf8'))];
+for (const src of cssSources) for (const m of src.matchAll(/url\(([^)]+\.woff2?)\)/g)) fontFiles.add(m[1].replace(/['"]/g, ''));
 const families = new Set([...fontFiles].map((f) => path.basename(f).split('-')[0]));
 
 const rows = [
