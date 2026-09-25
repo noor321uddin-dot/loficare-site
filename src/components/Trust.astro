@@ -1,0 +1,17 @@
+---
+import { t } from '../i18n';
+const bnLine = t('bn', 'trust.line');
+const enLine = t('en', 'trust.line');
+---
+<section id="trust" class="trust section-alt" aria-label="Built in Bangladesh">
+  <div class="container">
+    <p class="bn-line" lang="bn">{bnLine}</p>
+    <p class="en-line" lang="en">{enLine}</p>
+  </div>
+</section>
+<style>
+  .trust { padding-block: 28px; text-align: center; }
+  .bn-line { font-weight: 700; font-size: clamp(18px, 2.2vw, 24px); line-height: 1.45; }
+  .en-line { color: var(--fg-muted); margin-top: 4px; }
+  @media (min-width: 768px) { .trust { padding-block: 36px; } }
+</style>

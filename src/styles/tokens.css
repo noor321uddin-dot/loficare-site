@@ -15,8 +15,8 @@
   --mist: #D8E6E5;
   --mist-on-ink: #9CB7B5;
   --marigold: #F5871F;
-  --green: #1F9D74;
-  --red: #D64545;
+  --green: #167A5C; /* brief's #1F9D74 darkened to pass 4.5:1 as badge text on paper */
+  --red: #C43B3B;   /* brief's #D64545 darkened to pass 4.5:1 as error text on paper */
 
   /* semantic, light surface */
   --bg: var(--paper);
@@ -30,6 +30,10 @@
   --cta-fg: var(--ink-950);
   --ok: var(--green);
   --err: var(--red);
+  --tile: var(--wash-100);
+  --tile-line: var(--teal-600);
+  --card: #FFFFFF;
+  color-scheme: light;
 
   --font-latin: 'Manrope Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-bangla: 'Anek Bangla Variable', 'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
@@ -38,6 +42,23 @@
   --radius-tile: 16px;
   --z-overlay: 10; --z-header: 20; --z-bar: 30; --z-consent: 40; --z-dialog: 50;
 }
+
+/* dark mode, chosen by the visitor (D9). Same roles, ink values. */
+html[data-theme="dark"] {
+  --bg: var(--ink-950);
+  --bg-alt: var(--ink-900);
+  --fg: #F2FBFA;
+  --fg-muted: var(--mist-on-ink);
+  --line: var(--ink-800);
+  --accent: var(--aqua-200);
+  --accent-strong: var(--aqua-400);
+  --tile: var(--ink-900);
+  --tile-line: var(--aqua-300);
+  --card: var(--ink-900);
+  color-scheme: dark;
+}
+
+/* a dark band inside the light page, used only by the queue-board component */
 .band-ink {
   --bg: var(--ink-950);
   --bg-alt: var(--ink-900);

@@ -6,3 +6,4 @@ data/*.db
 data/*.db-*
 .impeccable/review/
 docs/reports/*.html
+docs/exports/

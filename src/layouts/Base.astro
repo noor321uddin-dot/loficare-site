@@ -2,20 +2,53 @@
 import '../styles/global.css';
 import '@fontsource-variable/manrope';
 import '@fontsource-variable/anek-bangla';
-interface Props { title: string; description?: string; lang?: 'en' | 'bn' }
-const { title, description = '', lang = 'en' } = Astro.props;
+import type { Locale } from '../i18n';
+interface Props { title: string; description?: string; locale?: Locale; path?: string }
+const { title, description = '', locale = 'en', path = '/' } = Astro.props;
+const site = (import.meta.env.SITE_URL as string | undefined) ?? 'http://127.0.0.1:4321';
+const enUrl = site + path;
+const bnUrl = site + '/bn' + path;
 ---
 <!doctype html>
-<html lang={lang}>
+<html lang={locale} data-theme="light">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
+    <link rel="canonical" href={locale === 'en' ? enUrl : bnUrl} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="bn" href={bnUrl} />
+    <link rel="alternate" hreflang="x-default" href={enUrl} />
+    <link rel="icon" type="image/svg+xml" href="/brand/loficare-mark.svg" />
     <link rel="icon" type="image/png" href="/brand/loficare-mark.png" />
+    <script is:inline>
+      (function () {
+        var d = document.documentElement;
+        try {
+          /* light by default (user decision); dark only when the visitor chose it */
+          var s = localStorage.getItem('lc-theme');
+          d.setAttribute('data-theme', s === 'dark' ? 'dark' : 'light');
+        } catch (e) { d.setAttribute('data-theme', 'light'); }
+        try {
+          var rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+          var seen = sessionStorage.getItem('lc-assembled');
+          if (!rm && !seen && !location.hash) d.setAttribute('data-assemble', 'pending');
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
-    <!-- DIRECTION CONTRACT: written after the checkpoint (build prompt section 13, phase 3). -->
+    <!--
+      DIRECTION CONTRACT, seed 17f59650
+      THESIS: The complete facility platform you can start today, shown as disconnected modules becoming one mark.
+      WORLD: The queue board. A light room with one dark screen in it; numbers as facts, tabular and a weight heavier; motion steps, overshoots and settles, never fades.
+      FIRST VIEWPORT: Left, the facility claim and two actions. Right, eighteen module tiles drift, then assemble into the LofiCare mark; only the appointment cross carries the aqua gradient.
+      VISITOR PATH: hero, three doors, trust line, problem, the 18 modules, diagnostics, hospitals, the live module, doctors, patients, data, cohorts, pricing, FAQ, demo, footer.
+      SIGNATURE: The assembly, once per session, scroll-driven on desktop, on enter on phones, static under reduced motion. Light by default, dark by choice.
+      RISK: Aqua on paper is a large-shape colour only; every text pair passes AA through the tokens.
+    -->
     <slot />
   </body>
 </html>

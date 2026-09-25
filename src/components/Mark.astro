@@ -1,0 +1,14 @@
+---
+interface Props { size?: number; class?: string; title?: string }
+const { size = 40, class: cls = '', title = 'LofiCare' } = Astro.props;
+const uid = Math.random().toString(36).slice(2, 7);
+---
+<svg class={cls} width={size} height={size} viewBox="0 0 1000 1000" role="img" aria-label={title}>
+  <defs>
+    <linearGradient id={`ring-${uid}`} x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#A7FCF6"/><stop offset="1" stop-color="#40E8E0"/></linearGradient>
+    <linearGradient id={`cross-${uid}`} x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#40E8E0"/><stop offset="1" stop-color="#A7FCF6"/></linearGradient>
+  </defs>
+  <path d="M315.3 472.9 A187.5 187.5 0 1 1 455.6 680.9" fill="none" stroke={`url(#ring-${uid})`} stroke-width="95"/>
+  <path d="M264 496h95v141h75v95H264z" fill={`url(#ring-${uid})`}/>
+  <path d="M456 406h82v58h58v82h-58v58h-82v-58h-58v-82h58z" fill={`url(#cross-${uid})`}/>
+</svg>

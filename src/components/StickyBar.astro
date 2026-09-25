@@ -1,0 +1,29 @@
+---
+import { t, type Locale } from '../i18n';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+---
+<div class="sticky-bar" data-mode="demo">
+  <a class="btn btn-primary" href="#demo" data-mode-link="demo" data-track="sticky_click" data-audience="facility">{t(locale, 'sticky.demo')}</a>
+  <a class="btn btn-primary" href="#appointments" data-mode-link="trial" data-track="sticky_click" data-audience="doctor">{t(locale, 'sticky.trial')}</a>
+</div>
+<style>
+  .sticky-bar { position: fixed; inset-inline: 0; bottom: 0; z-index: var(--z-bar); padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: color-mix(in srgb, var(--bg) 94%, transparent); backdrop-filter: blur(10px); border-top: 1px solid var(--line); display: grid; }
+  .sticky-bar .btn { grid-area: 1 / 1; width: 100%; }
+  .sticky-bar[data-mode="demo"] [data-mode-link="trial"], .sticky-bar[data-mode="trial"] [data-mode-link="demo"] { visibility: hidden; }
+  @media (min-width: 768px) { .sticky-bar { display: none; } }
+  :global(body) { padding-bottom: 76px; }
+  @media (min-width: 768px) { :global(body) { padding-bottom: 0; } }
+</style>
+<script>
+  const bar = document.querySelector<HTMLElement>('.sticky-bar');
+  const targets = ['appointments', 'doctors'].map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+  if (bar && targets.length && 'IntersectionObserver' in window) {
+    const visible = new Set<Element>();
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) e.isIntersecting ? visible.add(e.target) : visible.delete(e.target);
+      bar.dataset.mode = visible.size ? 'trial' : 'demo';
+    }, { threshold: 0.3 });
+    targets.forEach((el) => io.observe(el));
+  }
+</script>

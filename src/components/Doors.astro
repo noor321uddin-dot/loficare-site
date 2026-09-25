@@ -1,0 +1,36 @@
+---
+import Icon from './Icon.astro';
+import { t, localePath, type Locale } from '../i18n';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+---
+<section id="doors" class="doors container" aria-label="Three ways in">
+  <a class="door facility" href="#demo" data-track="door_click" data-audience="facility">
+    <span class="q">{t(locale, 'doors.facility.q')}</span>
+    <span class="sub">{t(locale, 'doors.facility.sub')}</span>
+    <span class="btn btn-primary">{t(locale, 'doors.facility.cta')}</span>
+  </a>
+  <a class="door doctor" href="#appointments" data-track="door_click" data-audience="doctor">
+    <span class="q">{t(locale, 'doors.doctor.q')}</span>
+    <span class="sub">{t(locale, 'doors.doctor.sub')}</span>
+    <span class="btn btn-secondary">{t(locale, 'doors.doctor.cta')}</span>
+  </a>
+  <a class="door patient" href={localePath(locale, '/patients/how-it-works')} data-track="find_doctor_click" data-audience="patient">
+    <span class="q">{t(locale, 'doors.patient.q')}</span>
+    <span class="cta">{t(locale, 'doors.patient.cta')} <Icon name="arrow-right" size={18} /></span>
+  </a>
+</section>
+<style>
+  .doors { display: grid; gap: 12px; padding-block: 8px 24px; }
+  .door { display: flex; flex-direction: column; gap: 8px; text-decoration: none; color: var(--fg); border: 1px solid var(--line); border-radius: var(--radius-tile); padding: 20px; background: var(--card); }
+  .door:hover { border-color: var(--accent-strong); }
+  .q { font-weight: 800; font-size: 20px; letter-spacing: -0.02em; }
+  .sub { color: var(--fg-muted); }
+  .door .btn { align-self: flex-start; margin-top: 6px; }
+  .patient { border-style: dashed; justify-content: center; }
+  .patient .cta { display: inline-flex; align-items: center; gap: 6px; color: var(--accent); font-weight: 700; }
+  @media (min-width: 768px) {
+    .doors { grid-template-columns: 2fr 1.25fr 1fr; gap: 16px; padding-block: 0 40px; }
+    .facility { padding: 28px; }
+  }
+</style>

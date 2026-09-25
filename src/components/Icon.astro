@@ -1,0 +1,11 @@
+---
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+interface Props { name: string; size?: number; class?: string; label?: string }
+const { name, size = 20, class: cls = '', label } = Astro.props;
+const file = path.join(process.cwd(), 'node_modules/@phosphor-icons/core/assets/regular', `${name}.svg`);
+let svg = readFileSync(file, 'utf8');
+const aria = label ? `role="img" aria-label="${label}"` : 'aria-hidden="true" focusable="false"';
+svg = svg.replace(/<svg[^>]*>/, `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="${size}" height="${size}" class="icon ${cls}" fill="currentColor" ${aria}>`);
+---
+<Fragment set:html={svg} />

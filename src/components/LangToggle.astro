@@ -1,0 +1,15 @@
+---
+import { t, localePath, type Locale } from '../i18n';
+interface Props { locale: Locale; path?: string }
+const { locale, path = '/' } = Astro.props;
+---
+<nav class="lang" aria-label={t(locale, 'lang.switch')}>
+  <a href={localePath('en', path)} aria-current={locale === 'en' ? 'page' : undefined} lang="en">{t(locale, 'lang.en')}</a>
+  <a href={localePath('bn', path)} aria-current={locale === 'bn' ? 'page' : undefined} lang="bn">{t(locale, 'lang.bn')}</a>
+</nav>
+<style>
+  .lang { display: inline-flex; border: 1.5px solid var(--line); border-radius: var(--radius-control); overflow: hidden; height: 44px; }
+  .lang a { display: inline-flex; align-items: center; justify-content: center; padding: 0 12px; min-width: 44px; text-decoration: none; color: var(--fg-muted); font-weight: 700; font-size: 14px; }
+  .lang a[aria-current="page"] { background: var(--bg-alt); color: var(--fg); }
+  .lang a:hover { color: var(--fg); }
+</style>
