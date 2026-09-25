@@ -2,12 +2,21 @@
 import '../styles/global.css';
 import '@fontsource-variable/manrope';
 import '@fontsource-variable/anek-bangla';
+import Consent from '../components/Consent.astro';
 import type { Locale } from '../i18n';
-interface Props { title: string; description?: string; locale?: Locale; path?: string }
-const { title, description = '', locale = 'en', path = '/' } = Astro.props;
-const site = (import.meta.env.SITE_URL as string | undefined) ?? 'http://127.0.0.1:4321';
+interface Props { title: string; description?: string; locale?: Locale; path?: string; jsonLd?: Record<string, unknown>[]; noindex?: boolean }
+const { title, description = '', locale = 'en', path = '/', jsonLd = [], noindex = false } = Astro.props;
+const site = ((import.meta.env.SITE_URL as string | undefined) || 'http://127.0.0.1:4321').replace(/\/$/, '');
 const enUrl = site + path;
 const bnUrl = site + '/bn' + path;
+const canonical = locale === 'en' ? enUrl : bnUrl;
+const ogImage = site + '/og/loficare-og.png';
+const analyticsDomain = (import.meta.env.ANALYTICS_DOMAIN as string | undefined) || '';
+const ld: Record<string, unknown>[] = [
+  { '@context': 'https://schema.org', '@type': 'Organization', name: 'LofiCare', url: site + '/', logo: site + '/brand/icon-192.png', areaServed: 'BD' },
+  { '@context': 'https://schema.org', '@type': 'WebSite', name: 'LofiCare', url: site + '/', inLanguage: locale === 'bn' ? 'bn-BD' : 'en' },
+  ...jsonLd,
+];
 ---
 <!doctype html>
 <html lang={locale} data-theme="light">
@@ -15,14 +24,34 @@ const bnUrl = site + '/bn' + path;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#F6FAFA" />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
-    <link rel="canonical" href={locale === 'en' ? enUrl : bnUrl} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang="en" href={enUrl} />
     <link rel="alternate" hreflang="bn" href={bnUrl} />
     <link rel="alternate" hreflang="x-default" href={enUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="LofiCare" />
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LofiCare mark and wordmark on dark teal, the hospital and diagnostic centre platform built for Bangladesh" />
+    <meta property="og:locale" content={locale === 'bn' ? 'bn_BD' : 'en_GB'} />
+    <meta property="og:locale:alternate" content={locale === 'bn' ? 'en_GB' : 'bn_BD'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    {description && <meta name="twitter:description" content={description} />}
+    <meta name="twitter:image" content={ogImage} />
     <link rel="icon" type="image/svg+xml" href="/brand/loficare-mark.svg" />
-    <link rel="icon" type="image/png" href="/brand/loficare-mark.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/brand/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/brand/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    {ld.map((o) => <script is:inline type="application/ld+json" set:html={JSON.stringify(o)} />)}
     <script is:inline>
       (function () {
         var d = document.documentElement;
@@ -30,6 +59,7 @@ const bnUrl = site + '/bn' + path;
           /* light by default (user decision); dark only when the visitor chose it */
           var s = localStorage.getItem('lc-theme');
           d.setAttribute('data-theme', s === 'dark' ? 'dark' : 'light');
+          if (s === 'dark') { var m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute('content', '#041A1A'); }
         } catch (e) { d.setAttribute('data-theme', 'light'); }
         try {
           var rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -50,5 +80,6 @@ const bnUrl = site + '/bn' + path;
       RISK: Aqua on paper is a large-shape colour only; every text pair passes AA through the tokens.
     -->
     <slot />
+    <Consent locale={locale} analyticsDomain={analyticsDomain} />
   </body>
 </html>

@@ -8,7 +8,7 @@ interface Props { locale: Locale }
 const { locale } = Astro.props;
 const wa = (import.meta.env.CONTACT_WHATSAPP as string | undefined) ?? '8801000000000';
 ---
-<Base title={`${t(locale, 'thanks.title.demo')}, LofiCare`} description={t(locale, 'thanks.body.demo')} locale={locale} path="/thank-you">
+<Base title={`${t(locale, 'thanks.title.demo')}, LofiCare`} description={t(locale, 'thanks.body.demo')} locale={locale} path="/thank-you" noindex>
   <Header locale={locale} />
   <main id="main" class="section">
     <div class="container narrow" data-form="demo">

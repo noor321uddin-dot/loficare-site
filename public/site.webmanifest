@@ -1,0 +1,13 @@
+{
+  "name": "LofiCare",
+  "short_name": "LofiCare",
+  "description": "The hospital and diagnostic centre platform, built for Bangladesh.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#F6FAFA",
+  "theme_color": "#F6FAFA",
+  "icons": [
+    { "src": "/brand/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/brand/loficare-mark.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

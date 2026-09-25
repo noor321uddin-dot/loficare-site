@@ -1,0 +1,46 @@
+---
+import { t, localePath, type Locale } from '../i18n';
+interface Props { locale: Locale; analyticsDomain: string }
+const { locale, analyticsDomain } = Astro.props;
+---
+<div class="consent" id="consent" hidden data-domain={analyticsDomain} role="region" aria-label={t(locale, 'consent.label')}>
+  <p>{t(locale, 'consent.text')} <a href={localePath(locale, '/privacy')}>{t(locale, 'consent.link')}</a></p>
+  <div class="actions">
+    <button type="button" class="btn btn-quiet" data-consent="no">{t(locale, 'consent.decline')}</button>
+    <button type="button" class="btn btn-primary" data-consent="yes">{t(locale, 'consent.accept')}</button>
+  </div>
+</div>
+<style>
+  .consent { position: fixed; left: 16px; right: 16px; bottom: calc(80px + env(safe-area-inset-bottom)); z-index: var(--z-consent); background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-tile); padding: 16px; display: grid; gap: 12px; box-shadow: 0 12px 32px rgba(4, 26, 26, 0.18); max-width: 560px; }
+  .consent p { font-size: 15px; }
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  @media (min-width: 768px) { .consent { left: auto; right: 24px; bottom: 24px; } }
+</style>
+<script>
+  import { grantConsent } from '../lib/track';
+  const box = document.getElementById('consent');
+  if (box) {
+    const domain = box.dataset.domain || '';
+    let stored: string | null = null;
+    try { stored = localStorage.getItem('lc-consent'); } catch {}
+    const loadAnalytics = () => {
+      if (!domain || document.getElementById('lc-analytics')) return;
+      const s = document.createElement('script');
+      s.id = 'lc-analytics';
+      s.defer = true;
+      s.setAttribute('data-domain', domain);
+      s.src = 'https://plausible.io/js/script.js';
+      document.head.appendChild(s);
+    };
+    if (stored === 'yes') { grantConsent(); loadAnalytics(); }
+    else if (domain && stored !== 'no') box.hidden = false; /* no banner when nothing would be measured */
+    box.addEventListener('click', (e) => {
+      const b = (e.target as HTMLElement).closest<HTMLElement>('[data-consent]');
+      if (!b) return;
+      const v = b.dataset.consent!;
+      try { localStorage.setItem('lc-consent', v); } catch {}
+      box.hidden = true;
+      if (v === 'yes') { grantConsent(); loadAnalytics(); }
+    });
+  }
+</script>

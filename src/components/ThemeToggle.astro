@@ -19,6 +19,7 @@ const { toDark, toLight } = Astro.props;
   const buttons = document.querySelectorAll<HTMLButtonElement>('.theme-toggle');
   const apply = (theme: string) => {
     document.documentElement.setAttribute('data-theme', theme);
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#041A1A' : '#F6FAFA');
     buttons.forEach((b) => {
       b.setAttribute('aria-label', theme === 'dark' ? b.dataset.toLight! : b.dataset.toDark!);
       b.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');

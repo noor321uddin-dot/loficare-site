@@ -241,5 +241,11 @@
   "legal.draft": "Draft for legal review. Text in brackets is a placeholder the legal team fills in before launch.",
   "legal.updated": "Last updated",
   "legal.contents": "On this page",
-  "legal.english": "English text, the reviewed version"
+  "legal.english": "English text, the reviewed version",
+
+  "consent.label": "Analytics consent",
+  "consent.text": "We would like to count page views and button clicks to improve this site. Nothing is measured unless you allow it, and no personal data is collected.",
+  "consent.link": "Privacy notice",
+  "consent.decline": "Only what is needed",
+  "consent.accept": "Allow analytics"
 }

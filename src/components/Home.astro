@@ -21,8 +21,22 @@ import Footer from './Footer.astro';
 import { t, type Locale } from '../i18n';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
+const site = ((import.meta.env.SITE_URL as string | undefined) || 'http://127.0.0.1:4321').replace(/\/$/, '');
+/* Only defensible fields: the live module, its category, and the true free tier. No ratings, no counts. */
+const app = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'LofiCare Appointments',
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'Web',
+  url: site + (locale === 'bn' ? '/bn/' : '/'),
+  description: t(locale, 'meta.description'),
+  inLanguage: locale === 'bn' ? 'bn-BD' : 'en',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'BDT', description: 'Free to start, first 500 appointments, no card' },
+  publisher: { '@type': 'Organization', name: 'LofiCare' },
+};
 ---
-<Base title={t(locale, 'meta.title')} description={t(locale, 'meta.description')} locale={locale} path="/">
+<Base title={t(locale, 'meta.title')} description={t(locale, 'meta.description')} locale={locale} path="/" jsonLd={[app]}>
   <a class="skip" href="#main">{t(locale, 'nav.skip')}</a>
   <Header locale={locale} />
   <main id="main">

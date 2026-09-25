@@ -22,7 +22,9 @@ export function bindTracking() {
   document.addEventListener('click', (e) => {
     const el = (e.target as HTMLElement).closest<HTMLElement>('[data-track]');
     if (!el) return;
-    track(el.dataset.track!, { audience: el.dataset.audience, label: (el.textContent || '').trim().slice(0, 40) });
+    const labelEl = el.querySelector<HTMLElement>('.q') || el;
+    track(el.dataset.track!, { audience: el.dataset.audience, label: (el.dataset.label || labelEl.textContent || '').trim().slice(0, 40) });
   });
   try { if (localStorage.getItem('lc-consent') === 'yes') grantConsent(); } catch {}
+  if (import.meta.env.DEV) (window as any).__lcTrack = { track, grantConsent, queue };
 }

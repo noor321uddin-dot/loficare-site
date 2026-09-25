@@ -8,7 +8,8 @@ Everything that ships marked as a placeholder or awaits the LofiCare team. Build
 | Domain | `SITE_URL` in `.env`, `site` in `astro.config.mjs` | LofiCare team |
 | Outbound webhook (GoHighLevel inbound webhook URL) | `LEAD_WEBHOOK_URL` | LofiStack ops |
 | SMTP for lead emails | `SMTP_URL`, `LEAD_EMAIL_TO`, `LEAD_EMAIL_FROM` | LofiStack ops |
-| Analytics domain and the consent banner | `ANALYTICS_DOMAIN`; banner lands in phase 8 | LofiStack ops |
+| Analytics domain | `ANALYTICS_DOMAIN`; the consent banner and the Plausible-compatible loader only activate when it is set | LofiStack ops |
+| Facebook link preview test | after deploy, run the Sharing Debugger on `/` and `/bn/` and paste into a test post; steps in `docs/reports/seo-check.md` | LofiStack ops |
 | Hosting region | `compose.yaml` volume; the data promise makes this a decision | LofiCare team |
 | Real screenshots of the appointment module | replace the chrome of the booking widget in `src/components/sections/Appointments.astro` | LofiCare product |
 | Sample doctor booking link `loficare.app/dr-rahman` | `src/components/sections/Doctors.astro` | LofiCare product |
