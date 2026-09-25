@@ -236,5 +236,10 @@
   "thanks.title.trial": "You are on the list",
   "thanks.body.trial": "We will message you today to set up your chamber and send the booking link.",
   "thanks.whatsapp": "Message us on WhatsApp",
-  "thanks.back": "Back to LofiCare"
+  "thanks.back": "Back to LofiCare",
+
+  "legal.draft": "Draft for legal review. Text in brackets is a placeholder the legal team fills in before launch.",
+  "legal.updated": "Last updated",
+  "legal.contents": "On this page",
+  "legal.english": "English text, the reviewed version"
 }

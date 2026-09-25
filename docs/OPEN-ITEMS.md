@@ -14,7 +14,7 @@ Everything that ships marked as a placeholder or awaits the LofiCare team. Build
 | Sample doctor booking link `loficare.app/dr-rahman` | `src/components/sections/Doctors.astro` | LofiCare product |
 | Real photographs of Bangladeshi facilities and chambers | no photo slots ship in this release by decision; add when real photos exist | LofiCare team |
 | Founding-cohort line and testimonials | `Trust.astro` (line only when true), `Cohorts.astro` empty slots | LofiCare team |
-| Privacy and terms pages | phase 7, structured placeholders marked for legal review | Legal |
+| Privacy notice and terms of use | `src/content/legal.ts`; drafts at `/privacy` and `/terms` with every placeholder in brackets and highlighted (legal entity, addresses, emails, hosting region, processors, retention periods, response time, supervisory authority, governing law and court, notice period, liability wording); the Bangla route carries summaries and needs a full translation after review | Legal, then native reviewer |
 | Native review of every Bangla string | `src/i18n/bn.json`; `npm run check:i18n` lists the 114 keys still falling back to English | Native reviewer |
 | Module names in Bangla | `src/components/sections/Platform.astro` (English only) and `Hero.astro` tile titles | Native reviewer |
 | Real module statuses | only appointments is "Available now"; move a badge only with the team's confirmation | LofiCare product |

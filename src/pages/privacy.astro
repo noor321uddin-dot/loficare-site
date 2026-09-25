@@ -1,0 +1,6 @@
+---
+export const prerender = true;
+import Legal from '../components/Legal.astro';
+import { privacy } from '../content/legal';
+---
+<Legal locale="en" doc={privacy} />
