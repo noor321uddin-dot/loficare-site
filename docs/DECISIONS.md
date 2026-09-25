@@ -1,0 +1,16 @@
+# Decisions
+
+Protocol: each role states a position, one rebuttal round, PM rules citing the non-negotiable. Tie-break order: honesty, mobile 4G performance, conversion clarity, craft ambition. Rulings marked "provisional" are shown as variants on the board so the user can overrule them.
+
+| # | Decision | Options | Ruling | Reason | Reopens if |
+|---|---|---|---|---|---|
+| D1 | Theme | Light page with two mirrored ink bands (hero, close) vs fully dark | Light with ink bands, provisional | FE-B: a daylight facility office and a phone outdoors read light pages better; FE-A: dark shows the aqua mark best, which the two ink bands still give it; PM: trust surface, light wins on legibility | The user picks full dark on the board |
+| D2 | Stack | Astro 5 + Node adapter vs Next.js + R3F | Astro | FE-B: zero JavaScript by default keeps first load under 90 KB; BE: one Node process, no framework server tax; FE-A conceded authoring speed is similar with a vanilla Three island; PM: performance is a conversion feature | A React-only dependency becomes essential |
+| D3 | Hero technique | SVG/CSS assembly mandatory; WebGL tier as desktop enhancement | As stated | FE-A wanted WebGL on capable phones; FE-B: phones are the majority and the SVG tier must be the real experience; PM ruled on the 4G tie-break; WebGL ships at 768px+ only after the 50 fps benchmark | Benchmark data shows phones hold 50 fps |
+| D4 | Book a demo mechanism | Inline `#demo` section with form + WhatsApp + phone vs slide-over | Inline section, provisional | BE: one form, one endpoint, one place to measure; FE-B: a slide-over on mobile fights the sticky bar; PM: the brief's §17.3 default | The user picks the channel-first variant on the board |
+| D5 | Type pairing | Manrope + Anek Bangla; Figtree + Hind Siliguri; Hanken Grotesk + Noto Sans Bengali | Manrope + Anek Bangla, provisional | FE-B: both variable, both subset well, x-heights sit together, neither is an AI default; FE-A: Manrope's geometry echoes the mark's ring; PM: credible for a hospital buyer. The brief's Poppins/Plus Jakarta + Hind Siliguri stays as the safe exit | The user picks another pair on the board |
+| D6 | Available-now badge | Calm Green with check + words vs ink-filled badge with pale aqua text | Calm Green, provisional | PM: the brief's honest-color rule wins; FE-B: green (hue 160) and aqua (hue 178) sit close, so the badge always carries the check icon and the words, never color alone | The user finds the green reads as brand on the board |
+| D7 | Lead storage | Drizzle + better-sqlite3 vs `node:sqlite` built-in | `node:sqlite` | BE: zero native modules; Smart App Control on this machine blocks unsigned binaries, and a lead table needs no ORM; swap path to Turso/libSQL documented in README | The site moves to a serverless host |
+| D8 | Direction choice mechanism | impeccable decision page vs a variants board | Variants board at `/variants` | The user asked for variations per section to give input; one board with two or three options per section is the checkpoint, and impeccable's concept roll seeds the hero directions on it | Never; the board is deleted before launch |
+
+Human checkpoint: after the board is reviewed, rulings marked provisional become final and the hero is built.

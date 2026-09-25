@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.astro/
+.env
+data/*.db
+data/*.db-*
+.impeccable/review/
+docs/reports/*.html

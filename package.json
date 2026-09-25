@@ -1,0 +1,36 @@
+{
+  "name": "loficare-site",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1 --port 4321",
+    "build": "astro build",
+    "preview": "astro preview",
+    "typecheck": "astro check",
+    "check:copy": "node scripts/check-copy.mjs",
+    "check:contrast": "node scripts/check-contrast.mjs",
+    "check:i18n": "node scripts/check-i18n.mjs",
+    "check:budget": "node scripts/check-budget.mjs",
+    "leads:export": "node scripts/leads-export.mjs",
+    "leads:retry": "node scripts/leads-retry.mjs"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@astrojs/node": "^11.1.6",
+    "@fontsource-variable/anek-bangla": "^5.3.0",
+    "@fontsource-variable/figtree": "^5.3.0",
+    "@fontsource-variable/hanken-grotesk": "^5.3.0",
+    "@fontsource-variable/manrope": "^5.3.0",
+    "@fontsource-variable/noto-sans-bengali": "^5.3.0",
+    "@fontsource/hind-siliguri": "^5.3.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/three": "^0.186.0",
+    "astro": "^7.3.5",
+    "gsap": "^3.15.0",
+    "tailwindcss": "^4.3.3",
+    "three": "^0.186.1",
+    "typescript": "^6.0.3",
+    "zod": "^4.6.5"
+  }
+}

@@ -1,0 +1,51 @@
+/* LofiCare tokens. Derived from the final logo (see docs/BUILD-PROMPT.md section 4). */
+:root {
+  --ink-950: #041A1A;
+  --ink-900: #062626;
+  --ink-800: #0B3534;
+  --aqua-400: #40E8E0;
+  --aqua-300: #67F1E9;
+  --aqua-200: #A7FCF6;
+  --teal-700: #0B6B67;
+  --teal-600: #0E7C78;
+  --wash-100: #D3F6F3;
+  --wash-50: #EAFBFA;
+  --paper: #F6FAFA;
+  --slate: #46605F;
+  --mist: #D8E6E5;
+  --mist-on-ink: #9CB7B5;
+  --marigold: #F5871F;
+  --green: #1F9D74;
+  --red: #D64545;
+
+  /* semantic, light surface */
+  --bg: var(--paper);
+  --bg-alt: var(--wash-50);
+  --fg: var(--ink-950);
+  --fg-muted: var(--slate);
+  --line: var(--mist);
+  --accent: var(--teal-700);
+  --accent-strong: var(--teal-600);
+  --cta: var(--marigold);
+  --cta-fg: var(--ink-950);
+  --ok: var(--green);
+  --err: var(--red);
+
+  --font-latin: 'Manrope Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-bangla: 'Anek Bangla Variable', 'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
+
+  --radius-control: 10px;
+  --radius-tile: 16px;
+  --z-overlay: 10; --z-header: 20; --z-bar: 30; --z-consent: 40; --z-dialog: 50;
+}
+.band-ink {
+  --bg: var(--ink-950);
+  --bg-alt: var(--ink-900);
+  --fg: #F2FBFA;
+  --fg-muted: var(--mist-on-ink);
+  --line: var(--ink-800);
+  --accent: var(--aqua-200);
+  --accent-strong: var(--aqua-400);
+  background: var(--bg);
+  color: var(--fg);
+}

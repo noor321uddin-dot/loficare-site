@@ -1,0 +1,505 @@
+===== PAGE 1 =====
+Lofi Care landing page: design and content
+guideline for the creative team
+Status: creative brief for delegation. Positioning: Lofi Care is a complete hospital and diagnostic
+centre management platform for Bangladesh, launched as one brand across three audiences
+on a single page. The online appointment system is the one module live and free to start
+today; the full platform opens through a "book a demo" conversation with diagnostic centres
+and hospitals. Scope: everything a designer and copywriter need to build the landing page.
+Audience strategy, page structure section by section with example copy, a full color system
+with hex codes, typography, layout and responsive rules, components, imagery, accessibility,
+discoverability, and a handoff checklist.
+House rules apply to every word that ships: no em dashes, no AI-sounding filler, no fabricated
+statistics, and no price baked into the page that can go stale (see §9). Currency reference: 1
+USD = 123 BDT.
+The load-bearing honesty rule for this launch: we lead with the complete platform, but the
+only thing shown as available today is the appointment module. Every other module is
+"early access," "rolling out," or "talk to us," in honest words, never a finished-product claim and
+never a faked screenshot (§9, §14). The platform is real and defined as an 18-module system;
+most of it is still being built, so the page invites facilities into an early-access conversation
+rather than claiming a finished hospital system.
+How to read this brief: §1 to §3 are the strategy and the look. §4 to §8 are the build. §9 to §17
+are the rules, the guardrails, and the handoff. A designer can start from §4. A copywriter can
+start from §7.
+1. The brief in one page
+What this page is. The Lofi Care marketing site. One brand, one page, three doors, positioning
+Lofi Care as the complete platform to run a diagnostic centre or hospital in Bangladesh, with
+the appointment module as the free way in.
+The one sentence the page must land. Lofi Care runs a diagnostic centre or hospital on one
+connected system, and you can start today with online appointments, free.
+The three jobs, in priority order: 1. Convince a diagnostic centre or hospital that Lofi Care
+can run their whole facility, and get them to book a demo. This is the platform sale. 2. Let an
+9/23/26, 3:07 AM Lofi Care landing page guideline
+file:///C:/Users/LORDPP~1/AppData/Local/Temp/claude/E--claude/83b8d0c4-1414-41dc-9955-c54f2705f40f/scratchpad/_lp_guideline.html 1/14
+
+===== PAGE 2 =====
+independent doctor start on the live module now: online appointments, free. 3. Let a
+patient find and book their doctor.
+Primary actions: 1. Facility (diagnostic centre or hospital): Book a demo. 2. Doctor: Start free
+with the appointment module. 3. Patient: Find your doctor.
+The narrative that ties it together. The appointment module is Module 5 of the full platform.
+So a doctor who starts free with appointments is already on the system a hospital runs on.
+Start small, grow into the platform. Land and expand, one brand.
+Success metric. Facility demo requests (split diagnostic centre vs hospital) and doctor
+appointment trial starts. The patient path is a supporting conversion.
+Non-negotiables. Mobile-first, fast on a 4G phone, every claim defensible, no fixed platform
+price on the page, and honest per-module status (§9).
+2. Positioning: the complete platform, and how we stand apart
+Lofi Care is not a chamber app. It is the system that runs the facility: an 18-module hospital
+and diagnostic centre management platform covering patients, doctors and referrers, billing,
+samples and reports, imaging, inpatient, pharmacy, workforce, and analytics. The page has to
+make that breadth clear in the first screen, while being honest that appointments is what a
+visitor can switch on today.
+The category we enter is narrower than us. The visible local players are chamber and
+prescription tools built for one doctor's desk. Lofi Care runs the whole institution. Say "one
+platform for your whole facility," not "another app for your chamber."
+We win the facility conversation on four things, not on being the biggest: 1. Built for
+Bangladesh. Local workflows, local payment rails, Bangla and English, and the data stays in the
+country (§7.10). Global enterprise systems are not built for a Chittagong diagnostic centre. 2.
+One connected system. Every counter, lab, and department reads the same patient record. No
+stitched-together tools. 3. Diagnostics depth that maps to how these centres actually make
+money. Referrer commissions and earnings, barcoded samples from collection to delivery,
+result verification and quality control, imaging, and fast report release. This is the sharpest
+wedge; lead the diagnostic-centre pitch with it (§7.5). 4. You can start today, free, on the one
+module that touches every patient: appointments. No six-month procurement to see value.
+The differentiation line for the page: the complete hospital and diagnostic-centre platform
+built for Bangladesh, that you can start using this week.
+9/23/26, 3:07 AM Lofi Care landing page guideline
+file:///C:/Users/LORDPP~1/AppData/Local/Temp/claude/E--claude/83b8d0c4-1414-41dc-9955-c54f2705f40f/scratchpad/_lp_guideline.html 2/14
+
+===== PAGE 3 =====
+3. Audience strategy: three doors, one page
+Three readers on a single page, each with a clear path.
+Facility decision-maker (diagnostic centre or hospital owner or manager): the primary
+target. Wants to know Lofi Care can run their operation and that it is credible. Path: the
+platform and diagnostics story, then Book a demo. The facility door serves two sub-
+audiences, diagnostic centres and hospitals, each with its own section (§7.5, §7.6).
+Independent doctor: the self-serve entry. Wants their chamber to run on time. Path: the
+appointment module, then Start free.
+Patient: wants to book without a phone call. Path: Find your doctor.
+Layout approach: a platform-first hero that speaks to the facility, with the doctor and patient
+doors clearly visible right below it. The facility is the headline; the doctor and patient are
+unmistakable but secondary. One page, three doors.
+4. Color system
+A calm, clinical, credible base with one warm color that does the asking. It has to carry both a
+patient-friendly warmth and the institutional trust a hospital or diagnostic-centre owner needs.
+Verify every text-on-background pair against WCAG AA (4.5:1 body text, 3:1 large text and UI)
+before finalizing. Hex values are a starting point; keep the roles, tune to pass contrast.
+9/23/26, 3:07 AM Lofi Care landing page guideline
+file:///C:/Users/LORDPP~1/AppData/Local/Temp/claude/E--claude/83b8d0c4-1414-41dc-9955-c54f2705f40f/scratchpad/_lp_guideline.html 3/14
+
+===== PAGE 4 =====
+4.1 Palette
+Role Name Hex Use
+Primary
+brand
+Trust Blue
+ #0E5AA7 Logo, headings accent, links, key icons, section anchors
+Primary
+dark
+Deep Ink
+ #0B2A4A Body headings and dark text (softer than pure black)
+Primary
+tint
+Sky Wash
+ #EAF3FC Alternating section backgrounds, cards, callout panels
+Action
+accent
+Marigold
+ #F5871F Primary CTA buttons only. The one color that means "do
+this." Warm, high contrast on blue, not red
+Positive
+micro
+Calm Green
+ #1F9D74 Small positive marks only (checkmarks, "available now"
+badge, success), used sparingly
+Neutral
+text
+Slate
+ #4A5A6A Secondary and supporting text
+Neutral
+line
+Mist
+ #D9E2EC Borders, dividers, input outlines, "early access" badges
+Base White / Off-
+white
+#FFFFFF  / 
+#F7FAFC
+Page and card backgrounds
+Error only Signal Red
+ #D64545 Form errors and warnings only. Never a CTA, never
+decoration
+4.2 Color rules
+Marigold is a promise. Only on the single most important button in each section. One
+primary CTA color per screen.
+Never use red for a call to action. In healthcare, red reads as blood, emergency, and
+alarm. Red is reserved for genuine errors.
+Module status uses color honestly: Calm Green for "available now" (appointments
+only), neutral Mist for "early access" or "on the roadmap." Never paint an unbuilt module
+in the available color (§9).
+White and Sky Wash carry the page. Saturated color is the exception, not the field.
+Contrast is a hard requirement. Check Marigold's label color before shipping.
+5. Typography
+Bilingual from the start (§12). One Latin family and one Bengali family that sit well together,
+both free and web-served for speed.
+9/23/26, 3:07 AM Lofi Care landing page guideline
+file:///C:/Users/LORDPP~1/AppData/Local/Temp/claude/E--claude/83b8d0c4-1414-41dc-9955-c54f2705f40f/scratchpad/_lp_guideline.html 4/14
+
+===== PAGE 5 =====
+Use Latin Bengali Notes
+Headings Poppins or Plus
+Jakarta Sans
+Hind Siliguri Modern, professional, credible. Weight 600
+to 700
+Body Inter Hind Siliguri or Noto Sans
+Bengali
+High legibility at small sizes on phones.
+Weight 400 to 500
+One Latin and one Bengali family, no more.
+Type scale (mobile first): body 16px minimum, H3 20 to 22px, H2 26 to 30px, H1 32 to
+40px, scaling up on desktop. Line height 1.5 for body.
+Line length 60 to 75 characters on desktop; full width with gutters on mobile.
+Set numbers in a slightly heavier weight so they read as facts.
+6. Layout and responsive rules
+Design the phone first. Start at 360 to 390px wide. The market is mobile and most
+traffic will arrive from a shared link opened on a phone. Facility buyers will also view on
+desktop, so the desktop layout of the platform and diagnostics sections must look
+credible and substantial.
+Header: sticky, minimal. Logo left; a language toggle (EN / বাংলা ) and one primary CTA
+("Book a demo") right; quiet links to the doctor and patient sections. Few exit paths.
+Sticky mobile CTA bar: a bottom bar that always shows the primary action.
+Container width: about 1140px max on desktop, centered, 16px side gutter on mobile,
+no horizontal scroll.
+Section rhythm: alternate White and Sky Wash. Generous vertical spacing (64 to 96px
+desktop, 40 to 56px mobile).
+Show the platform early, honestly. Real product shots of the live appointment module;
+honest placeholders or schematics for modules still being built (§8, §9).
+7. The page spine, section by section
+For each section: its goal, what it must contain, example copy to start from, and visual notes.
+Copy is a starting point in Lofi Care's voice, not final.
+7.1 Hero (platform-first, with the doctor and patient doors)
+Goal: land the complete-platform positioning and the "book a demo" action in five seconds,
+while making the live appointment module and the patient path unmistakable.
+H1 (option 1): "The complete hospital and diagnostic centre platform, built for
+Bangladesh."
+9/23/26, 3:07 AM Lofi Care landing page guideline
+file:///C:/Users/LORDPP~1/AppData/Local/Temp/claude/E--claude/83b8d0c4-1414-41dc-9955-c54f2705f40f/scratchpad/_lp_guideline.html 5/14
+
+===== PAGE 6 =====
+H1 (option 2): "Run your whole facility on one platform, built for Bangladesh."
+Subhead: "Lofi Care runs a diagnostic centre or hospital on one connected system:
+patients, doctors and referrers, billing, samples and reports, pharmacy, inpatient, and
+analytics. Online appointments are live today and free to start. Talk to us about bringing
+the full platform to your facility."
+Primary CTA: "Book a demo" (Marigold). Secondary CTA: "Start free with
+Appointments" (outline).
+Doors band directly below: "Diagnostic centre or hospital? Book a demo." ·
+"Independent doctor? Start free with appointments." · quieter: "Patient? Find your
+doctor."
+Product visual: the live appointment module and a dashboard, shown honestly. No
+fabricated screenshots of unbuilt modules (§9).
+7.2 Trust bar
+Goal: one honest credibility signal. No fake logos.
+Content, using what is true: "Built in Bangladesh. Your patients' data stays in Bangladesh."
+Add a founding-cohort line once real ("Our founding diagnostic centres and chambers are
+onboarding now"). Never invent a number.
+7.3 The problem
+Goal: make both the facility owner and the doctor feel the pain the platform removes.
+H2: "A facility runs on too many disconnected systems."
+Body, two layers:
+For the facility: registration in one book, samples on paper slips, results retyped, reports
+delivered late, referrer commissions tracked in a notebook, and no single view of the day
+or the money.
+For the chamber doctor: the booking line is busy, the serial lives in one assistant's head,
+the waiting room keeps asking whose turn it is.
+Visual: calm iconography of disconnected pieces joining into one, not stock photos of
+stressed staff.
+7.4 One platform: the 18 modules
+Goal: show the full system in one view, grouped by area, with honest status per module. This
+section earns the "complete platform" claim.
+Present a grid grouped by tier. Confirm the exact list and each module's true status with the
+Lofi Care team (§17). Proposed grouping and honest status:
+9/23/26, 3:07 AM Lofi Care landing page guideline
+file:///C:/Users/LORDPP~1/AppData/Local/Temp/claude/E--claude/83b8d0c4-1414-41dc-9955-c54f2705f40f/scratchpad/_lp_guideline.html 6/14
+
+===== PAGE 7 =====
+Tier Modules Status
+Core Facility, people & access control · Patient identity & registry · Doctor,
+referrer & earnings · Service catalogue & pricing · Appointment,
+queue & front desk · Visit & order desk · Billing, payments &
+counter · Credit accounts (corporate, insurance, health card)
+Appointments:
+available now, free.
+Rest: early access
+Diagnostics Sample, collection, barcode & QR · Result entry, verification & quality
+control · Imaging & radiology · Report release, delivery & archive
+Early access
+Clinical Clinical records, prescription & digital forms Early access
+Hospital Inpatient: admission, ward, OT, emergency & ancillary Early access
+Supply Pharmacy & inventory Early access
+Operations Workforce, assets & compliance Early access
+Engagement Communication, patient portal & service desk Early access
+Insight Reporting, analytics & MIS Early access
+Rule for this section: only the appointment module carries "Available now." Everything else is
+"Early access" in neutral color, never "Available," and never a fabricated screenshot (§9). If any
+other module is genuinely live for the founding cohort, move its badge with the team's
+confirmation.
+7.5 For diagnostic centres (the sharp B2B hook)
+Goal: the primary conversion for the diagnostic-centre owner, led by the pain that costs them
+most.
+H2: "Know what every referrer earns. Get reports out faster."
+Body: track referrer commissions automatically on every bill, tag and barcode every
+sample from collection to delivery, verify results with quality control before release, and
+hand patients their reports faster, across every branch, on one system. Corporate and
+credit accounts handled.
+CTA: "Book a demo."
+Visual: honest schematic of the sample-to-report flow and a referrer statement, labelled
+as early access where not yet live.
+7.6 For hospitals
+Goal: the conversion for the hospital buyer.
+H2: "One system for your whole hospital."
+Body: admissions and wards, OT and emergency, pharmacy and inventory, billing and
+credit accounts, clinical records, workforce, and analytics, all on one platform built for
+Bangladesh, with an append-only audit trail on every sensitive action.
+CTA: "Book a demo."
+9/23/26, 3:07 AM Lofi Care landing page guideline
+file:///C:/Users/LORDPP~1/AppData/Local/Temp/claude/E--claude/83b8d0c4-1414-41dc-9955-c54f2705f40f/scratchpad/_lp_guideline.html 7/14
+
+===== PAGE 8 =====
+7.7 The live module: appointments
+Goal: convert the doctor and prove the platform is real by letting anyone start on the live
+module.
+H2: "Start today with online appointments."
+Benefit headlines, each with a one-line explanation and a real product shot: "No more
+phone calls to book," "The waiting room knows the queue," "Fewer empty chairs," "See
+your day from your phone." Write each in Lofi Care's plain, benefit-first voice.
+CTA: "Start free."
+7.8 For independent doctors
+Goal: the self-serve door for the solo or multi-chamber doctor.
+H2: "Run your chamber, starting this week."
+Body: the appointment module, free to start, set up for you, with a public booking link
+for your signboard and Facebook page. It costs less than three patients a month when
+you upgrade. And it is the first module of the same platform a hospital runs on, so you
+grow into the rest when you are ready.
+CTA: "Start free."
+7.9 The patient section
+Goal: serve the third audience and reassure the buyer that patients get a good experience.
+H2: "For your patients: book in a minute, skip the phone call."
+Body: no account to create, a code to confirm the number, a reminder the day before, a
+known place in the queue.
+CTA: "Find your doctor" (routes to a participating doctor or a directory, §17).
+7.10 Data stays in Bangladesh, and control (trust)
+Goal: the differentiator no international platform can claim, plus the control a facility demands.
+H2: "Your patients' data stays in Bangladesh, and every sensitive action is on the record."
+Body: data held on servers in Bangladesh, in line with the country's data-protection
+rules, plus an append-only audit trail that even the owner cannot edit. Do not overclaim
+certifications we do not hold (§14).
+7.11 Proof and the founding cohorts
+Goal: credibility without fabrication, on both tracks.
+9/23/26, 3:07 AM Lofi Care landing page guideline
+file:///C:/Users/LORDPP~1/AppData/Local/Temp/claude/E--claude/83b8d0c4-1414-41dc-9955-c54f2705f40f/scratchpad/_lp_guideline.html 8/14
+
+===== PAGE 9 =====
+Two founding cohorts, framed as scarcity and co-building: Founding Diagnostic
+Centres and Hospitals (early-access facilities, founder pricing) and Founding Doctors
+(free appointments, testimonials).
+Real testimonials only, with name, role, and facility. Never state a user count we do not
+have.
+If proof is thin at launch, lead with the founder story and the Bangladesh-built promise,
+not invented metrics.
+7.12 Pricing
+Goal: free entry on appointments, no stale price, no fixed platform number.
+Appointments: "Start free with your first 500 appointments. No card." Anchor the paid
+tier with "It costs less than three patients a month." Do not paste a fixed table that can
+rot; show tiers with a dated figure or a current-pricing link (§17).
+The platform: priced per facility, with founder pricing for the early cohort. No number
+on the page. "Book a demo for a quote scoped to your centre or hospital."
+7.13 FAQ
+Goal: answer the questions that stop each buyer. Accordion.
+Cover: is this a full hospital system or just appointments (honest: appointments is live now, the
+rest is early access and rolls out with you, book a demo); is it built for diagnostic centres
+specifically (yes, referrer earnings, samples, results, reports); why not a cheaper chamber tool
+(we run the whole facility); is my data safe (stays in Bangladesh, full audit trail); how long to get
+started (appointments today, the platform on a timeline set with you); prove it (start free on
+appointments).
+7.14 Final call to action
+H2: "One platform for your facility. Start today with appointments."
+Primary CTA: "Book a demo." Secondary: "Start free with Appointments."
+7.15 Footer
+Contact (a Bangladeshi phone number and a WhatsApp or Messenger link), a demo-request
+link, a simple privacy notice and terms, the language toggle, and the company line.
+8. Component and UI kit
+Buttons: primary (Marigold fill, label color contrast-checked), secondary (Trust Blue
+outline), text link. 8 to 12px radius. Minimum tap target 44 by 44px.
+9/23/26, 3:07 AM Lofi Care landing page guideline
+file:///C:/Users/LORDPP~1/AppData/Local/Temp/claude/E--claude/83b8d0c4-1414-41dc-9955-c54f2705f40f/scratchpad/_lp_guideline.html 9/14
+
+===== PAGE 10 =====
+Module cards / tier grid: grouped by area, each module a chip or card with an honest
+status badge (Calm Green "Available now" for appointments, Mist "Early access" for the
+rest).
+Demo-request form: short, with the fields a facility sale needs (name, facility, facility
+type diagnostic centre or hospital, role, phone or email, branches). Label every field;
+errors in Signal Red with text.
+Trial start form: one or two fields.
+Accordion for the FAQ.
+Sticky mobile CTA bar with the primary action.
+States: hover, focus (visible focus ring), disabled, loading for every interactive element.
+9. Imagery and iconography
+Real Bangladeshi context: hospitals, diagnostic centres, doctors, chambers. Not generic
+Western stock.
+Show only what is real. Real product shots for the live appointment module. For
+modules being built, use honest labelled placeholders, schematics, or icons, never a
+fabricated screenshot passed off as a working product (§14).
+Icons: one consistent line-icon set, one per module, in Trust Blue or Slate.
+Optimize images (§13); a slow hero on 4G is a conversion loss.
+10. Copy, voice, and the honesty rules
+Voice: plain, confident, credible. Short sentences.
+House style, enforced: no em dashes, ever (commas, colons, full stops). No AI-
+sounding filler ("delve", "leverage", "seamless", "robust", "elevate").
+The module-status honesty rule (load-bearing). We position Lofi Care as a complete
+platform, and that is fair because it is what we are building. But no module beyond
+appointments may be described as "available" or shown as a finished product unless it
+truly is. Use "early access," "rolling out," or "talk to us." This is what lets us lead big and
+stay honest, and it protects trust with the facility buyers who matter most.
+Defensible claims only. No no-show percentage stated as fact until we have measured
+our own.
+The price-rot rule. No hard-coded price that can go stale; anchor appointments on "less
+than three patients a month" and "start free"; price the platform as "book a demo."
+The anchor line appears in appointments pricing and once near the final CTA.
+9/23/26, 3:07 AM Lofi Care landing page guideline
+file:///C:/Users/LORDPP~1/AppData/Local/Temp/claude/E--claude/83b8d0c4-1414-41dc-9955-c54f2705f40f/scratchpad/_lp_guideline.html 10/14
+
+===== PAGE 11 =====
+11. Naming
+Use consistently (§17). Recommended: Lofi Care is the platform and the brand; the live module
+is Lofi Care Appointments; the facility product is the Lofi Care platform (or "Lofi Care for
+Diagnostics and Hospitals"). Every module in §7.4 is named under the one Lofi Care platform.
+Naming the module now, while only it is live, avoids a rebrand when the rest arrives.
+12. Language strategy
+English primary, Bangla available. The facility buyer and the younger doctor read
+English comfortably, and English reads as modern and credible. A real EN / বাংলা  toggle,
+not machine translation baked in.
+What must be bilingual: the patient-facing section and booking flow, the primary CTAs,
+and the trust and compliance lines.
+Ship English with the patient path bilingual at minimum; full depth is a decision (§17).
+13. Accessibility and performance
+WCAG AA across the page: contrast (§4), visible focus states, real alt text, labelled form
+fields, error messaging in text and not color alone.
+Tap targets at least 44px, with spacing.
+Performance is a conversion feature: fast first load on a mid-range Android on 4G,
+compressed and lazy-loaded images, modern formats, two fonts only, no heavy above-
+the-fold video.
+Render the core message and CTA even if a large image is still loading.
+14. What NOT to do
+Never present a module that is not built as available, and never show a fabricated
+screenshot of one (§9). First rule of this launch.
+No fabricated stats or fake social proof. No invented user counts, no stock
+testimonials, no fake client logos.
+No no-show percentage stated as fact until measured.
+No fixed platform price on the page, and no appointment price hard-coded in a way
+that can rot.
+No red call-to-action buttons.
+No claim of HIPAA or SOC2 certification. We align with good practice and keep data
+in Bangladesh; we do not certify.
+9/23/26, 3:07 AM Lofi Care landing page guideline
+file:///C:/Users/LORDPP~1/AppData/Local/Temp/claude/E--claude/83b8d0c4-1414-41dc-9955-c54f2705f40f/scratchpad/_lp_guideline.html 11/14
+
+===== PAGE 12 =====
+No teal or green as the primary brand color (it blends into the local competitor pack).
+No generic Western stock imagery.
+15. Measurement
+Track each action separately: facility demo requests (split diagnostic centre vs hospital),
+doctor appointment trial starts, and patient "Find your doctor" clicks. The headline
+numbers are demo requests and trial starts.
+Instrument the funnel: hero CTA click, form start, form complete, per audience.
+Analytics with a light touch, behind an honest consent banner, defaulting to the
+privacy-preserving choice. No personal data in a URL.
+16. Discoverability
+Facebook link preview is the real first channel. Doctor and healthcare groups on
+Facebook are where this gets shared, so a clean Open Graph preview (a purpose-made
+share image, a strong title, a one-line description) matters most. Test the link pasted into
+a Facebook post before launch.
+Basic on-page SEO: clear title and meta description, sensible headings, and Bangladesh,
+hospital, diagnostic centre, and appointment keywords in the natural copy.
+Favicon and app title set, so a saved link looks legitimate.
+17. Open decisions and assumptions
+Resolve with the Lofi Care team. None block starting on §4 to §9.
+9/23/26, 3:07 AM Lofi Care landing page guideline
+file:///C:/Users/LORDPP~1/AppData/Local/Temp/claude/E--claude/83b8d0c4-1414-41dc-9955-c54f2705f40f/scratchpad/_lp_guideline.html 12/14
+
+===== PAGE 13 =====
+# Decision Why it matters Suggested default
+1 The real status of each of the 18
+modules
+§7.4 must be honest; this is
+the launch's integrity
+Only appointments "Available now";
+the rest "Early access"
+2 Founder cohort sizes and offer, for
+facilities and doctors
+Scarcity and onboarding
+capacity
+A small facility cohort (about five) plus
+an open doctor cohort
+3 The "Book a demo" channel: form,
+WhatsApp, phone, or all
+The primary CTA must go
+somewhere real
+A short demo-request form plus
+WhatsApp and phone
+4 Naming: Lofi Care platform, Lofi
+Care Appointments module
+Header, module grid, footer As in §11
+5 Patient "Find your doctor"
+destination
+The patient CTA needs a
+real target
+If no directory yet, route to a "how it
+works for patients" page and contact
+6 How appointment pricing is
+shown
+The price-rot rule Anchor line plus "start free"; exact
+figure dated or pulled from source
+7 Final palette sign-off and the
+accessible Marigold label pairing
+Contrast is a hard
+requirement
+Values in §4, verified to AA
+8 Domain and brand lockup (logo,
+wordmark)
+Header, footer, favicon, OG
+image
+Confirm with the team
+9 What proof is true at launch
+(facility and doctor testimonials)
+§7.2 and §7.11 cannot
+invent it
+Founder story and Bangladesh-built
+lines until real proof exists
+Assumption to validate: beyond appointments, the modules are defined and being built, not
+yet self-serve-live, so the page presents them as early access. If any module is genuinely ready
+for the founding cohort, move its badge to "Available now" and give it a real product shot.
+18. Handoff checklist for the creative team
+[ ] Confirm the real module statuses (§7.4, §17) before designing that section.
+[ ] Wireframe the mobile layout first, then desktop, following the §7 spine.
+[ ] Lock the palette (§4) and verify every text-on-background pair to WCAG AA.
+[ ] Set the two font families (§5) and the mobile-first type scale.
+[ ] Design the platform-first hero with the three doors (§7.1).
+[ ] Build the 18-module tier grid with honest status badges (§7.4).
+[ ] Build the diagnostic-centre and hospital sections with their demo CTAs (§7.5, §7.6).
+[ ] Build the component kit (§8): buttons, module cards, demo-request form, trial form,
+accordion, sticky mobile CTA.
+[ ] Produce real product shots for the live appointment module only; honest placeholders
+for the rest.
+[ ] Draft copy from the §7 examples; run it against §10 and §14, especially module status.
+[ ] Write real Bengali for the bilingual elements (§12).
+9/23/26, 3:07 AM Lofi Care landing page guideline
+file:///C:/Users/LORDPP~1/AppData/Local/Temp/claude/E--claude/83b8d0c4-1414-41dc-9955-c54f2705f40f/scratchpad/_lp_guideline.html 13/14
+
+===== PAGE 14 =====
+[ ] Create the Open Graph share image and test the Facebook link preview (§16).
+[ ] Check performance on a mid-range Android on 4G (§13).
+[ ] Resolve the §17 open decisions with the Lofi Care team.
+9/23/26, 3:07 AM Lofi Care landing page guideline
+file:///C:/Users/LORDPP~1/AppData/Local/Temp/claude/E--claude/83b8d0c4-1414-41dc-9955-c54f2705f40f/scratchpad/_lp_guideline.html 14/14

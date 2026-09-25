@@ -1,0 +1,21 @@
+---
+import '../styles/global.css';
+import '@fontsource-variable/manrope';
+import '@fontsource-variable/anek-bangla';
+interface Props { title: string; description?: string; lang?: 'en' | 'bn' }
+const { title, description = '', lang = 'en' } = Astro.props;
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    <link rel="icon" type="image/png" href="/brand/loficare-mark.png" />
+  </head>
+  <body>
+    <!-- DIRECTION CONTRACT: written after the checkpoint (build prompt section 13, phase 3). -->
+    <slot />
+  </body>
+</html>
