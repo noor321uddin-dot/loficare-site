@@ -10,7 +10,7 @@ const { locale } = Astro.props;
 <section id="hero" class="hero">
   <div class="container grid">
     <div class="copy">
-      <div class="brand-lockup"><Mark size={72} /><span class="wordmark">LofiCare</span></div>
+      <div class="brand-lockup"><Mark size={72} class="lockup-mark" /><span class="wordmark">LofiCare</span></div>
       <h1>{t(locale, 'hero.h1')}</h1>
       <p class="lede">{t(locale, 'hero.sub')}</p>
       <div class="actions">
@@ -28,7 +28,7 @@ const { locale } = Astro.props;
   :global(html[data-theme="dark"]) .hero { background: radial-gradient(ellipse at 6% 15%, #0E2230 0%, #081A22 50%, #0B1E2E 100%); }
   .grid { display: grid; gap: 32px; width: 100%; }
   .brand-lockup { display: flex; align-items: center; gap: 6px; margin-bottom: 26px; }
-  .brand-lockup :global(svg) { margin-left: -19px; } /* the mark sits inside its 1000-unit frame; pull the glyph to the text edge */
+  .brand-lockup :global(.lockup-mark) { margin-left: -19px; flex: none; } /* the mark sits inside its 1000-unit frame; pull the glyph to the text edge */
   .wordmark { font-size: clamp(30px, 2.8vw, 38px); font-weight: 800; letter-spacing: -0.03em; color: var(--fg); }
   h1 { font-size: clamp(32px, 3.4vw, 40px); line-height: 1.08; max-width: 32ch; }
   :global(html:lang(bn)) h1 { line-height: 1.3; }
