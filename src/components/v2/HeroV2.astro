@@ -27,7 +27,7 @@ const { locale } = Astro.props;
 <style>
   .hero2 { padding-block: 32px 56px; }
   .grid { display: grid; gap: 36px; }
-  h1 { font-size: clamp(34px, 3.4vw, 48px); line-height: 1.06; letter-spacing: -0.035em; max-width: 21ch; text-wrap: pretty; }
+  h1 { font-size: clamp(34px, 3.3vw, 46px); line-height: 1.06; letter-spacing: -0.035em; max-width: 21ch; text-wrap: pretty; }
   :global(html:lang(bn)) h1 { line-height: 1.25; letter-spacing: 0; }
   .lede { margin-top: 18px; max-width: 40ch; font-size: 18px; }
   .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
@@ -38,7 +38,7 @@ const { locale } = Astro.props;
   .board-float :global(.qb-wrap figcaption) { display: none; }
   @media (min-width: 900px) {
     .hero2 { min-height: min(calc(100dvh - 68px), 760px); display: flex; align-items: center; padding-block: 40px 64px; }
-    .grid { grid-template-columns: 0.9fr 1.1fr; gap: 64px; align-items: center; }
+    .grid { grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
     .visual { padding-bottom: 90px; }
     .board-float { position: absolute; margin: 0; left: -12%; bottom: 0; width: 380px; }
   }
