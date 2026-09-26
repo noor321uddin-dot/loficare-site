@@ -10,13 +10,11 @@ const { locale } = Astro.props;
       <div class="panel card">
         <h3>{t(locale, 'cohorts.facility.h3')}</h3>
         <p class="muted">{t(locale, 'cohorts.facility.p')}</p>
-        <p class="slot">{t(locale, 'cohorts.slot')}</p>
         <a class="btn btn-primary" href="#demo" data-track="section_cta_click" data-audience="facility">{t(locale, 'cohorts.facility.cta')}</a>
       </div>
       <div class="panel card">
         <h3>{t(locale, 'cohorts.doctors.h3')}</h3>
         <p class="muted">{t(locale, 'cohorts.doctors.p')}</p>
-        <p class="slot">{t(locale, 'cohorts.slot')}</p>
         <a class="btn btn-secondary" href="#trial" data-track="section_cta_click" data-audience="doctor">{t(locale, 'cohorts.doctors.cta')}</a>
       </div>
     </div>
@@ -26,6 +24,5 @@ const { locale } = Astro.props;
   .panels { display: grid; gap: 16px; margin-top: 24px; }
   .panel { padding: 24px; display: grid; gap: 12px; align-content: start; }
   .panel .btn { justify-self: start; margin-top: 4px; }
-  .slot { border: 1px dashed var(--line); border-radius: var(--radius-control); padding: 14px; color: var(--fg-muted); font-size: 14px; text-align: center; }
   @media (min-width: 768px) { .panels { grid-template-columns: 1.15fr 1fr; gap: 20px; } }
 </style>

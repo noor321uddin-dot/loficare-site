@@ -76,11 +76,6 @@ const ld: Record<string, unknown>[] = [
           d.setAttribute('data-theme', s === 'dark' ? 'dark' : 'light');
           if (s === 'dark') { var m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute('content', '#041A1A'); }
         } catch (e) { d.setAttribute('data-theme', 'light'); }
-        try {
-          var rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
-          var seen = sessionStorage.getItem('lc-assembled');
-          if (!rm && !seen && !location.hash) d.setAttribute('data-assemble', 'pending');
-        } catch (e) {}
       })();
     </script>
   </head>
@@ -89,9 +84,9 @@ const ld: Record<string, unknown>[] = [
       DIRECTION CONTRACT, seed 17f59650
       THESIS: The complete facility platform you can start today, shown as disconnected modules becoming one mark.
       WORLD: The queue board. A light room with one dark screen in it; numbers as facts, tabular and a weight heavier; motion steps, overshoots and settles, never fades.
-      FIRST VIEWPORT: Left, the facility claim and two actions. Right, eighteen module tiles drift, then assemble into the LofiCare mark; only the appointment cross carries the aqua gradient.
+      FIRST VIEWPORT: Left, the facility claim and two actions. Right, the waiting-room queue board itself, the one dark screen in the light room, its serials stepping forward on sample data.
       VISITOR PATH: hero, three doors, trust line, problem, the 18 modules, diagnostics, hospitals, the live module, doctors, patients, data, cohorts, pricing, FAQ, demo, footer.
-      SIGNATURE: The assembly, once per session, scroll-driven on desktop, on enter on phones, static under reduced motion. Light by default, dark by choice.
+      SIGNATURE: The board's numbers step; in the platform section eighteen named tiles assemble into the mark on scroll; departments leave the record and take their places on the hospital ring. Static under reduced motion. Light by default, dark by choice.
       RISK: Aqua on paper is a large-shape colour only; every text pair passes AA through the tokens.
     -->
     <slot />

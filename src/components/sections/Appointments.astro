@@ -3,20 +3,22 @@ import Icon from '../Icon.astro';
 import { t, type Locale } from '../../i18n';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
-const states = ['pick', 'done', 'code', 'done'];
+/* The live module, demonstrated. The widget is a real component with three states; the four benefits sit beside it
+   as one list and each one puts the widget in the state it describes. Sample data, labelled. */
+const benefits = [
+  { i: 1, icon: 'phone-slash', state: 'pick' },
+  { i: 2, icon: 'monitor', state: 'done' },
+  { i: 3, icon: 'calendar-check', state: 'code' },
+  { i: 4, icon: 'device-mobile', state: 'done' },
+];
 ---
 <section id="appointments" class="section">
   <div class="container">
-    <div class="section-head"><h2>{t(locale, 'appointments.h2')}</h2></div>
+    <div class="section-head">
+      <h2>{t(locale, 'appointments.h2')}</h2>
+      <p class="lede">{t(locale, 'appointments.sub')}</p>
+    </div>
     <div class="layout">
-      <ol class="benefits">
-        {[1, 2, 3, 4].map((i) => (
-          <li class="benefit" data-state={states[i - 1]}>
-            <h3>{t(locale, `appointments.b${i}.h3`)}</h3>
-            <p class="muted">{t(locale, `appointments.b${i}.p`)}</p>
-          </li>
-        ))}
-      </ol>
       <div class="widget-col">
         <div class="widget card" data-state="pick" id="booking-widget">
           <div class="w-head"><strong>{t(locale, 'widget.title')}</strong><span class="muted">{t(locale, 'widget.spec')}</span></div>
@@ -50,16 +52,30 @@ const states = ['pick', 'done', 'code', 'done'];
         </div>
         <p class="sample">{t(locale, 'appointments.demo')}</p>
       </div>
+      <ol class="benefits">
+        {benefits.map((b) => (
+          <li class="benefit" data-state={b.state}>
+            <button type="button" class="b-btn" data-to={b.state} aria-pressed={b.i === 1 ? 'true' : 'false'}>
+              <span class="b-icon"><Icon name={b.icon} size={20} /></span>
+              <span class="b-text">
+                <span class="b-h">{t(locale, `appointments.b${b.i}.h3`)}</span>
+                <span class="b-p">{t(locale, `appointments.b${b.i}.p`)}</span>
+              </span>
+            </button>
+          </li>
+        ))}
+      </ol>
     </div>
-    <div class="section-cta"><a class="btn btn-primary" href="#trial" data-track="section_cta_click" data-audience="doctor">{t(locale, 'appointments.cta')}</a></div>
+    <div class="section-cta">
+      <a class="btn btn-primary" href="#trial" data-track="section_cta_click" data-audience="doctor">{t(locale, 'appointments.cta')}</a>
+      <p class="terms">{t(locale, 'appointments.terms')}</p>
+    </div>
   </div>
 </section>
 <style>
   .layout { display: grid; gap: 24px; margin-top: 24px; }
-  .benefits { list-style: none; margin: 0; padding: 0; display: grid; gap: 22px; }
-  .benefit h3 { margin-bottom: 4px; }
-  .widget-col { display: grid; gap: 8px; order: -1; }
-  .widget { padding: 18px; display: grid; gap: 12px; max-width: 380px; }
+  .widget-col { display: grid; gap: 8px; }
+  .widget { padding: 18px; display: grid; gap: 12px; max-width: 380px; width: 100%; }
   .w-head { display: grid; gap: 2px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
   .w-step { display: none; gap: 10px; }
   .widget[data-state="pick"] .w-pick, .widget[data-state="code"] .w-code, .widget[data-state="done"] .w-done { display: grid; }
@@ -71,27 +87,38 @@ const states = ['pick', 'done', 'code', 'done'];
   .w-ok { display: inline-flex; align-items: center; gap: 6px; color: var(--ok); font-weight: 800; }
   .b-row { display: flex; gap: 28px; margin-bottom: 8px; }
   .big.yours { color: var(--aqua-200); }
+  /* the benefits: one list, hairlines, the active one filled with wash */
+  .benefits { list-style: none; margin: 0; padding: 0; display: grid; border-top: 1px solid var(--line); }
+  .benefit { border-bottom: 1px solid var(--line); }
+  .b-btn { all: unset; display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: start; width: 100%; box-sizing: border-box; padding: 16px 10px; cursor: pointer; border-radius: var(--radius-control); color: var(--fg); }
+  .b-btn:focus-visible { outline: 3px solid var(--aqua-400); outline-offset: 2px; }
+  .b-icon { width: 44px; height: 44px; border-radius: var(--radius-control); border: 1.5px solid var(--line); display: grid; place-items: center; color: var(--accent); background: var(--card); transition: background-color .2s ease, border-color .2s ease; }
+  .b-btn[aria-pressed="true"] .b-icon { background: var(--bg-alt); border-color: var(--accent-strong); }
+  .b-btn:hover .b-icon { border-color: var(--accent-strong); }
+  .b-text { display: grid; gap: 4px; }
+  .b-h { font-weight: 700; font-size: 18px; letter-spacing: -0.01em; line-height: 1.25; }
+  .b-p { color: var(--fg-muted); max-width: 44ch; }
+  .terms { align-self: center; color: var(--fg-muted); font-size: 14px; }
   @media (min-width: 768px) {
-    .layout { grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; margin-top: 32px; }
-    .widget-col { order: 0; position: sticky; top: 96px; justify-items: start; }
-    .benefits { gap: 0; padding-block: 3vh 5vh; }
-    .benefit { min-height: 28vh; display: flex; flex-direction: column; justify-content: center; }
+    .layout { grid-template-columns: minmax(320px, 400px) 1fr; gap: 56px; align-items: start; margin-top: 32px; }
+    .widget-col { position: sticky; top: 96px; justify-items: start; }
+    .b-btn { padding: 18px 12px; }
   }
 </style>
 <script>
   const widget = document.getElementById('booking-widget');
+  const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('#appointments .b-btn'));
   if (widget) {
+    const set = (state: string, from?: HTMLButtonElement) => {
+      widget.dataset.state = state;
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(from ? b === from : b.dataset.to === state)));
+    };
     widget.addEventListener('click', (e) => {
       const next = (e.target as HTMLElement).closest<HTMLElement>('.w-next');
-      if (next) { widget.dataset.state = next.dataset.to; return; }
+      if (next) { set(next.dataset.to || 'pick'); return; }
       const slot = (e.target as HTMLElement).closest<HTMLButtonElement>('.slot');
       if (slot) widget.querySelectorAll('.slot').forEach((s) => s.setAttribute('aria-pressed', String(s === slot)));
     });
-    if (matchMedia('(min-width: 768px)').matches && 'IntersectionObserver' in window) {
-      const io = new IntersectionObserver((entries) => {
-        for (const en of entries) if (en.isIntersecting) widget.dataset.state = (en.target as HTMLElement).dataset.state;
-      }, { threshold: 0.6 });
-      document.querySelectorAll('#appointments .benefit').forEach((b) => io.observe(b));
-    }
+    buttons.forEach((b) => b.addEventListener('click', () => set(b.dataset.to || 'pick', b)));
   }
 </script>

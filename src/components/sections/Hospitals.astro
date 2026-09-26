@@ -1,8 +1,23 @@
 ---
+import Icon from '../Icon.astro';
 import { t, type Locale } from '../../i18n';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
-const depts = [1, 2, 3, 4, 5, 6, 7, 8].map((i) => t(locale, `hospitals.dept.${i}`));
+/* The record and its departments as a slow orbit. Eight departments circle one patient record; pick one and the
+   orbit turns to bring it to the top, opens what it covers and lights the departments it hands work to.
+   Vanilla, no framework: positions are set per frame from one angle. Below 768px the same content is a list
+   of native disclosures. The class names avoid Tailwind's utility names on purpose (never `ring`). */
+const icons = ['clipboard-text', 'bed', 'scissors', 'siren', 'pill', 'receipt', 'folder-open', 'users-three'];
+const related = [[2, 6], [1, 3, 5], [2, 4], [1, 3, 7], [2, 6], [1, 5, 8], [4, 2], [6, 7]];
+const depts = icons.map((icon, i) => ({
+  id: i + 1,
+  icon,
+  name: t(locale, `hospitals.dept.${i + 1}`),
+  desc: t(locale, `hospitals.dept.${i + 1}.desc`),
+  related: related[i],
+}));
+const spokes = depts.map((_, i) => { const a = (i * 45 * Math.PI) / 180; return { x2: 200 + Math.cos(a) * 150, y2: 200 + Math.sin(a) * 150 }; });
+const r = (n: number) => Math.round(n * 10) / 10;
 ---
 <section id="hospitals" class="section section-alt">
   <div class="container split">
@@ -13,33 +28,209 @@ const depts = [1, 2, 3, 4, 5, 6, 7, 8].map((i) => t(locale, `hospitals.dept.${i}
       </div>
       <div class="section-cta"><a class="btn btn-primary" href="#demo" data-track="section_cta_click" data-audience="facility">{t(locale, 'hospitals.cta')}</a></div>
     </div>
-    <div class="ring-wrap">
-      <div class="ring" aria-hidden="true">
-        <div class="hub">{t(locale, 'hospitals.hub')}</div>
-        {depts.map((d, i) => <span class="node" style={`--a:${i * 45}deg`}>{d}</span>)}
+    <div class="orbit-wrap" id="record-orbit">
+      <div class="orbit">
+        <svg class="spokes" viewBox="0 0 400 400" aria-hidden="true">
+          <circle class="track" cx="200" cy="200" r="150" />
+          {spokes.map((s) => <line class="spoke" x1="200" y1="200" x2={r(s.x2)} y2={r(s.y2)} />)}
+        </svg>
+        <div class="hub" aria-hidden="true"><span class="ping"></span><span class="ping ping-2"></span><span class="hub-label">{t(locale, 'hospitals.hub')}</span></div>
+        {depts.map((d, i) => (
+          <button type="button" class="node" style={`--i:${i}`} data-id={d.id} data-related={d.related.join(',')} data-name={d.name} data-desc={d.desc} aria-expanded="false" aria-controls="dept-card">
+            <span class="node-dot"><Icon name={d.icon} size={18} /></span>
+            <span class="node-label">{d.name}</span>
+          </button>
+        ))}
+        <div class="dept-card card" id="dept-card" hidden>
+          <button type="button" class="close" aria-label={t(locale, 'hospitals.close')}><Icon name="x" size={16} /></button>
+          <span class="badge-early">{t(locale, 'platform.early')}</span>
+          <h3 class="dc-title"></h3>
+          <p class="dc-desc"></p>
+          <p class="dc-rel-label">{t(locale, 'hospitals.related')}</p>
+          <div class="dc-rel"></div>
+        </div>
       </div>
+      <p class="hint">{t(locale, 'hospitals.hint')}</p>
       <div class="list">
         <div class="hub-card">{t(locale, 'hospitals.hub')}</div>
-        <ul class="dept-list">{depts.map((d) => <li>{d}</li>)}</ul>
+        {depts.map((d) => (
+          <details class="m-item">
+            <summary><span class="m-icon"><Icon name={d.icon} size={18} /></span><span class="m-name">{d.name}</span><Icon name="caret-right" size={16} class="m-caret" /></summary>
+            <div class="m-body">
+              <p>{d.desc}</p>
+              <p class="m-rel"><span>{t(locale, 'hospitals.related')}</span> {d.related.map((id) => depts[id - 1].name).join(', ')}</p>
+            </div>
+          </details>
+        ))}
       </div>
     </div>
   </div>
 </section>
 <style>
   .split { display: grid; gap: 28px; }
-  .ring { display: none; }
-  .list { display: grid; gap: 10px; }
-  .hub-card { justify-self: start; background: var(--ink-950); color: var(--aqua-200); border-radius: 999px; padding: 10px 16px; font-weight: 800; }
-  .dept-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
-  .dept-list li { border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 8px 14px; font-weight: 600; }
+  .orbit, .hint { display: none; }
+  /* mobile: the record, then eight disclosures on hairlines */
+  .list { display: grid; }
+  .hub-card { justify-self: start; background: var(--ink-950); color: var(--aqua-200); border-radius: 999px; padding: 10px 16px; font-weight: 800; margin-bottom: 8px; }
+  .m-item { border-bottom: 1px solid var(--line); }
+  .m-item summary { list-style: none; display: grid; grid-template-columns: 40px 1fr 20px; align-items: center; gap: 12px; min-height: 56px; cursor: pointer; font-weight: 600; color: var(--fg); }
+  .m-item summary::-webkit-details-marker { display: none; }
+  .m-icon { width: 40px; height: 40px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); display: grid; place-items: center; color: var(--accent); }
+  .m-item :global(.m-caret) { color: var(--fg-muted); transition: transform .2s ease; }
+  .m-item[open] :global(.m-caret) { transform: rotate(90deg); }
+  .m-body { padding: 0 0 16px 52px; display: grid; gap: 8px; color: var(--fg-muted); font-size: 15px; }
+  .m-body p { margin: 0; }
+  .m-rel span { font-weight: 700; color: var(--fg); }
   @media (min-width: 768px) {
-    .split { grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: center; }
-    .list { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-    .ring-wrap { position: relative; display: grid; place-items: center; }
-    .ring { display: block; position: relative; width: 320px; height: 320px; --r: 122px; }
-    .ring::before { content: ""; position: absolute; inset: 14%; border: 2px solid var(--tile-line); border-radius: 50%; opacity: 0.55; }
-    .hub { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background: var(--ink-950); color: var(--aqua-200); border-radius: 999px; padding: 10px 16px; font-weight: 800; white-space: nowrap; }
-    .node { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(var(--a)) translate(var(--r)) rotate(calc(-1 * var(--a))); background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; font-weight: 600; font-size: 14px; white-space: nowrap; }
+    .split { grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+    .list { display: none; }
+    .orbit-wrap { display: grid; justify-items: center; gap: 10px; }
+    .orbit { display: block; position: relative; width: 340px; height: 340px; --r: 128px; }
+    .hint { display: block; font-size: 13px; color: var(--fg-muted); margin: 0; }
+    .spokes { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; transform-origin: 50% 50%; }
+    .track { fill: none; stroke: var(--tile-line); stroke-width: 1.5; opacity: 0.5; }
+    .spoke { stroke: var(--tile-line); stroke-width: 1.5; opacity: 0.4; }
+    .hub { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 5; }
+    .hub-label { position: relative; display: block; background: var(--ink-950); color: var(--aqua-200); border-radius: 999px; padding: 12px 18px; font-weight: 800; white-space: nowrap; box-shadow: inset 0 0 0 1px rgba(64, 232, 224, 0.12); }
+    .ping { position: absolute; inset: -6px; border-radius: 999px; border: 1px solid var(--aqua-400); opacity: 0; animation: orbit-ping 3s cubic-bezier(0, 0, 0.2, 1) infinite; }
+    .ping-2 { animation-delay: 1.5s; }
+    @keyframes orbit-ping { 0% { transform: scale(1); opacity: 0.55; } 70%, 100% { transform: scale(1.45); opacity: 0; } }
+    /* nodes: placed by script from one angle; before the script runs they sit at their resting angles */
+    .node { position: absolute; left: 50%; top: 50%; display: grid; justify-items: center; gap: 6px; border: 0; background: none; padding: 0; margin: 0; cursor: pointer; color: var(--fg); font: inherit; will-change: transform; transform: translate(calc(-50% + var(--x, 0px)), calc(-50% + var(--y, 0px))); }
+    .node:focus-visible { outline: none; }
+    .node:focus-visible .node-dot { outline: 3px solid var(--aqua-400); outline-offset: 2px; }
+    .node-dot { width: 44px; height: 44px; border-radius: 999px; background: var(--card); border: 1.5px solid var(--line); display: grid; place-items: center; color: var(--accent); transition: background-color .25s ease, border-color .25s ease, transform .25s ease, color .25s ease, opacity .6s ease; }
+    .node-label { font-size: 13px; font-weight: 600; white-space: nowrap; transition: opacity .6s ease; }
+    .node:hover .node-dot { border-color: var(--accent-strong); }
+    .node.active .node-dot { background: var(--ink-950); color: var(--aqua-200); border-color: var(--aqua-400); transform: scale(1.15); }
+    .node.active .node-label { font-weight: 700; }
+    .node.related .node-dot { border-color: var(--accent-strong); animation: node-pulse 1.4s ease-in-out infinite; }
+    @keyframes node-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(64, 232, 224, 0.45); } 50% { box-shadow: 0 0 0 7px rgba(64, 232, 224, 0); } }
+    :global(html[data-theme="dark"]) .node.active .node-dot { background: var(--aqua-400); color: var(--ink-950); border-color: var(--aqua-400); }
+    /* arrival: dots and labels fade in one after another the first time the orbit is on screen */
+    .orbit:not(.in) .node-dot, .orbit:not(.in) .node-label { opacity: 0; }
+    .orbit.in .node-dot, .orbit.in .node-label { transition-delay: calc(var(--i) * 70ms); }
+    /* the card opens under the node that was brought to the top */
+    .dept-card { position: absolute; left: 50%; top: calc(50% - var(--r) + 46px); width: 292px; z-index: 300; padding: 16px 16px 18px; display: grid; gap: 8px; text-align: left; transform: translate(-50%, 8px); opacity: 0; transition: opacity .25s ease, transform .25s ease; box-shadow: 0 18px 44px -14px rgba(4, 26, 26, 0.35); }
+    .dept-card[hidden] { display: none; }
+    .dept-card.show { opacity: 1; transform: translate(-50%, 0); }
+    .close { position: absolute; top: 8px; right: 8px; width: 36px; height: 36px; border: 0; background: none; border-radius: 999px; display: grid; place-items: center; color: var(--fg-muted); cursor: pointer; }
+    .close:hover { background: var(--bg-alt); color: var(--fg); }
+    .dept-card .badge-early { justify-self: start; border-radius: 999px; padding: 3px 10px; font-size: 12px; }
+    .dc-title { font-size: 18px; margin: 0; letter-spacing: -0.01em; }
+    .dc-desc { margin: 0; font-size: 14px; line-height: 1.5; color: var(--fg-muted); }
+    .dc-rel-label { margin: 6px 0 0; font-size: 12px; font-weight: 700; color: var(--fg-muted); }
+    .dc-rel { display: flex; flex-wrap: wrap; gap: 6px; }
+    .dc-rel :global(.chip) { display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--line); border-radius: 999px; padding: 6px 10px; font: inherit; font-size: 13px; font-weight: 600; background: var(--bg); color: var(--fg); cursor: pointer; }
+    .dc-rel :global(.chip:hover) { border-color: var(--accent-strong); }
   }
-  @media (min-width: 1024px) { .ring { width: 380px; height: 380px; --r: 146px; } }
+  @media (min-width: 1024px) { .orbit { width: 400px; height: 400px; --r: 150px; } .node-label { font-size: 14px; } }
+  @media (prefers-reduced-motion: reduce) {
+    .ping, .node.related .node-dot { animation: none; }
+    .node-dot, .node-label, .dept-card { transition: none; }
+  }
 </style>
+<script>
+  const wrap = document.getElementById('record-orbit');
+  const orbit = wrap?.querySelector<HTMLElement>('.orbit');
+  if (wrap && orbit) {
+    const nodes = Array.from(orbit.querySelectorAll<HTMLButtonElement>('.node'));
+    const spokes = orbit.querySelector<SVGElement>('.spokes')!;
+    const card = orbit.querySelector<HTMLElement>('.dept-card')!;
+    const title = card.querySelector<HTMLElement>('.dc-title')!;
+    const desc = card.querySelector<HTMLElement>('.dc-desc')!;
+    const rel = card.querySelector<HTMLElement>('.dc-rel')!;
+    const N = nodes.length;
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const wide = matchMedia('(min-width: 768px)');
+    const byId = (id: string) => nodes.find((n) => n.dataset.id === id) || null;
+    let angle = -90;               // department one starts at the top
+    let goal: number | null = null; // where the orbit is turning to, when a department is picked
+    let auto = !reduced;
+    let active: HTMLButtonElement | null = null;
+    let raf = 0, last = 0, running = false, visible = false;
+
+    const radius = () => parseFloat(getComputedStyle(orbit).getPropertyValue('--r')) || 150;
+    const layout = () => {
+      const r = radius();
+      nodes.forEach((n, i) => {
+        const a = (((i / N) * 360 + angle) * Math.PI) / 180;
+        const s = Math.sin(a);
+        n.style.setProperty('--x', `${(Math.cos(a) * r).toFixed(1)}px`);
+        n.style.setProperty('--y', `${(s * r).toFixed(1)}px`);
+        n.style.zIndex = String(Math.round(100 - 50 * s));
+        let o = 0.72 + 0.28 * ((1 - s) / 2); // the top of the orbit is the bright end
+        if (active) o = n === active || n.classList.contains('related') ? 1 : 0.45;
+        n.style.opacity = o.toFixed(2);
+      });
+      spokes.style.transform = `rotate(${angle}deg)`;
+    };
+    const tick = (ts: number) => {
+      const dt = last ? Math.min(ts - last, 64) : 16;
+      last = ts;
+      if (goal !== null) {
+        const d = ((goal - angle + 540) % 360) - 180; // shortest way round
+        if (Math.abs(d) < 0.15) { angle = goal; goal = null; } else angle += d * Math.min(1, dt / 240);
+      } else if (auto) angle = (angle + dt * 0.006) % 360; // one turn a minute
+      layout();
+      if (running && (auto || goal !== null)) raf = requestAnimationFrame(tick); else running = false;
+    };
+    const run = () => { if (!running && visible && wide.matches) { running = true; last = 0; raf = requestAnimationFrame(tick); } };
+    const halt = () => { running = false; cancelAnimationFrame(raf); };
+
+    const fill = (node: HTMLButtonElement) => {
+      title.textContent = node.dataset.name || '';
+      desc.textContent = node.dataset.desc || '';
+      rel.replaceChildren(...(node.dataset.related || '').split(',').map((id) => {
+        const target = byId(id);
+        const b = document.createElement('button');
+        b.type = 'button'; b.className = 'chip'; b.textContent = target?.dataset.name || '';
+        b.addEventListener('click', (e) => { e.stopPropagation(); if (target) open(target); });
+        return b;
+      }));
+    };
+    const open = (node: HTMLButtonElement) => {
+      active = node; auto = false;
+      const links = (node.dataset.related || '').split(',');
+      nodes.forEach((n) => {
+        n.setAttribute('aria-expanded', String(n === node));
+        n.classList.toggle('active', n === node);
+        n.classList.toggle('related', n !== node && links.includes(n.dataset.id || ''));
+      });
+      const i = nodes.indexOf(node);
+      const top = (((270 - (i / N) * 360) % 360) + 360) % 360;
+      if (reduced) { angle = top; goal = null; layout(); } else { goal = top; run(); }
+      fill(node);
+      card.hidden = false;
+      requestAnimationFrame(() => card.classList.add('show'));
+    };
+    const close = (refocus = false) => {
+      if (!active) return;
+      const was = active;
+      active = null; goal = null;
+      nodes.forEach((n) => { n.setAttribute('aria-expanded', 'false'); n.classList.remove('active', 'related'); });
+      card.classList.remove('show'); card.hidden = true;
+      auto = !reduced;
+      layout();
+      run();
+      if (refocus) was.focus();
+    };
+
+    nodes.forEach((n) => n.addEventListener('click', (e) => { e.stopPropagation(); active === n ? close() : open(n); }));
+    card.addEventListener('click', (e) => e.stopPropagation());
+    card.querySelector('.close')!.addEventListener('click', () => close(true));
+    orbit.addEventListener('click', () => close());
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && active) close(true); });
+    document.addEventListener('visibilitychange', () => (document.hidden ? halt() : run()));
+    wide.addEventListener('change', () => (wide.matches ? (layout(), run()) : halt()));
+
+    layout();
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        visible = entries.some((e) => e.isIntersecting);
+        if (visible) { orbit.classList.add('in'); run(); } else halt();
+      }, { rootMargin: '0px 0px 10% 0px' });
+      io.observe(orbit);
+    } else { visible = true; orbit.classList.add('in'); run(); }
+  }
+</script>

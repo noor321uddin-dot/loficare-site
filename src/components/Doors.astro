@@ -27,10 +27,10 @@ const { locale } = Astro.props;
   .q { font-weight: 800; font-size: 20px; letter-spacing: -0.02em; }
   .sub { color: var(--fg-muted); }
   .door .btn { align-self: flex-start; margin-top: 6px; }
-  .patient { border-style: dashed; justify-content: center; }
+  .patient { border-style: dashed; justify-content: flex-start; }
   .patient .cta { display: inline-flex; align-items: center; gap: 6px; color: var(--accent); font-weight: 700; }
   @media (min-width: 768px) {
     .doors { grid-template-columns: 2fr 1.25fr 1fr; gap: 16px; padding-block: 0 40px; }
-    .facility { padding: 28px; }
+    .door { padding: 28px; }
   }
 </style>

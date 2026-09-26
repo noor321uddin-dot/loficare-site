@@ -32,7 +32,7 @@ const qr = await QRCode.toString('https://' + link, { type: 'svg', margin: 0, co
     </div>
     <figure class="sign-wrap">
       <div class="sign">
-        <span class="s-name" lang="bn">ডা. রহমান</span>
+        <span class="s-name">{t(locale, 'doctors.sign.name')}</span>
         <span class="s-spec">{t(locale, 'doctors.sign.spec')}</span>
         <span class="s-hours">{t(locale, 'doctors.sign.hours')}</span>
         <div class="s-link">
@@ -60,7 +60,7 @@ const qr = await QRCode.toString('https://' + link, { type: 'svg', margin: 0, co
   .qr { display: block; width: 84px; height: 84px; flex: none; background: #FFFFFF; padding: 6px; border-radius: 8px; }
   .qr :global(svg) { width: 100%; height: 100%; display: block; }
   .s-scan { font-size: 13px; color: var(--mist-on-ink); text-align: right; }
-  @media (min-width: 768px) { .split { grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: center; } .sign-wrap { justify-items: center; } }
+  @media (min-width: 768px) { .split { grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: center; } .sign-wrap { justify-self: center; width: min(100%, 420px); } }
 </style>
 <script>
   import { enhanceForm } from '../../lib/forms';

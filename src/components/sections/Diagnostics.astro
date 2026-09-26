@@ -1,15 +1,28 @@
 ---
+import QRCode from 'qrcode';
 import { t, type Locale } from '../../i18n';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
-const times = ['08:12', '08:40', '11:05', '11:20', '11:26'];
-const barcode = (seed: number) => {
-  const rects: Array<{ x: number; w: number }> = [];
-  let x = 0;
-  for (let k = 0; k < 16; k++) { const w = 1 + ((seed * 7 + k * 3) % 3); rects.push({ x, w }); x += w + 1 + ((seed + k) % 2); }
-  return { rects, width: x };
+/* One specimen label, printed the way the module prints it: a QR the lab scanner reads and a Code 39 strip for
+   the older readers, then five stations from the front desk to the patient's phone. Sample data, labelled. */
+const sampleId = 'LC-0913';
+const qr = await QRCode.toString('https://loficare.app/s/' + sampleId, { type: 'svg', margin: 0, errorCorrectionLevel: 'M', color: { dark: '#041A1A', light: '#00000000' } });
+const C39: Record<string, string> = {
+  '0': 'nnnwwnwnn', '1': 'wnnwnnnnw', '2': 'nnwwnnnnw', '3': 'wnwwnnnnn', '4': 'nnnwwnnnw', '5': 'wnnwwnnnn', '6': 'nnwwwnnnn', '7': 'nnnwnnwnw', '8': 'wnnwnnwnn', '9': 'nnwwnnwnn',
+  'C': 'wnwnnwnnn', 'L': 'nnwnnnnww', '-': 'nwnnnnwnw', '*': 'nwnnwnwnn',
 };
-const steps = [1, 2, 3, 4, 5].map((i) => ({ label: t(locale, `diagnostics.step.${i}`), d: t(locale, `diagnostics.step.${i}.d`), time: times[i - 1], bc: barcode(i) }));
+const code39 = (text: string) => {
+  const bars: Array<{ x: number; w: number }> = []; let x = 0;
+  for (const ch of `*${text}*`) {
+    const p = C39[ch]; if (!p) continue;
+    p.split('').forEach((k, i) => { const w = k === 'w' ? 3 : 1; if (i % 2 === 0) bars.push({ x, w }); x += w; });
+    x += 1;
+  }
+  return { bars, width: x - 1 };
+};
+const bc = code39(sampleId);
+const times = ['08:12', '08:40', '11:05', '11:20', '11:26'];
+const steps = [1, 2, 3, 4, 5].map((i) => ({ label: t(locale, `diagnostics.step.${i}`), d: t(locale, `diagnostics.step.${i}.d`), time: times[i - 1] }));
 const statement = [
   { who: 'Dr. Sultana', n: '42', earned: '18,900' },
   { who: 'Dr. Karim', n: '27', earned: '12,450' },
@@ -22,16 +35,31 @@ const statement = [
       <h2>{t(locale, 'diagnostics.h2')}</h2>
       <p class="lede">{t(locale, 'diagnostics.body')}</p>
     </div>
-    <ol class="flow" aria-label="Sample to report">
-      {steps.map((s) => (
-        <li class="step card">
-          <svg class="bc" viewBox={`0 0 ${s.bc.width} 14`} aria-hidden="true" focusable="false">{s.bc.rects.map((r) => <rect x={r.x} y="0" width={r.w} height="14" />)}</svg>
-          <h3>{s.label}</h3>
-          <p class="muted">{s.d}</p>
-          <span class="num time">{s.time}</span>
-        </li>
-      ))}
-    </ol>
+    <div class="journey" id="journey">
+      <figure class="label">
+        <div class="lab-top">
+          <span class="lab-id num">{sampleId}</span>
+          <span class="lab-test">{t(locale, 'diagnostics.label.test')}</span>
+        </div>
+        <div class="lab-codes">
+          <span class="qr" set:html={qr} />
+          <svg class="c39" viewBox={`0 0 ${bc.width} 40`} preserveAspectRatio="none" aria-hidden="true" focusable="false">{bc.bars.map((b) => <rect x={b.x} y="0" width={b.w} height="40" />)}</svg>
+        </div>
+        <div class="lab-bottom"><span>{t(locale, 'diagnostics.label.patient')}</span><span class="num">08:12</span></div>
+        <figcaption class="sample">{t(locale, 'diagnostics.sample')}</figcaption>
+      </figure>
+      <ol class="rail" aria-label={t(locale, 'diagnostics.rail')}>
+        <span class="track" aria-hidden="true"><span class="fill"></span></span>
+        {steps.map((s) => (
+          <li class="station">
+            <span class="dot" aria-hidden="true"></span>
+            <span class="time num">{s.time}</span>
+            <h3>{s.label}</h3>
+            <p class="muted">{s.d}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
     <div class="statement card">
       <div class="st-head">
         <h3>{t(locale, 'diagnostics.statement.h3')}</h3>
@@ -46,21 +74,65 @@ const statement = [
   </div>
 </section>
 <style>
-  .flow { list-style: none; margin: 28px 0 0; padding: 0; display: grid; gap: 10px; counter-reset: step; }
-  .step { padding: 16px; display: grid; gap: 6px; }
-  .bc { width: 96px; height: 14px; fill: var(--fg); margin-bottom: 6px; }
-  .step h3 { font-size: 17px; }
-  .time { color: var(--accent); }
-  .statement { margin-top: 24px; padding: 18px 20px; }
+  .journey { display: grid; gap: 24px; margin-top: 28px; }
+  /* the label: a white sticker on the page, ink codes, nothing else */
+  .label { margin: 0; justify-self: start; width: min(100%, 300px); background: #FFFFFF; color: var(--ink-950); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px 12px; display: grid; gap: 10px; }
+  :global(html[data-theme="dark"]) .label { border-color: var(--mist); }
+  .lab-top, .lab-bottom { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 13px; color: var(--slate); }
+  .lab-id { font-size: 18px; color: var(--ink-950); }
+  .lab-codes { display: grid; grid-template-columns: 64px 1fr; gap: 14px; align-items: center; }
+  .qr :global(svg) { width: 64px; height: 64px; }
+  .c39 { width: 100%; height: 40px; fill: var(--ink-950); }
+  .label .sample { justify-self: start; }
+  /* the rail: five stations on one line, the line filling as the page scrolls */
+  .rail { list-style: none; margin: 0; padding: 0 0 0 26px; position: relative; display: grid; gap: 22px; }
+  .track { position: absolute; left: 7px; top: 10px; bottom: 10px; width: 2px; background: var(--line); border-radius: 2px; overflow: hidden; }
+  .fill { position: absolute; inset: 0; background: var(--accent-strong); transform-origin: top; transform: scaleY(1); }
+  .station { position: relative; display: grid; gap: 2px; }
+  .dot { position: absolute; left: -26px; top: 6px; width: 16px; height: 16px; border-radius: 50%; background: var(--bg); border: 2px solid var(--accent-strong); }
+  .station.on .dot { background: var(--accent-strong); }
+  .time { color: var(--accent); font-size: 14px; }
+  .station h3 { font-size: 18px; }
+  .statement { margin-top: 28px; padding: 18px 20px; max-width: 620px; }
   .st-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; }
   .badges { display: inline-flex; gap: 10px; align-items: center; }
   table { width: 100%; border-collapse: collapse; }
   th { text-align: left; font-size: 13px; color: var(--fg-muted); font-weight: 600; padding: 8px 0; border-bottom: 1px solid var(--line); }
-  td { padding: 10px 0; border-bottom: 1px solid var(--line); }
-  tr:last-child td { border-bottom: 0; }
+  td { padding: 10px 0; }
+  tr + tr td { border-top: 1px solid var(--line); }
   .r { text-align: right; }
   @media (min-width: 768px) {
-    .flow { grid-template-columns: repeat(5, 1fr); gap: 12px; }
-    .statement { max-width: 560px; }
+    .journey { grid-template-columns: 300px 1fr; gap: 48px; align-items: start; margin-top: 36px; }
+    .rail { grid-template-columns: repeat(5, 1fr); gap: 16px; padding: 30px 0 0; }
+    .track { left: 8px; right: 8px; top: 7px; bottom: auto; width: auto; height: 2px; }
+    .fill { transform-origin: left; }
+    .dot { left: 0; top: -30px; }
+    .statement { margin-top: 40px; }
   }
 </style>
+<script>
+  /* The fill and the stations follow the scroll. Static and complete without JavaScript or under reduced motion. */
+  const journey = document.getElementById('journey');
+  const fill = journey?.querySelector<HTMLElement>('.fill');
+  const stations = journey ? Array.from(journey.querySelectorAll<HTMLElement>('.station')) : [];
+  if (journey && fill && stations.length && !matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(async (entries) => {
+      if (!entries.some((e) => e.isIntersecting)) return;
+      io.disconnect();
+      try {
+        const [{ gsap }, { ScrollTrigger }] = await Promise.all([import('gsap'), import('gsap/ScrollTrigger')]);
+        gsap.registerPlugin(ScrollTrigger);
+        const horizontal = matchMedia('(min-width: 768px)').matches;
+        const tl = gsap.timeline({ scrollTrigger: { trigger: journey, start: 'top 80%', end: 'bottom 55%', scrub: 0.5 } });
+        tl.fromTo(fill, horizontal ? { scaleX: 0 } : { scaleY: 0 }, horizontal ? { scaleX: 1, ease: 'none' } : { scaleY: 1, ease: 'none' }, 0);
+        stations.forEach((s, i) => {
+          tl.fromTo(s, { opacity: 0.4, y: 8 }, { opacity: 1, y: 0, ease: 'expo.out', duration: 0.18, onStart: () => s.classList.add('on'), onReverseComplete: () => s.classList.remove('on') }, i / stations.length);
+        });
+        ScrollTrigger.refresh();
+      } catch { stations.forEach((s) => s.classList.add('on')); }
+    }, { rootMargin: '0px 0px 30% 0px' });
+    io.observe(journey);
+  } else {
+    stations.forEach((s) => s.classList.add('on'));
+  }
+</script>

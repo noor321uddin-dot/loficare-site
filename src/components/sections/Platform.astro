@@ -1,6 +1,6 @@
 ---
 import Icon from '../Icon.astro';
-import Mark from '../Mark.astro';
+import Assembly from '../Assembly.astro';
 import { t, type Locale } from '../../i18n';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
@@ -21,44 +21,50 @@ const tiers: Array<{ key: string; modules: Mod[] }> = [
 ---
 <section id="platform" class="section section-alt">
   <div class="container">
-    <div class="head">
-      <div class="section-head">
-        <h2>{t(locale, 'platform.h2')}</h2>
-        <p class="lede">{t(locale, 'platform.sub')}</p>
-      </div>
-      <Mark size={72} class="legend" />
+    <div class="section-head">
+      <h2>{t(locale, 'platform.h2')}</h2>
+      <p class="lede">{t(locale, 'platform.sub')}</p>
     </div>
-    <div class="tiers">
-      {tiers.map((tier) => (
-        <div class="tier">
-          <h3>{t(locale, `platform.tier.${tier.key}`)}</h3>
-          <ul class="chips">
-            {tier.modules.map((m) => (
-              <li class:list={['chip', { live: m.live }]} data-module={m.live ? 'appointments' : undefined}>
-                <span class="name">{m.name}</span>
-                {m.live
-                  ? <span class="badge badge-ok"><Icon name="check" size={14} /> {t(locale, 'platform.available')}</span>
-                  : <span class="badge badge-early">{t(locale, 'platform.early')}</span>}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+    <div class="grid">
+      <div class="mark-col">
+        <Assembly locale={locale} class="mark" />
+        <p class="legend"><span class="lit" aria-hidden="true"></span>{t(locale, 'platform.legend')}</p>
+      </div>
+      <div class="tiers">
+        {tiers.map((tier) => (
+          <div class="tier">
+            <h3>{t(locale, `platform.tier.${tier.key}`)}</h3>
+            <ul class="mods">
+              {tier.modules.map((m) => (
+                <li class:list={{ live: m.live }}>
+                  <span>{m.name}</span>
+                  {m.live && <span class="badge badge-ok"><Icon name="check" size={14} /> {t(locale, 'platform.available')}</span>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
     </div>
   </div>
 </section>
 <style>
-  .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
-  .legend { display: none; flex: none; }
-  .tiers { margin-top: 28px; border-bottom: 1px solid var(--line); }
-  .tier { display: grid; gap: 10px; padding: 18px 0; border-top: 1px solid var(--line); }
+  .grid { display: grid; gap: 28px; margin-top: 28px; }
+  .mark-col { display: grid; gap: 14px; justify-items: center; }
+  .mark-col :global(.mark) { width: min(100%, 340px); }
+  .legend { display: inline-flex; align-items: center; gap: 10px; font-size: 14px; color: var(--fg-muted); max-width: 40ch; text-align: left; }
+  .lit { flex: none; width: 14px; height: 14px; border-radius: 3px; background: linear-gradient(135deg, #40E8E0, #A7FCF6); border: 1px solid var(--tile-line); }
+  .tiers { border-top: 1px solid var(--line); }
+  .tier { display: grid; gap: 8px; padding: 16px 0; border-bottom: 1px solid var(--line); }
   .tier h3 { font-size: 15px; color: var(--accent); }
-  .chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
-  .chip { display: inline-flex; align-items: center; gap: 10px; flex-wrap: wrap; border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 8px 14px; font-weight: 600; font-size: 15px; }
-  .chip.live { border-color: var(--ok); }
+  .mods { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px 24px; align-items: start; }
+  .mods li { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; font-weight: 600; font-size: 15px; line-height: 1.4; }
+  .mods li.live span:first-child { color: var(--fg); }
+  @media (min-width: 640px) { .mods { grid-template-columns: 1fr 1fr; } }
   @media (min-width: 768px) {
-    .legend { display: block; }
-    .tier { grid-template-columns: 180px 1fr; gap: 16px; padding: 22px 0; }
-    .tier h3 { position: sticky; top: 88px; align-self: start; }
+    .grid { grid-template-columns: minmax(300px, 420px) 1fr; gap: 56px; align-items: start; margin-top: 36px; }
+    .mark-col { position: sticky; top: 96px; }
+    .mark-col :global(.mark) { width: 100%; }
+    .tier { grid-template-columns: 150px 1fr; gap: 16px; padding: 18px 0; }
   }
 </style>

@@ -15,6 +15,10 @@
   --mist: #D8E6E5;
   --mist-on-ink: #9CB7B5;
   --marigold: #F5871F;
+  --orbit-600: #4169E1;
+  --orbit-700: #2F55C9;
+  --orbit-300: #7D9EFA;
+  --white: #FFFFFF;
   --green: #167A5C; /* brief's #1F9D74 darkened to pass 4.5:1 as badge text on paper */
   --red: #C43B3B;   /* brief's #D64545 darkened to pass 4.5:1 as error text on paper */
 
@@ -26,8 +30,8 @@
   --line: var(--mist);
   --accent: var(--teal-700);
   --accent-strong: var(--teal-600);
-  --cta: var(--marigold);
-  --cta-fg: var(--ink-950);
+  --cta: var(--orbit-600);
+  --cta-fg: var(--white);
   --ok: var(--green);
   --err: var(--red);
   --tile: var(--wash-100);

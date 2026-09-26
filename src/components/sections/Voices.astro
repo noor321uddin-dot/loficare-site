@@ -1,0 +1,112 @@
+---
+import Icon from '../Icon.astro';
+import { voices, pick } from '../../content/voices';
+import { t, type Locale } from '../../i18n';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+/* Doctors in their own words. The list in src/content/voices.ts is the only source; while it is empty this
+   section says so plainly. Entries flagged `sample` are layout stand-ins and the section labels them as such. */
+const lead = voices[0];
+const rest = voices.slice(1, 4);
+const hasSample = voices.some((v) => v.sample);
+if (hasSample) console.warn(`voices: ${voices.filter((v) => v.sample).length} sample quote(s) with stock portraits are rendering; replace them in src/content/voices.ts before launch`);
+const initial = (name: string) => name.replace(/^(Dr\.?|ডা\.?)\s*/, '').charAt(0);
+---
+<section id="voices" class="section section-alt">
+  <div class="container">
+    {lead ? (
+      <>
+        <div class="section-head">
+          <h2>{t(locale, 'voices.h2')}</h2>
+          {hasSample && <p class="sample">{t(locale, 'voices.sample')}</p>}
+        </div>
+        <div class="lead">
+          <figure class="portrait">
+            {lead.photo ? <img src={lead.photo} alt="" width="320" height="320" loading="lazy" decoding="async" /> : <span class="initial" aria-hidden="true">{initial(pick(lead.name, locale))}</span>}
+          </figure>
+          <blockquote>
+            <Icon name="quotes" size={28} class="qmark" />
+            <p class="q">{pick(lead.quote, locale)}</p>
+            <footer>
+              <span class="who">{pick(lead.name, locale)}</span>
+              <span class="role">{pick(lead.role, locale)}, {pick(lead.place, locale)}</span>
+              {lead.since && <span class="since">{pick(lead.since, locale)}</span>}
+            </footer>
+          </blockquote>
+        </div>
+        {rest.length > 0 && (
+          <ul class="more">
+            {rest.map((v) => (
+              <li>
+                <blockquote>
+                  <p class="q">{pick(v.quote, locale)}</p>
+                  <footer class="row">
+                    <span class="thumb">
+                      {v.photo ? <img src={v.photo} alt="" width="96" height="96" loading="lazy" decoding="async" /> : <span class="initial small" aria-hidden="true">{initial(pick(v.name, locale))}</span>}
+                    </span>
+                    <span class="meta"><span class="who">{pick(v.name, locale)}</span><span class="role">{pick(v.role, locale)}, {pick(v.place, locale)}</span></span>
+                  </footer>
+                </blockquote>
+              </li>
+            ))}
+          </ul>
+        )}
+      </>
+    ) : (
+      <div class="empty">
+        <div class="section-head">
+          <h2>{t(locale, 'voices.empty.h2')}</h2>
+          <p class="lede">{t(locale, 'voices.empty.p')}</p>
+        </div>
+        <div class="slots" aria-hidden="true">
+          {[1, 2, 3].map(() => (
+            <div class="slot"><span class="ph-avatar"></span><span class="ph-lines"><span></span><span></span></span></div>
+          ))}
+        </div>
+        <div class="section-cta">
+          <a class="btn btn-primary" href="#trial" data-track="section_cta_click" data-audience="doctor">{t(locale, 'voices.empty.cta')}</a>
+          <p class="promise">{t(locale, 'voices.empty.promise')}</p>
+        </div>
+      </div>
+    )}
+  </div>
+</section>
+<style>
+  .section-head .sample { max-width: 60ch; }
+  .lead { display: grid; gap: 20px; margin-top: 24px; }
+  .portrait { margin: 0; width: 120px; height: 120px; border-radius: 50%; overflow: hidden; background: var(--wash-100); display: grid; place-items: center; border: 1px solid var(--line); }
+  .portrait img, .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .initial { font-weight: 800; font-size: 40px; color: var(--accent); }
+  .initial.small { font-size: 18px; }
+  blockquote { margin: 0; display: grid; gap: 14px; }
+  .qmark { color: var(--accent-strong); }
+  .q { font-size: clamp(22px, 2.6vw, 30px); line-height: 1.3; font-weight: 700; letter-spacing: -0.02em; max-width: 26ch; text-wrap: balance; }
+  :global(html[lang="bn"]) .q { letter-spacing: 0; line-height: 1.45; }
+  footer { display: grid; gap: 2px; }
+  .who { font-weight: 700; }
+  .role, .since { color: var(--fg-muted); font-size: 15px; }
+  /* the two shorter quotes: a hairline list, small portrait beside the name */
+  .more { list-style: none; margin: 32px 0 0; padding: 0; display: grid; border-top: 1px solid var(--line); }
+  .more li { padding: 22px 0; border-bottom: 1px solid var(--line); }
+  .more .q { font-size: 18px; font-weight: 600; max-width: 52ch; letter-spacing: -0.01em; line-height: 1.4; }
+  .row { display: flex; align-items: center; gap: 12px; }
+  .thumb { width: 44px; height: 44px; border-radius: 50%; overflow: hidden; flex: none; background: var(--wash-100); border: 1px solid var(--line); display: grid; place-items: center; }
+  .meta { display: grid; gap: 1px; }
+  .meta .role { font-size: 14px; }
+  /* the honest empty state: three reserved places, dashed, no words in them */
+  .empty { display: grid; gap: 24px; }
+  .slots { display: grid; gap: 12px; }
+  .slot { display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: center; border: 1px dashed var(--line); border-radius: var(--radius-tile); padding: 16px 18px; }
+  .ph-avatar { width: 44px; height: 44px; border-radius: 50%; border: 1px dashed var(--line); }
+  .ph-lines { display: grid; gap: 8px; }
+  .ph-lines span { height: 10px; border-radius: 5px; background: var(--line); opacity: .6; }
+  .ph-lines span:last-child { width: 55%; }
+  .promise { align-self: center; color: var(--fg-muted); font-size: 14px; max-width: 42ch; }
+  @media (min-width: 768px) {
+    .lead { grid-template-columns: 160px 1fr; gap: 40px; align-items: start; margin-top: 32px; }
+    .portrait { width: 160px; height: 160px; }
+    .more { grid-template-columns: 1fr 1fr; gap: 0 48px; }
+    .more li { padding: 28px 0 0; border-bottom: 0; }
+    .slots { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>

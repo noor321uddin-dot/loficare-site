@@ -1,0 +1,111 @@
+---
+/* Eighteen module tiles and the mark they make. Same geometry as public/brand/loficare-mark.svg (see docs/DECISIONS.md):
+   thirteen tiles on the ring's centreline, four in the L, and the appointment cross, which is the one module lit.
+   The tiles are focusable and name themselves in the caption; on scroll they assemble from a scattered start
+   (GSAP loads lazily, like the problem section's line), and without JavaScript they simply sit assembled. */
+import { t, type Locale } from '../i18n';
+interface Props { locale: Locale; class?: string }
+const { locale, class: cls = '' } = Astro.props;
+const CX = 501, CY = 499, R = 187.5, A1 = 188, SPAN = 276, N = 13, S = 66;
+const modules = [
+  'Facility, people and access control', 'Patient identity and registry', 'Doctor, referrer and earnings', 'Service catalogue and pricing',
+  'Visit and order desk', 'Billing, payments and counter', 'Credit accounts: corporate, insurance, health card', 'Sample, collection, barcode and QR',
+  'Result entry, verification and quality control', 'Imaging and radiology', 'Report release, delivery and archive', 'Clinical records, prescription and digital forms',
+  'Inpatient: admission, ward, OT, emergency and ancillary', 'Pharmacy and inventory', 'Workforce, assets and compliance', 'Communication, patient portal and service desk',
+  'Reporting, analytics and MIS',
+];
+type Tile = { x: number; y: number; rot: number; name: string; sx: number; sy: number; srot: number };
+const scatter = (i: number) => ({ sx: Math.round(Math.cos(i * 2.399) * (150 + (i % 3) * 40)), sy: Math.round(Math.sin(i * 1.731) * (140 + (i % 4) * 36)), srot: ((i * 53) % 360) - 180 });
+const tiles: Tile[] = [];
+for (let i = 0; i < N; i++) {
+  const deg = A1 + (i + 0.5) * (SPAN / N); const rad = (deg * Math.PI) / 180;
+  tiles.push({ x: CX + R * Math.cos(rad), y: CY + R * Math.sin(rad), rot: deg + 90, name: modules[i], ...scatter(i) });
+}
+([[311.5, 540.5], [311.5, 612.5], [311.5, 684.5], [393, 684.5]] as Array<[number, number]>).forEach(([x, y], k) => tiles.push({ x, y, rot: 0, name: modules[N + k], ...scatter(N + k) }));
+const r = (n: number) => Math.round(n * 10) / 10;
+const early = t(locale, 'platform.early');
+---
+<div class:list={['asm', cls]} id="assembly">
+  <svg class="asm-svg" viewBox="235 235 530 530" aria-label={t(locale, 'hero.assembly.alt')} role="group">
+    <defs><linearGradient id="asm-cross" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#40E8E0" /><stop offset="1" stop-color="#A7FCF6" /></linearGradient></defs>
+    {tiles.map((tile) => (
+      <g class="tile" tabindex="0" role="img" aria-label={`${tile.name}. ${early}`} data-name={tile.name} data-status={early} data-sx={tile.sx} data-sy={tile.sy} data-srot={tile.srot}>
+        <rect x={r(tile.x - S / 2)} y={r(tile.y - S / 2)} width={S} height={S} rx="12" transform={`rotate(${r(tile.rot)} ${r(tile.x)} ${r(tile.y)})`} />
+      </g>
+    ))}
+    <g class="tile tile-cross" tabindex="0" role="img" aria-label={`${t(locale, 'platform.live.name')}. ${t(locale, 'platform.live.status')}`} data-name={t(locale, 'platform.live.name')} data-status={t(locale, 'platform.live.status')} data-sx="30" data-sy="-260" data-srot="-24">
+      <path d="M456 406h82v58h58v82h-58v58h-82v-58h-58v-82h58z" />
+    </g>
+  </svg>
+  <p class="asm-caption" aria-live="polite"><span class="asm-name">{t(locale, 'platform.live.name')}</span><span class="asm-status">{t(locale, 'platform.live.status')}</span></p>
+</div>
+<style>
+  .asm { display: grid; gap: 12px; justify-items: center; }
+  .asm-svg { width: 100%; height: auto; overflow: visible; }
+  .tile { cursor: default; outline: none; }
+  .tile rect { fill: var(--tile); stroke: var(--tile-line); stroke-width: 3; transition: fill .2s ease; }
+  .tile:hover rect, .tile:focus-visible rect { fill: var(--aqua-200); }
+  .tile:focus-visible rect, .tile:focus-visible path { stroke: var(--aqua-400); stroke-width: 6; }
+  .tile-cross path { fill: url(#asm-cross); stroke: var(--tile-line); stroke-width: 3; }
+  :global(html[data-theme="dark"]) .tile:hover rect, :global(html[data-theme="dark"]) .tile:focus-visible rect { fill: var(--ink-800); }
+  :global(html[data-theme="dark"]) .tile-cross path { stroke: none; filter: drop-shadow(0 0 18px rgba(64, 232, 224, 0.45)); }
+  .asm-caption { height: 4.4em; width: min(100%, 34ch); text-align: center; font-size: 15px; line-height: 1.4; color: var(--fg-muted); display: grid; align-content: start; gap: 2px; transition: opacity .14s ease, transform .14s ease; }
+  .asm-caption.out { opacity: 0; transform: translateY(3px); }
+  @media (prefers-reduced-motion: reduce) { .asm-caption { transition: none; } }
+  .asm-name { font-weight: 700; color: var(--fg); }
+  .asm-status:empty { display: none; }
+</style>
+<script>
+  const root = document.getElementById('assembly');
+  if (root) {
+    const svg = root.querySelector<SVGSVGElement>('.asm-svg')!;
+    const tiles = Array.from(svg.querySelectorAll<SVGGElement>('.tile'));
+    const name = root.querySelector<HTMLElement>('.asm-name')!;
+    const status = root.querySelector<HTMLElement>('.asm-status')!;
+    const idle = name.textContent || '';
+    const idleStatus = status.textContent || '';
+    const caption = root.querySelector<HTMLElement>('.asm-caption')!;
+    let current: SVGGElement | null = null, swap = 0, rest = 0;
+    const write = (el: SVGGElement | null) => {
+      name.textContent = el ? el.dataset.name || '' : idle;
+      status.textContent = el ? el.dataset.status || '' : idleStatus;
+    };
+    /* one crossfade per change; moving between tiles quickly retargets instead of stacking fades,
+       and leaving a tile waits a beat so passing over the gaps between tiles does not flicker */
+    const show = (el: SVGGElement | null) => {
+      clearTimeout(rest);
+      if (!el) { rest = window.setTimeout(() => show2(null), 160); return; }
+      show2(el);
+    };
+    const show2 = (el: SVGGElement | null) => {
+      if (el === current) return;
+      current = el;
+      clearTimeout(swap);
+      caption.classList.add('out');
+      swap = window.setTimeout(() => { write(current); caption.classList.remove('out'); }, 140);
+    };
+    for (const tile of tiles) {
+      tile.addEventListener('pointerenter', () => show(tile));
+      tile.addEventListener('focus', () => show(tile));
+      tile.addEventListener('pointerleave', () => show(null));
+      tile.addEventListener('blur', () => show(null));
+    }
+    /* the assembly, scrubbed as the section arrives; tiles are already in place if the script never runs */
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+      const num = (el: Element, k: string) => Number((el as SVGGElement).dataset[k] ?? 0);
+      const io = new IntersectionObserver(async (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        io.disconnect();
+        try {
+          const [{ gsap }, { ScrollTrigger }] = await Promise.all([import('gsap'), import('gsap/ScrollTrigger')]);
+          gsap.registerPlugin(ScrollTrigger);
+          gsap.set(tiles, { x: (_i: number, el: Element) => num(el, 'sx'), y: (_i: number, el: Element) => num(el, 'sy'), rotation: (_i: number, el: Element) => num(el, 'srot'), opacity: 0.35, transformOrigin: '50% 50%' });
+          gsap.to(tiles, { x: 0, y: 0, rotation: 0, opacity: 1, ease: 'expo.out', duration: 1.4, stagger: { each: 0.05, from: 'random' },
+            scrollTrigger: { trigger: root, start: 'top 85%', end: 'center 45%', scrub: 0.5 } });
+          ScrollTrigger.refresh();
+        } catch { /* leave the tiles assembled */ }
+      }, { rootMargin: '0px 0px 40% 0px' });
+      io.observe(root);
+    }
+  }
+</script>

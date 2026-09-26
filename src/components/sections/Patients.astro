@@ -3,12 +3,13 @@ import Icon from '../Icon.astro';
 import { t, localePath, type Locale } from '../../i18n';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
-const thread: Array<{ who: 'them' | 'me'; bn?: string; en?: string; text?: string }> = [
-  { who: 'them', bn: t(locale, 'patients.msg.1.bn'), en: t(locale, 'patients.msg.1.en') },
+const pickMsg = (i: number) => t(locale, `patients.msg.${i}.${locale === 'bn' ? 'bn' : 'en'}`);
+const thread: Array<{ who: 'them' | 'me'; text: string }> = [
+  { who: 'them', text: pickMsg(1) },
   { who: 'me', text: t(locale, 'patients.msg.2') },
-  { who: 'them', bn: t(locale, 'patients.msg.3.bn'), en: t(locale, 'patients.msg.3.en') },
-  { who: 'them', bn: t(locale, 'patients.msg.4.bn'), en: t(locale, 'patients.msg.4.en') },
-  { who: 'them', bn: t(locale, 'patients.msg.5.bn'), en: t(locale, 'patients.msg.5.en') },
+  { who: 'them', text: pickMsg(3) },
+  { who: 'them', text: pickMsg(4) },
+  { who: 'them', text: pickMsg(5) },
 ];
 ---
 <section id="patients" class="section">
@@ -26,7 +27,7 @@ const thread: Array<{ who: 'them' | 'me'; bn?: string; en?: string; text?: strin
       <ol class="thread" aria-label={t(locale, 'patients.sample')}>
         {thread.map((m) => (
           <li class:list={['msg', m.who]}>
-            {m.who === 'them' ? <><span lang="bn" class="bn-text">{m.bn}</span><span class="en-text" lang="en">{m.en}</span></> : <span class="num">{m.text}</span>}
+            {m.who === 'them' ? <span class="m-text">{m.text}</span> : <span class="num">{m.text}</span>}
           </li>
         ))}
       </ol>
@@ -36,12 +37,11 @@ const thread: Array<{ who: 'them' | 'me'; bn?: string; en?: string; text?: strin
 </section>
 <style>
   .split { display: grid; gap: 28px; }
-  .thread-wrap { margin: 0; display: grid; gap: 10px; }
-  .thread { list-style: none; margin: 0; padding: 18px; display: grid; gap: 10px; background: var(--bg-alt); border: 1px solid var(--line); border-radius: var(--radius-tile); max-width: 460px; }
-  .msg { display: grid; gap: 4px; padding: 10px 14px; border-radius: 14px; max-width: 88%; }
+  .thread-wrap { margin: 0; display: grid; gap: 10px; justify-items: start; width: 100%; max-width: 440px; }
+  .thread { list-style: none; margin: 0; padding: 16px; display: grid; gap: 8px; width: 100%; box-sizing: border-box; background: var(--bg-alt); border: 1px solid var(--line); border-radius: var(--radius-tile); }
+  .msg { padding: 10px 14px; border-radius: 16px; max-width: 82%; line-height: 1.45; font-size: 15px; }
   .msg.them { background: var(--card); border: 1px solid var(--line); justify-self: start; border-bottom-left-radius: 4px; }
-  .msg.me { background: var(--ink-950); color: var(--aqua-200); justify-self: end; border-bottom-right-radius: 4px; font-size: 18px; }
-  .bn-text { font-weight: 600; line-height: 1.5; }
-  .en-text { color: var(--fg-muted); font-size: 13px; }
-  @media (min-width: 768px) { .split { grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; } .thread-wrap { justify-items: center; } }
+  .msg.me { background: var(--ink-950); color: var(--aqua-200); justify-self: end; border-bottom-right-radius: 4px; font-weight: 700; letter-spacing: 0.04em; }
+  :global(html[lang="bn"]) .msg { font-size: 16px; line-height: 1.55; }
+  @media (min-width: 768px) { .split { grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; } .thread-wrap { justify-self: end; } }
 </style>

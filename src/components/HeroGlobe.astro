@@ -1,0 +1,76 @@
+---
+import Mark from './Mark.astro';
+import { t, type Locale } from '../i18n';
+interface Props { locale: Locale; class?: string }
+const { locale, class: cls = '' } = Astro.props;
+/* The hero's world: drag the globe and the doctor runs to stay on top of it; pause and he turns and waves.
+   The 3D scene (src/lib/three-globe.ts) loads only once the stage is near the viewport, so the copy and the
+   first paint never wait for WebGL. Without WebGL, or before it loads, the stage shows a quiet placeholder. */
+---
+<figure class:list={['hg', cls]} id="hero-globe">
+  <div class="stage" tabindex="0" role="group" aria-roledescription={t(locale, 'globe.role')} aria-label={t(locale, 'globe.label')} aria-describedby="globe-help">
+    <div class="wait" role="status"><span class="spin" aria-hidden="true"></span>{t(locale, 'globe.loading')}</div>
+    <div class="fallback" hidden><Mark size={96} /></div>
+  </div>
+  <p class="hint" aria-hidden="true">
+    <span class="h1">{t(locale, 'globe.hint1')}</span><span class="h2">{t(locale, 'globe.hint2')}</span>
+    <svg viewBox="0 0 180 165" fill="none"><path d="M161 148C137 82 103 39 28 14m0 0 6 16m-6-16 19-2" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" /></svg>
+  </p>
+  <button type="button" class="pause" aria-pressed="false" data-pause={t(locale, 'globe.pause')} data-play={t(locale, 'globe.play')} hidden>
+    <svg class="i-pause" viewBox="0 0 20 20" aria-hidden="true"><path d="M7 5v10m6-10v10" stroke="currentColor" stroke-width="1.6" /></svg>
+    <svg class="i-play" viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 8 6-8 6Z" fill="currentColor" /></svg>
+    <span class="pl">{t(locale, 'globe.pause')}</span>
+  </button>
+  <p id="globe-help" class="sr-only">{t(locale, 'globe.help')}</p>
+</figure>
+<style>
+  .hg { position: relative; margin: 0; width: 100%; }
+  .stage { position: relative; width: 100%; aspect-ratio: 1 / 1.02; cursor: grab; touch-action: pan-y; user-select: none; outline: none; border-radius: 28px; overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent); mask-image: linear-gradient(to bottom, #000 78%, transparent); }
+  .stage:focus-visible { outline: 2px dashed var(--aqua-400); outline-offset: -8px; }
+  .stage:global(.dragging) { cursor: grabbing; touch-action: none; }
+  .stage :global(.globe-canvas) { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .wait { position: absolute; inset: 0; display: grid; place-content: center; grid-auto-flow: column; gap: 10px; align-items: center; font-size: 13px; color: var(--fg-muted); }
+  .spin { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--line); border-top-color: var(--aqua-400); animation: spin 1.1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .fallback { position: absolute; inset: 0; display: grid; place-items: center; }
+  .hg.ready .wait { display: none; }
+  .hint { position: absolute; right: 2%; top: 6%; width: 140px; margin: 0; pointer-events: none; color: var(--fg-muted); text-align: right; font-size: 14px; line-height: 1.35; font-style: italic; display: grid; opacity: 0; transition: opacity .6s ease; }
+  .hint svg { width: 120px; height: 110px; margin: -6px 0 0 -18px; opacity: .7; }
+  .hg.ready .hint { opacity: 1; }
+  .hg.dragged .hint { opacity: 0; }
+  .pause { position: absolute; left: 4px; bottom: 6px; display: inline-flex; gap: 6px; align-items: center; min-height: 40px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 999px; background: color-mix(in srgb, var(--bg) 80%, transparent); color: var(--fg-muted); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+  .pause:hover { color: var(--fg); border-color: var(--accent-strong); }
+  .pause svg { width: 14px; height: 14px; }
+  .pause[aria-pressed="false"] .i-play, .pause[aria-pressed="true"] .i-pause { display: none; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  @media (max-width: 767px) { .stage { aspect-ratio: 1 / 0.95; } .hint { width: 104px; font-size: 12px; } .hint svg { width: 90px; height: 84px; } }
+  @media (prefers-reduced-motion: reduce) { .spin { animation: none; } .hint { transition: none; } }
+</style>
+<script>
+  const root = document.getElementById('hero-globe');
+  const stage = root?.querySelector<HTMLElement>('.stage');
+  if (root && stage) {
+    const pause = root.querySelector<HTMLButtonElement>('.pause')!;
+    const label = pause.querySelector<HTMLElement>('.pl')!;
+    const fail = () => { root.classList.add('ready'); root.querySelector<HTMLElement>('.fallback')!.hidden = false; root.querySelector('.hint')?.remove(); };
+    const webgl = (() => { try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch { return false; } })();
+    if (!webgl) fail();
+    else {
+      const io = new IntersectionObserver(async (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        io.disconnect();
+        try {
+          const { mountGlobe } = await import('../lib/three-globe');
+          const globe = await mountGlobe(stage, {
+            onReady: () => { root.classList.add('ready'); pause.hidden = false; },
+            onState: (moving: boolean) => { pause.setAttribute('aria-pressed', String(!moving)); label.textContent = moving ? pause.dataset.pause! : pause.dataset.play!; },
+          });
+          pause.addEventListener('click', () => globe.toggle());
+          stage.addEventListener('pointerdown', () => root.classList.add('dragged'), { once: true });
+        } catch (err) { console.error('globe failed', err); fail(); }
+      }, { rootMargin: '200px' });
+      io.observe(stage);
+    }
+  }
+</script>

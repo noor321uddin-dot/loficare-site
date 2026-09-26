@@ -178,7 +178,7 @@ No kicker or eyebrow labels above headings. Emphasis by weight and size only, ne
 - Breakpoints as used: 480 (header demo button appears), 640 (form fields pair up), 768 (two-column sections, ring, sticky widget, sticky bar hidden), 900 (header quiet links, demo layout), 1024 (larger ring).
 - Sticky header 68 px with a blurred paper ground; sticky bottom bar on phones with safe-area padding and a context-aware label.
 - Layer scale, fixed: overlays 10, header 20, sticky bar 30, consent 40, dialogs 50.
-- The hero band is capped at 720 px so the composition never floats; the mark sits at 480 px on desktop and 300 px on phones.
+- The hero band is capped at 720 px so the composition never floats; the queue board sits at up to 520 px on desktop and full width on phones.
 
 ## Elevation & Depth
 
@@ -198,7 +198,11 @@ One radius system: 10 px on controls (buttons, inputs, toggles), 16 px on tiles 
 - **Forms**: label above input, helper below, error below in red text and a red border, radio choices as bordered pills that fill with wash when checked, 48 px inputs, honeypot off-screen.
 - **Accordion**: native `details`, hairline between items, caret rotates when open.
 - **Booking widget**: a real component with three states (pick, code, done), sample data labelled.
-- **Hero assembly**: SVG tiles animated with GSAP on every device; on capable desktops a WebGL tier renders the same geometry in three dimensions with the cross lit, pointer parallax and a pulse when a door is hovered.
+- **Queue board (hero)**: the waiting-room display as a component: ink ground, room rows, `now serving` numbers in aqua-400 stepping forward every few seconds on sample data, a clock and the next serials; static under reduced motion.
+- **Assembly (platform)**: eighteen named SVG tiles, focusable, assembling into the mark on scroll with GSAP loaded lazily; the cross is lit and the caption names whichever tile is under the pointer or focus.
+- **Specimen label (diagnostics)**: a white sticker with a real QR and a Code 39 strip for a sample id, beside a five-station rail whose fill follows the scroll.
+- **Record ring (hospitals)**: spokes draw, departments with icons leave the record along their angle and settle, one pulse; on phones a hub card with a two-column chip grid.
+- **Voices**: doctor quotes from `src/content/voices.ts` only; an honest empty state with three dashed places until real words exist.
 - **Toggles**: language as a two-segment pill, colour mode as a 44 px icon button with sun and moon from Phosphor.
 - **Icons**: Phosphor regular only, `currentColor`, 18 to 22 px inline.
 
