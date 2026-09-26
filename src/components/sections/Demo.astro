@@ -9,15 +9,20 @@ const waText = encodeURIComponent(locale === 'bn' ? 'আমি লফিকে�
 ---
 <section id="demo" class="section section-alt">
   <div class="container">
-    <div class="section-head">
-      <h2>{t(locale, 'demo.h2')}</h2>
-      <p class="lede">{t(locale, 'demo.anchor')}</p>
-    </div>
-    <div class="section-cta">
-      <a class="btn btn-primary" href="#demo-form" data-track="hero_cta_click" data-audience="facility">{t(locale, 'hero.cta1')}</a>
-      <a class="btn btn-secondary" href="#trial" data-track="hero_cta_click" data-audience="doctor">{t(locale, 'cta.free')}</a>
-    </div>
     <div class="layout">
+      <div class="intro">
+        <div class="section-head">
+          <h2>{t(locale, 'demo.h2')}</h2>
+          <p class="lede">{t(locale, 'demo.anchor')}</p>
+        </div>
+        <div class="channels">
+          <h3>{t(locale, 'demo.channels')}</h3>
+          <a class="btn btn-quiet" href={`https://wa.me/${wa}?text=${waText}`} rel="noopener" data-track="whatsapp_click" data-audience="facility" data-placeholder="contact"><Icon name="whatsapp-logo" size={20} /> {t(locale, 'demo.whatsapp')}</a>
+          <a class="btn btn-quiet" href={`tel:${phone}`} data-track="phone_click" data-audience="facility" data-placeholder="contact"><Icon name="phone" size={20} /> {t(locale, 'demo.call')} <span class="num">{phone}</span></a>
+        </div>
+        <p class="free"><a class="btn btn-secondary" href="#trial" data-track="hero_cta_click" data-audience="doctor">{t(locale, 'cta.free')}</a></p>
+      </div>
+      <div class="form-col">
       <form id="demo-form" class="demo card" action="/api/demo-request" method="post" novalidate
         data-contact="either" data-form-name="demo" data-status-id="demo-status"
         data-success={t(locale, 'form.success')} data-sending={t(locale, 'form.sending')} data-error-server={t(locale, 'form.error.server')}>
@@ -83,25 +88,24 @@ const waText = encodeURIComponent(locale === 'bn' ? 'আমি লফিকে�
         <button class="btn btn-primary" type="submit" data-track="demo_submit" data-audience="facility">{t(locale, 'form.submit')}</button>
       </form>
       <p id="demo-status" class="form-status" hidden tabindex="-1" aria-live="polite"></p>
-      <aside class="channels">
-        <h3>{t(locale, 'demo.channels')}</h3>
-        <a class="btn btn-quiet" href={`https://wa.me/${wa}?text=${waText}`} rel="noopener" data-track="whatsapp_click" data-audience="facility" data-placeholder="contact"><Icon name="whatsapp-logo" size={20} /> {t(locale, 'demo.whatsapp')}</a>
-        <a class="btn btn-quiet" href={`tel:${phone}`} data-track="phone_click" data-audience="facility" data-placeholder="contact"><Icon name="phone" size={20} /> {t(locale, 'demo.call')} <span class="num">{phone}</span></a>
-      </aside>
+      </div>
     </div>
   </div>
 </section>
 <style>
-  .layout { display: grid; gap: 24px; margin-top: 28px; }
-  .demo { padding: 22px; display: grid; gap: 16px; }
+  /* two columns on desktop: the ask and the other ways in on the left, the form on the right, tops aligned */
+  .layout { display: grid; gap: 32px; }
+  .intro { display: grid; gap: 28px; align-content: start; }
+  .demo { padding: 28px; display: grid; gap: 16px; }
   .demo h3 { font-size: 20px; }
   .grid2 { display: grid; gap: 14px; }
   fieldset { border: 0; padding: 0; margin: 0; }
   .demo .btn { justify-self: start; }
-  .channels { display: grid; gap: 12px; align-content: start; justify-items: start; }
+  .channels { display: grid; gap: 12px; justify-items: start; padding-top: 24px; border-top: 1px solid var(--line); }
   .channels h3 { font-size: 17px; }
+  .free { margin: 0; }
   @media (min-width: 640px) { .grid2 { grid-template-columns: 1fr 1fr; } }
-  @media (min-width: 900px) { .layout { grid-template-columns: 1.4fr 0.6fr; gap: 40px; align-items: start; } }
+  @media (min-width: 960px) { .layout { grid-template-columns: 0.85fr 1.15fr; gap: 56px; align-items: start; } .intro { position: sticky; top: 96px; } }
 </style>
 <script>
   import { enhanceForm } from '../../lib/forms';
