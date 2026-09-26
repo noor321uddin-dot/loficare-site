@@ -1,0 +1,72 @@
+---
+import Mark from '../Mark.astro';
+import Icon from '../Icon.astro';
+import { t, type Locale } from '../../i18n';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+/* v3 hero: a doctor first, the product second. The photograph carries the medical read; the two overlays are the
+   live appointment module as a patient and a waiting room see it (sample data, labelled). No prescription screen:
+   that module is early access, and the hero only shows what works today. */
+---
+<section id="hero" class="hero3">
+  <div class="container grid">
+    <div class="copy">
+      <div class="lockup"><Mark size={56} class="lockup-mark" /><span class="wordmark">LofiCare</span></div>
+      <h1>{t(locale, 'v3.hero.h1')}</h1>
+      <p class="lede">{t(locale, 'v3.hero.sub')}</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#demo" data-track="hero_cta_click" data-audience="facility">{t(locale, 'cta.demo')}</a>
+        <a class="btn btn-secondary" href="#trial" data-track="hero_cta_click" data-audience="doctor">{t(locale, 'cta.free')}</a>
+      </div>
+    </div>
+    <div class="visual">
+      <figure class="photo">
+        <img src="/photos/doctor-corridor.webp" width="1000" height="1285" alt={t(locale, 'v3.hero.alt')} fetchpriority="high" decoding="async" />
+      </figure>
+      <div class="sms" aria-label={t(locale, 'v3.hero.sms.label')}>
+        <span class="sms-icon"><Icon name="chat-circle-text" size={18} /></span>
+        <div>
+          <p class="sms-from">LofiCare</p>
+          <p class="sms-text">{t(locale, 'v3.hero.sms')}</p>
+        </div>
+      </div>
+      <div class="now">
+        <span class="now-label">{t(locale, 'widget.board.now')}</span>
+        <span class="now-num num">9</span>
+        <span class="now-room">{t(locale, 'v3.hero.room')}</span>
+      </div>
+      <p class="sample">{t(locale, 'v3.hero.sample')}</p>
+    </div>
+  </div>
+</section>
+<style>
+  .hero3 { padding-block: 32px 56px; background: linear-gradient(180deg, var(--bg) 0%, #F2F6FD 100%); }
+  :global(html[data-theme="dark"]) .hero3 { background: var(--bg); }
+  .grid { display: grid; gap: 40px; }
+  .lockup { display: flex; align-items: center; gap: 4px; margin-bottom: 24px; }
+  .lockup :global(.lockup-mark) { margin-left: -15px; flex: none; }
+  .wordmark { font-size: 30px; font-weight: 800; letter-spacing: -0.03em; }
+  h1 { font-size: clamp(32px, 3.1vw, 44px); line-height: 1.08; letter-spacing: -0.035em; max-width: 22ch; text-wrap: balance; }
+  :global(html:lang(bn)) h1 { line-height: 1.3; letter-spacing: 0; }
+  .lede { margin-top: 18px; max-width: 42ch; font-size: 18px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .visual { position: relative; display: grid; gap: 12px; justify-items: end; }
+  .photo { margin: 0; width: min(100%, 440px); aspect-ratio: 4 / 5; border-radius: 28px; overflow: hidden; background: var(--bg-alt); }
+  .photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 25%; display: block; }
+  /* the patient's confirmation, as it lands on a phone */
+  .sms { position: absolute; left: 0; top: 18%; width: min(78%, 300px); display: grid; grid-template-columns: 36px 1fr; gap: 10px; padding: 14px 16px; border-radius: 18px; background: var(--card); border: 1px solid var(--line); box-shadow: 0 24px 50px -24px rgba(16, 40, 90, 0.35); }
+  .sms-icon { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: #E6EDFA; color: var(--orbit-700); }
+  .sms p { margin: 0; }
+  .sms-from { font-size: 12px; font-weight: 700; color: var(--fg-muted); }
+  .sms-text { font-size: 15px; line-height: 1.4; font-weight: 600; }
+  /* the waiting-room board, one row of it */
+  .now { position: absolute; right: -12px; bottom: 60px; display: grid; gap: 2px; padding: 12px 18px; border-radius: 16px; background: var(--ink-950); color: #E8F7F6; box-shadow: 0 24px 50px -24px rgba(4, 26, 26, 0.6); text-align: left; }
+  .now-label, .now-room { font-size: 12px; color: #A9C9C6; }
+  .now-num { font-size: 40px; font-weight: 800; color: var(--aqua-400); line-height: 1; }
+  .visual .sample { justify-self: end; }
+  @media (max-width: 899px) { .visual { justify-items: center; } .sms { left: 4%; top: auto; bottom: 30%; } .now { right: 4%; } .visual .sample { justify-self: center; } }
+  @media (min-width: 900px) {
+    .hero3 { min-height: min(calc(100dvh - 68px), 780px); display: flex; align-items: center; padding-block: 32px 56px; }
+    .grid { grid-template-columns: 1.25fr 0.75fr; gap: 48px; align-items: center; }
+  }
+</style>

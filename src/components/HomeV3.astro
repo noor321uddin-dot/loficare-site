@@ -1,0 +1,66 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from './Header.astro';
+import HeroV3 from './v3/HeroV3.astro';
+import FactsV3 from './v3/FactsV3.astro';
+import Appointments from './sections/Appointments.astro';
+import FacilitiesV3 from './v3/FacilitiesV3.astro';
+import PatientsV3 from './v3/PatientsV3.astro';
+import VoicesMarquee from './v2/VoicesMarquee.astro';
+import Doctors from './sections/Doctors.astro';
+import Faq from './sections/Faq.astro';
+import Demo from './sections/Demo.astro';
+import StickyBar from './StickyBar.astro';
+import Footer from './Footer.astro';
+import { t, type Locale } from '../i18n';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const site = ((import.meta.env.SITE_URL as string | undefined) || 'http://127.0.0.1:4321').replace(/\/$/, '');
+/* v3 home (D16): doctor-first. A doctor photograph leads, the live appointment module is shown as a patient
+   and a waiting room see it, facilities get photographs, patients get a family. Kept at /v3, noindexed. */
+/* Only defensible fields: the live module, its category, and the true free tier. No ratings, no counts. */
+const app = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'LofiCare Appointments',
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'Web',
+  url: site + (locale === 'bn' ? '/bn/' : '/'),
+  description: t(locale, 'meta.description'),
+  inLanguage: locale === 'bn' ? 'bn-BD' : 'en',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'BDT', description: 'Free to start, first 500 appointments, no card' },
+  publisher: { '@type': 'Organization', name: 'LofiCare' },
+};
+---
+<Base title={t(locale, 'meta.title')} description={t(locale, 'meta.description')} locale={locale} path="/v3" jsonLd={[app]} noindex>
+  <a class="skip" href="#main">{t(locale, 'nav.skip')}</a>
+  <Header locale={locale} />
+  <main id="main" class="v2 v3">
+    <HeroV3 locale={locale} />
+    <FactsV3 locale={locale} />
+    <Appointments locale={locale} />
+    <FacilitiesV3 locale={locale} />
+    <PatientsV3 locale={locale} />
+    <VoicesMarquee locale={locale} />
+    <Doctors locale={locale} />
+    <Faq locale={locale} />
+    <Demo locale={locale} />
+  </main>
+  <Footer locale={locale} />
+  <StickyBar locale={locale} />
+</Base>
+<style is:global>
+  /* colour lock for v2: blue is the only accent, neutrals replace the aqua washes */
+  html:has(main.v2) { --accent: var(--orbit-600); --accent-strong: var(--orbit-600); --bg-alt: #F3F6FB; --wash-50: #F3F6FB; --wash-100: #E6EDFA; --tile-line: #9DB3EA; }
+  html[data-theme="dark"]:has(main.v2) { --accent: var(--orbit-300); --accent-strong: var(--orbit-300); --bg-alt: #0F1B2E; --tile-line: #4E6FC4; }
+  main.v2 .section-alt { background: transparent; }
+  main.v2 .section { padding-block: clamp(56px, 8vw, 104px); }
+</style>
+<style>
+  .skip { position: absolute; left: 16px; top: -60px; background: var(--cta); color: var(--cta-fg); padding: 10px 14px; border-radius: 10px; z-index: 60; font-weight: 700; }
+  .skip:focus { top: 12px; }
+</style>
+<script>
+  import { bindTracking } from '../lib/track';
+  bindTracking();
+</script>

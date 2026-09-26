@@ -1,0 +1,20 @@
+---
+import Icon from '../Icon.astro';
+import { t, type Locale } from '../../i18n';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+/* three things that are true today, directly under the hero: where the data lives, the languages, the price to start */
+const facts = [{ icon: 'map-pin', k: 1 }, { icon: 'translate', k: 2 }, { icon: 'hand-coins', k: 3 }];
+---
+<section id="trust" class="facts3" aria-label={t(locale, 'a11y.trust')}>
+  <ul class="container row">
+    {facts.map((f) => <li><Icon name={f.icon} size={22} /><span>{t(locale, `v3.fact.${f.k}`)}</span></li>)}
+  </ul>
+</section>
+<style>
+  .facts3 { border-block: 1px solid var(--line); background: var(--card); }
+  .row { list-style: none; margin: 0 auto; display: grid; gap: 14px; padding-block: 20px; }
+  li { display: flex; align-items: center; gap: 12px; font-weight: 700; }
+  li :global(.icon) { color: var(--orbit-600); flex: none; }
+  @media (min-width: 768px) { .row { grid-template-columns: repeat(3, 1fr); gap: 32px; padding-block: 24px; } }
+</style>

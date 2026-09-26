@@ -1,0 +1,47 @@
+---
+import Icon from '../Icon.astro';
+import { t, type Locale } from '../../i18n';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+/* v3 facilities: two places, two photographs. What each one gets, in the words a manager uses, and an honest
+   early-access tag: these modules are not live yet. */
+const places = [
+  { id: 'lab', photo: '/photos/lab-bench.webp', w: 1000, h: 667, icon: 'flask', items: [1, 2, 3] },
+  { id: 'ward', photo: '/photos/waiting-hall.webp', w: 1400, h: 1115, icon: 'bed', items: [1, 2, 3] },
+];
+---
+<section id="platform" class="section">
+  <div class="container">
+    <h2>{t(locale, 'v3.fac.h2')}</h2>
+    <p class="lede">{t(locale, 'v3.fac.sub')}</p>
+    <div class="places">
+      {places.map((p) => (
+        <article class="place">
+          <figure class="ph"><img src={p.photo} width={p.w} height={p.h} alt={t(locale, `v3.fac.${p.id}.alt`)} loading="lazy" decoding="async" /></figure>
+          <div class="body">
+            <span class="tag">{t(locale, 'platform.early')}</span>
+            <h3><Icon name={p.icon} size={22} />{t(locale, `v3.fac.${p.id}.h3`)}</h3>
+            <ul>{p.items.map((i) => <li><Icon name="check" size={16} />{t(locale, `v3.fac.${p.id}.${i}`)}</li>)}</ul>
+          </div>
+        </article>
+      ))}
+    </div>
+    <div class="section-cta"><a class="btn btn-primary" href="#demo" data-track="section_cta_click" data-audience="facility">{t(locale, 'cta.demo')}</a></div>
+  </div>
+</section>
+<style>
+  h2 { font-size: clamp(28px, 3.2vw, 40px); letter-spacing: -0.03em; line-height: 1.12; max-width: 22ch; }
+  .lede { margin-top: 12px; max-width: 56ch; }
+  .places { display: grid; gap: 20px; margin-top: 32px; }
+  .place { border-radius: 24px; overflow: hidden; background: var(--card); border: 1px solid var(--line); display: grid; }
+  .ph { margin: 0; aspect-ratio: 16 / 9; background: var(--bg-alt); }
+  .ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .body { padding: 24px 26px 28px; display: grid; gap: 12px; align-content: start; }
+  .tag { justify-self: start; font-size: 12px; font-weight: 700; color: var(--fg-muted); border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; }
+  h3 { display: flex; align-items: center; gap: 10px; font-size: 22px; letter-spacing: -0.02em; margin: 0; }
+  h3 :global(.icon) { color: var(--orbit-600); }
+  ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  li { display: grid; grid-template-columns: 16px 1fr; gap: 10px; align-items: start; color: var(--fg-muted); }
+  li :global(.icon) { color: var(--orbit-600); margin-top: 4px; }
+  @media (min-width: 900px) { .places { grid-template-columns: 1fr 1fr; gap: 28px; } }
+</style>
