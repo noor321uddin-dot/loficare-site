@@ -22,7 +22,7 @@ const { locale } = Astro.props;
 </section>
 <style>
   .panels { display: grid; gap: 16px; margin-top: 24px; }
-  .panel { padding: 24px; display: grid; gap: 12px; align-content: start; }
+  .panel { padding: 28px; display: grid; gap: 12px; grid-template-rows: auto 1fr auto; }
   .panel .btn { justify-self: start; margin-top: 4px; }
-  @media (min-width: 768px) { .panels { grid-template-columns: 1.15fr 1fr; gap: 20px; } }
+  @media (min-width: 768px) { .panels { grid-template-columns: 1fr 1fr; gap: 24px; } }
 </style>

@@ -30,7 +30,9 @@ const strands = ['M0 20C150 20 200 80 300 80', 'M0 50C150 50 200 80 300 80', 'M0
 <style>
   .cols { display: grid; gap: 28px; margin-top: 28px; }
   .col h3 { margin-bottom: 10px; }
-  .col ul { margin: 0; padding-left: 20px; color: var(--fg-muted); display: grid; gap: 6px; }
+  .col ul { margin: 0; padding: 0; list-style: none; color: var(--fg-muted); display: grid; gap: 8px; }
+  .col li { padding-left: 16px; position: relative; }
+  .col li::before { content: ''; position: absolute; left: 0; top: 0.7em; width: 6px; height: 2px; background: var(--accent-strong); }
   .join { margin: 36px 0 0; display: grid; gap: 12px; }
   .join-svg { width: min(100%, 600px); height: auto; overflow: visible; }
   .strand, .main { fill: none; stroke: var(--accent-strong); stroke-width: 3; stroke-linecap: round; }
@@ -39,7 +41,8 @@ const strands = ['M0 20C150 20 200 80 300 80', 'M0 50C150 50 200 80 300 80', 'M0
   figcaption { font-weight: 700; max-width: 40ch; }
   @media (min-width: 768px) {
     .cols { grid-template-columns: 1fr 1fr; gap: 48px; }
-    .join { grid-template-columns: 1fr auto; align-items: center; gap: 32px; margin-top: 48px; }
+    .join { grid-template-columns: 1fr 1fr; align-items: center; gap: 48px; margin-top: 48px; }
+    figcaption { font-size: 20px; line-height: 1.35; }
   }
 </style>
 <script>

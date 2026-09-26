@@ -40,8 +40,8 @@ const initial = (s: string) => s.replace(/^(Dr\.?|ডা\.?)\s*/, '').charAt(0);
   </section>
 )}
 <style>
-  .band { background: #EEF3FD; }
-  :global(html[data-theme="dark"]) .band { background: #0E1B33; }
+  .band { background: var(--bg-alt); }
+
   .head { display: grid; gap: 10px; margin-bottom: 28px; }
   h2 { font-size: clamp(28px, 3.2vw, 40px); letter-spacing: -0.03em; line-height: 1.1; }
   .marquee { position: relative; display: grid; gap: 14px; overflow: hidden; outline: none; }
@@ -59,10 +59,10 @@ const initial = (s: string) => s.replace(/^(Dr\.?|ডা\.?)\s*/, '').charAt(0);
   .meta { display: grid; font-size: 14px; line-height: 1.3; }
   .meta span { color: var(--fg-muted); }
   .fade { position: absolute; inset-block: 0; width: 12%; pointer-events: none; }
-  .fade.l { left: 0; background: linear-gradient(to right, #EEF3FD, transparent); }
-  .fade.r { right: 0; background: linear-gradient(to left, #EEF3FD, transparent); }
-  :global(html[data-theme="dark"]) .fade.l { background: linear-gradient(to right, #0E1B33, transparent); }
-  :global(html[data-theme="dark"]) .fade.r { background: linear-gradient(to left, #0E1B33, transparent); }
+  .fade.l { left: 0; background: linear-gradient(to right, var(--bg-alt), transparent); }
+  .fade.r { right: 0; background: linear-gradient(to left, var(--bg-alt), transparent); }
+
+
   @keyframes slide { to { transform: translateX(-50%); } }
   @media (prefers-reduced-motion: reduce) {
     .track { animation: none; width: auto; }

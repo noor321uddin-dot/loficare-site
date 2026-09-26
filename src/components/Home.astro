@@ -1,13 +1,19 @@
 ---
 import Base from '../layouts/Base.astro';
 import Header from './Header.astro';
-import HeroV2 from './v2/HeroV2.astro';
-import StatementV2 from './v2/StatementV2.astro';
-import PlatformBento from './v2/PlatformBento.astro';
+import Hero from './Hero.astro';
+import Doors from './Doors.astro';
+import Trust from './Trust.astro';
+import Problem from './sections/Problem.astro';
+import Platform from './sections/Platform.astro';
+import Diagnostics from './sections/Diagnostics.astro';
+import Hospitals from './sections/Hospitals.astro';
 import Appointments from './sections/Appointments.astro';
-import VoicesMarquee from './v2/VoicesMarquee.astro';
 import Doctors from './sections/Doctors.astro';
-import TrustV2 from './v2/TrustV2.astro';
+import VoicesMarquee from './v2/VoicesMarquee.astro';
+import Patients from './sections/Patients.astro';
+import DataTrust from './sections/DataTrust.astro';
+import Cohorts from './sections/Cohorts.astro';
 import Pricing from './sections/Pricing.astro';
 import Faq from './sections/Faq.astro';
 import Demo from './sections/Demo.astro';
@@ -17,8 +23,7 @@ import { t, type Locale } from '../i18n';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 const site = ((import.meta.env.SITE_URL as string | undefined) || 'http://127.0.0.1:4321').replace(/\/$/, '');
-/* v2 home (D14): ten sections, one accent, real photographs, two mock components (queue board, booking widget),
-   one marquee. The previous page lives at /v1 (HomeV1.astro, tag v1-snapshot). */
+/* The live home (v1 line, owner choice 2026-09-27). The v2 recomposition is kept at /v2, noindexed. */
 /* Only defensible fields: the live module, its category, and the true free tier. No ratings, no counts. */
 const app = {
   '@context': 'https://schema.org',
@@ -36,14 +41,20 @@ const app = {
 <Base title={t(locale, 'meta.title')} description={t(locale, 'meta.description')} locale={locale} path="/" jsonLd={[app]}>
   <a class="skip" href="#main">{t(locale, 'nav.skip')}</a>
   <Header locale={locale} />
-  <main id="main" class="v2">
-    <HeroV2 locale={locale} />
-    <StatementV2 locale={locale} />
-    <PlatformBento locale={locale} />
+  <main id="main">
+    <Hero locale={locale} />
+    <Doors locale={locale} />
+    <Trust locale={locale} />
+    <Problem locale={locale} />
+    <Platform locale={locale} />
+    <Diagnostics locale={locale} />
+    <Hospitals locale={locale} />
     <Appointments locale={locale} />
-    <VoicesMarquee locale={locale} />
     <Doctors locale={locale} />
-    <TrustV2 locale={locale} />
+    <VoicesMarquee locale={locale} />
+    <Patients locale={locale} />
+    <DataTrust locale={locale} />
+    <Cohorts locale={locale} />
     <Pricing locale={locale} />
     <Faq locale={locale} />
     <Demo locale={locale} />
@@ -51,13 +62,6 @@ const app = {
   <Footer locale={locale} />
   <StickyBar locale={locale} />
 </Base>
-<style is:global>
-  /* colour lock for v2: blue is the only accent, neutrals replace the aqua washes */
-  html:has(main.v2) { --accent: var(--orbit-600); --accent-strong: var(--orbit-600); --bg-alt: #F3F6FB; --wash-50: #F3F6FB; --wash-100: #E6EDFA; --tile-line: #9DB3EA; }
-  html[data-theme="dark"]:has(main.v2) { --accent: var(--orbit-300); --accent-strong: var(--orbit-300); --bg-alt: #0F1B2E; --tile-line: #4E6FC4; }
-  main.v2 .section-alt { background: transparent; }
-  main.v2 .section { padding-block: clamp(56px, 8vw, 104px); }
-</style>
 <style>
   .skip { position: absolute; left: 16px; top: -60px; background: var(--cta); color: var(--cta-fg); padding: 10px 14px; border-radius: 10px; z-index: 60; font-weight: 700; }
   .skip:focus { top: 12px; }

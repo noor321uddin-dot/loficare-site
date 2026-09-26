@@ -94,6 +94,7 @@ const statement = [
   .time { color: var(--accent); font-size: 14px; }
   .station h3 { font-size: 18px; }
   .statement { margin-top: 28px; padding: 18px 20px; max-width: 620px; }
+  .station { align-content: start; }
   .st-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; }
   .badges { display: inline-flex; gap: 10px; align-items: center; }
   table { width: 100%; border-collapse: collapse; }
@@ -126,7 +127,7 @@ const statement = [
         const tl = gsap.timeline({ scrollTrigger: { trigger: journey, start: 'top 80%', end: 'bottom 55%', scrub: 0.5 } });
         tl.fromTo(fill, horizontal ? { scaleX: 0 } : { scaleY: 0 }, horizontal ? { scaleX: 1, ease: 'none' } : { scaleY: 1, ease: 'none' }, 0);
         stations.forEach((s, i) => {
-          tl.fromTo(s, { opacity: 0.4, y: 8 }, { opacity: 1, y: 0, ease: 'expo.out', duration: 0.18, onStart: () => s.classList.add('on'), onReverseComplete: () => s.classList.remove('on') }, i / stations.length);
+          tl.fromTo(s, { opacity: 0.4 }, { opacity: 1, ease: 'expo.out', duration: 0.12, onStart: () => s.classList.add('on'), onReverseComplete: () => s.classList.remove('on') }, (i / stations.length) * 0.85);
         });
         ScrollTrigger.refresh();
       } catch { stations.forEach((s) => s.classList.add('on')); }
