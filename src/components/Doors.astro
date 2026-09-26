@@ -4,7 +4,7 @@ import { t, localePath, type Locale } from '../i18n';
 interface Props { locale: Locale }
 const { locale } = Astro.props;
 ---
-<section id="doors" class="doors container" aria-label="Three ways in">
+<section id="doors" class="doors container" aria-label={t(locale, 'a11y.doors')}>
   <a class="door facility" href="#demo" data-track="door_click" data-audience="facility">
     <span class="q">{t(locale, 'doors.facility.q')}</span>
     <span class="sub">{t(locale, 'doors.facility.sub')}</span>

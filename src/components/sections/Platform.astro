@@ -7,16 +7,16 @@ const { locale } = Astro.props;
 type Mod = { name: string; live?: boolean };
 const tiers: Array<{ key: string; modules: Mod[] }> = [
   { key: 'core', modules: [
-    { name: 'Facility, people and access control' }, { name: 'Patient identity and registry' }, { name: 'Doctor, referrer and earnings' }, { name: 'Service catalogue and pricing' },
-    { name: 'Appointment, queue and front desk', live: true }, { name: 'Visit and order desk' }, { name: 'Billing, payments and counter' }, { name: 'Credit accounts: corporate, insurance, health card' },
+    { name: t(locale, 'module.1') }, { name: t(locale, 'module.2') }, { name: t(locale, 'module.3') }, { name: t(locale, 'module.4') },
+    { name: t(locale, 'module.live'), live: true }, { name: t(locale, 'module.5') }, { name: t(locale, 'module.6') }, { name: t(locale, 'module.7') },
   ] },
-  { key: 'diagnostics', modules: [{ name: 'Sample, collection, barcode and QR' }, { name: 'Result entry, verification and quality control' }, { name: 'Imaging and radiology' }, { name: 'Report release, delivery and archive' }] },
-  { key: 'clinical', modules: [{ name: 'Clinical records, prescription and digital forms' }] },
-  { key: 'hospital', modules: [{ name: 'Inpatient: admission, ward, OT, emergency and ancillary' }] },
-  { key: 'supply', modules: [{ name: 'Pharmacy and inventory' }] },
-  { key: 'operations', modules: [{ name: 'Workforce, assets and compliance' }] },
-  { key: 'engagement', modules: [{ name: 'Communication, patient portal and service desk' }] },
-  { key: 'insight', modules: [{ name: 'Reporting, analytics and MIS' }] },
+  { key: 'diagnostics', modules: [{ name: t(locale, 'module.8') }, { name: t(locale, 'module.9') }, { name: t(locale, 'module.10') }, { name: t(locale, 'module.11') }] },
+  { key: 'clinical', modules: [{ name: t(locale, 'module.12') }] },
+  { key: 'hospital', modules: [{ name: t(locale, 'module.13') }] },
+  { key: 'supply', modules: [{ name: t(locale, 'module.14') }] },
+  { key: 'operations', modules: [{ name: t(locale, 'module.15') }] },
+  { key: 'engagement', modules: [{ name: t(locale, 'module.16') }] },
+  { key: 'insight', modules: [{ name: t(locale, 'module.17') }] },
 ];
 ---
 <section id="platform" class="section section-alt">

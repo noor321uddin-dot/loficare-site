@@ -7,13 +7,7 @@ import { t, type Locale } from '../i18n';
 interface Props { locale: Locale; class?: string }
 const { locale, class: cls = '' } = Astro.props;
 const CX = 501, CY = 499, R = 187.5, A1 = 188, SPAN = 276, N = 13, S = 66;
-const modules = [
-  'Facility, people and access control', 'Patient identity and registry', 'Doctor, referrer and earnings', 'Service catalogue and pricing',
-  'Visit and order desk', 'Billing, payments and counter', 'Credit accounts: corporate, insurance, health card', 'Sample, collection, barcode and QR',
-  'Result entry, verification and quality control', 'Imaging and radiology', 'Report release, delivery and archive', 'Clinical records, prescription and digital forms',
-  'Inpatient: admission, ward, OT, emergency and ancillary', 'Pharmacy and inventory', 'Workforce, assets and compliance', 'Communication, patient portal and service desk',
-  'Reporting, analytics and MIS',
-];
+const modules = Array.from({ length: 17 }, (_, i) => t(locale, `module.${i + 1}`));
 type Tile = { x: number; y: number; rot: number; name: string; sx: number; sy: number; srot: number };
 const scatter = (i: number) => ({ sx: Math.round(Math.cos(i * 2.399) * (150 + (i % 3) * 40)), sy: Math.round(Math.sin(i * 1.731) * (140 + (i % 4) * 36)), srot: ((i * 53) % 360) - 180 });
 const tiles: Tile[] = [];

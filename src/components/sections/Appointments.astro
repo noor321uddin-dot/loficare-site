@@ -25,9 +25,9 @@ const benefits = [
           <div class="w-step w-pick">
             <p class="w-label">{t(locale, 'widget.pick')}</p>
             <div class="slots" role="group" aria-label={t(locale, 'widget.pick')}>
-              <button type="button" class="slot" aria-pressed="true">Sun 10:40</button>
-              <button type="button" class="slot" aria-pressed="false">Sun 11:00</button>
-              <button type="button" class="slot" aria-pressed="false">Sun 11:20</button>
+              <button type="button" class="slot" aria-pressed="true">{t(locale, 'widget.slot.1')}</button>
+              <button type="button" class="slot" aria-pressed="false">{t(locale, 'widget.slot.2')}</button>
+              <button type="button" class="slot" aria-pressed="false">{t(locale, 'widget.slot.3')}</button>
             </div>
             <label class="w-label" for="w-phone">{t(locale, 'widget.phone')}</label>
             <input id="w-phone" type="tel" value="01712 345678" readonly />
@@ -45,7 +45,7 @@ const benefits = [
                 <div><span class="label">{t(locale, 'widget.board.now')}</span><div class="big">9</div></div>
                 <div><span class="label">{t(locale, 'widget.board.yours')}</span><div class="big yours">12</div></div>
               </div>
-              <p class="label">Sun 10:40, Room 3</p>
+              <p class="label">{t(locale, 'widget.when')}</p>
             </div>
             <button type="button" class="btn btn-quiet w-next" data-to="pick">{t(locale, 'widget.again')}</button>
           </div>

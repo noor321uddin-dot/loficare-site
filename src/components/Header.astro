@@ -8,11 +8,11 @@ const { locale } = Astro.props;
 ---
 <header class="site-header">
   <div class="container bar">
-    <a class="brand" href={localePath(locale, '/')} aria-label="LofiCare, home">
+    <a class="brand" href={localePath(locale, '/')} aria-label={t(locale, 'a11y.home')}>
       <Mark size={36} />
       <span class="wordmark">LofiCare</span>
     </a>
-    <nav class="quiet" aria-label="Sections">
+    <nav class="quiet" aria-label={t(locale, 'a11y.sections')}>
       <a class="link-quiet" href="#doctors">{t(locale, 'nav.doctors')}</a>
       <a class="link-quiet" href={localePath(locale, "/patients/how-it-works")}>{t(locale, 'nav.patients')}</a>
     </nav>

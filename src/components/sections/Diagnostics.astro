@@ -24,9 +24,9 @@ const bc = code39(sampleId);
 const times = ['08:12', '08:40', '11:05', '11:20', '11:26'];
 const steps = [1, 2, 3, 4, 5].map((i) => ({ label: t(locale, `diagnostics.step.${i}`), d: t(locale, `diagnostics.step.${i}.d`), time: times[i - 1] }));
 const statement = [
-  { who: 'Dr. Sultana', n: '42', earned: '18,900' },
-  { who: 'Dr. Karim', n: '27', earned: '12,450' },
-  { who: 'Dr. Nahar', n: '19', earned: '8,300' },
+  { who: t(locale, 'sample.ref.1'), n: '42', earned: '18,900' },
+  { who: t(locale, 'sample.ref.2'), n: '27', earned: '12,450' },
+  { who: t(locale, 'sample.ref.3'), n: '19', earned: '8,300' },
 ];
 ---
 <section id="diagnostics" class="section">
