@@ -51,4 +51,19 @@ export const voices: Voice[] = [
     place: { en: 'Sylhet', bn: 'সিলেট' },
     since: { en: 'Founding cohort', bn: 'প্রতিষ্ঠাতা দল' },
   },
+  {
+    sample: true,
+    quote: { en: 'Reports used to wait at the counter until someone called. Now the SMS goes out when the doctor signs off.', bn: 'আগে কেউ ফোন না করা পর্যন্ত রিপোর্ট কাউন্টারে পড়ে থাকত। এখন ডাক্তার সই করলেই এসএমএস চলে যায়।' },
+    name: { en: 'Dr. Mahmudul Karim', bn: 'ডা. মাহমুদুল করিম' }, role: { en: 'Pathology', bn: 'প্যাথলজি' }, place: { en: 'Rajshahi', bn: 'রাজশাহী' },
+  },
+  {
+    sample: true,
+    quote: { en: 'Every referral shows up on the statement the same day. The month-end argument is gone.', bn: 'প্রতিটি রেফারেল একই দিনে স্টেটমেন্টে ওঠে। মাস শেষের তর্কটা আর নেই।' },
+    name: { en: 'Shirin Akter', bn: 'শিরিন আক্তার' }, role: { en: 'Front desk lead', bn: 'ফ্রন্ট ডেস্ক প্রধান' }, place: { en: 'Khulna', bn: 'খুলনা' },
+  },
+  {
+    sample: true,
+    quote: { en: 'I open my phone before chamber and the whole evening list is already there, serials and all.', bn: 'চেম্বারে যাওয়ার আগে ফোন খুললেই সন্ধ্যার পুরো তালিকা, সিরিয়ালসহ, তৈরি থাকে।' },
+    name: { en: 'Dr. Sabbir Hossain', bn: 'ডা. সাব্বির হোসেন' }, role: { en: 'Cardiology', bn: 'হৃদরোগ' }, place: { en: 'Cumilla', bn: 'কুমিল্লা' },
+  },
 ];

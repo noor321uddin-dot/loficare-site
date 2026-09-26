@@ -1,0 +1,67 @@
+---
+import Icon from '../Icon.astro';
+import { t, type Locale } from '../../i18n';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+/* v2 platform: five cells for five things, no empty tiles. Only the appointment cell carries the live chip;
+   every other area reads early access. Two cells are photographs, one is the blue live cell. */
+---
+<section id="platform" class="section">
+  <div class="container">
+    <div class="head">
+      <h2>{t(locale, 'platform2.h2')}</h2>
+      <p class="lede">{t(locale, 'platform2.sub')}</p>
+    </div>
+    <div class="bento">
+      <a class="cell live" href="#appointments">
+        <span class="chip"><Icon name="check" size={14} /> {t(locale, 'platform.available')}</span>
+        <h3>{t(locale, 'platform2.live.h3')}</h3>
+        <p>{t(locale, 'platform2.live.p')}</p>
+        <span class="more">{t(locale, 'platform2.live.more')} <Icon name="arrow-right" size={16} /></span>
+      </a>
+      <figure class="cell photo lab">
+        <img src="/photos/lab-bench.webp" width="1000" height="667" alt={t(locale, 'platform2.lab.alt')} loading="lazy" decoding="async" />
+        <figcaption><h3>{t(locale, 'platform2.lab.h3')}</h3><p>{t(locale, 'platform2.lab.p')}</p></figcaption>
+      </figure>
+      <div class="cell plain earn">
+        <Icon name="receipt" size={22} />
+        <h3>{t(locale, 'platform2.earn.h3')}</h3>
+        <p>{t(locale, 'platform2.earn.p')}</p>
+      </div>
+      <figure class="cell photo ward">
+        <img src="/photos/consultation.webp" width="1000" height="563" alt={t(locale, 'platform2.ward.alt')} loading="lazy" decoding="async" />
+        <figcaption><h3>{t(locale, 'platform2.ward.h3')}</h3><p>{t(locale, 'platform2.ward.p')}</p></figcaption>
+      </figure>
+      <div class="cell plain rest">
+        <Icon name="squares-four" size={22} />
+        <h3>{t(locale, 'platform2.rest.h3')}</h3>
+        <p>{t(locale, 'platform2.rest.p')}</p>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .head { display: grid; gap: 12px; max-width: 60ch; }
+  h2 { font-size: clamp(28px, 3.2vw, 40px); letter-spacing: -0.03em; line-height: 1.1; }
+  .bento { display: grid; gap: 14px; margin-top: 32px; }
+  .cell { position: relative; border-radius: 20px; overflow: hidden; margin: 0; display: grid; align-content: end; gap: 8px; padding: 24px; min-height: 220px; color: var(--fg); text-decoration: none; }
+  .cell h3 { margin: 0; font-size: 20px; letter-spacing: -0.015em; }
+  .cell p { margin: 0; color: var(--fg-muted); max-width: 40ch; }
+  .plain { background: var(--card); border: 1px solid var(--line); align-content: start; }
+  .plain :global(.icon) { color: var(--orbit-600); }
+  .live { background: var(--orbit-600); color: #fff; align-content: space-between; min-height: 300px; transition: background-color .2s ease; }
+  .live:hover { background: var(--orbit-700); }
+  .live h3 { font-size: clamp(24px, 2.4vw, 32px); line-height: 1.12; max-width: 16ch; }
+  .live p { color: rgba(255, 255, 255, 0.86); }
+  .chip { justify-self: start; display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; background: rgba(255, 255, 255, 0.16); font-size: 13px; font-weight: 700; }
+  .more { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; }
+  .photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(8, 20, 44, 0.82) 0%, rgba(8, 20, 44, 0.2) 55%, transparent 80%); }
+  .photo figcaption { position: relative; z-index: 1; display: grid; gap: 6px; }
+  .photo h3 { color: #fff; }
+  .photo p { color: rgba(255, 255, 255, 0.86); }
+  @media (min-width: 900px) {
+    .bento { grid-template-columns: 1.15fr 1fr 1fr; grid-template-rows: 260px 240px; grid-template-areas: 'live lab rest' 'live earn ward'; }
+    .live { grid-area: live; } .lab { grid-area: lab; } .rest { grid-area: rest; } .earn { grid-area: earn; } .ward { grid-area: ward; }
+  }
+</style>

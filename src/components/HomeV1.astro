@@ -1,0 +1,72 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from './Header.astro';
+import Hero from './Hero.astro';
+import Doors from './Doors.astro';
+import Trust from './Trust.astro';
+import Problem from './sections/Problem.astro';
+import Platform from './sections/Platform.astro';
+import Diagnostics from './sections/Diagnostics.astro';
+import Hospitals from './sections/Hospitals.astro';
+import Appointments from './sections/Appointments.astro';
+import Doctors from './sections/Doctors.astro';
+import Voices from './sections/Voices.astro';
+import Patients from './sections/Patients.astro';
+import DataTrust from './sections/DataTrust.astro';
+import Cohorts from './sections/Cohorts.astro';
+import Pricing from './sections/Pricing.astro';
+import Faq from './sections/Faq.astro';
+import Demo from './sections/Demo.astro';
+import StickyBar from './StickyBar.astro';
+import Footer from './Footer.astro';
+import { t, type Locale } from '../i18n';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+const site = ((import.meta.env.SITE_URL as string | undefined) || 'http://127.0.0.1:4321').replace(/\/$/, '');
+/* The v1 home (globe hero, 16 sections) kept at /v1 for comparison, noindexed. Tagged v1-snapshot in git. */
+/* Only defensible fields: the live module, its category, and the true free tier. No ratings, no counts. */
+const app = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'LofiCare Appointments',
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'Web',
+  url: site + (locale === 'bn' ? '/bn/' : '/'),
+  description: t(locale, 'meta.description'),
+  inLanguage: locale === 'bn' ? 'bn-BD' : 'en',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'BDT', description: 'Free to start, first 500 appointments, no card' },
+  publisher: { '@type': 'Organization', name: 'LofiCare' },
+};
+---
+<Base title={t(locale, 'meta.title')} description={t(locale, 'meta.description')} locale={locale} path="/v1" jsonLd={[app]} noindex>
+  <a class="skip" href="#main">{t(locale, 'nav.skip')}</a>
+  <Header locale={locale} />
+  <main id="main">
+    <Hero locale={locale} />
+    <Doors locale={locale} />
+    <Trust locale={locale} />
+    <Problem locale={locale} />
+    <Platform locale={locale} />
+    <Diagnostics locale={locale} />
+    <Hospitals locale={locale} />
+    <Appointments locale={locale} />
+    <Doctors locale={locale} />
+    <Voices locale={locale} />
+    <Patients locale={locale} />
+    <DataTrust locale={locale} />
+    <Cohorts locale={locale} />
+    <Pricing locale={locale} />
+    <Faq locale={locale} />
+    <Demo locale={locale} />
+  </main>
+  <Footer locale={locale} />
+  <StickyBar locale={locale} />
+</Base>
+<style>
+  .skip { position: absolute; left: 16px; top: -60px; background: var(--cta); color: var(--cta-fg); padding: 10px 14px; border-radius: 10px; z-index: 60; font-weight: 700; }
+  .skip:focus { top: 12px; }
+</style>
+<script>
+  import { bindTracking } from '../lib/track';
+  bindTracking();
+</script>

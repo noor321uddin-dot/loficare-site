@@ -14,7 +14,7 @@ const { locale } = Astro.props;
     </a>
     <nav class="quiet" aria-label="Sections">
       <a class="link-quiet" href="#doctors">{t(locale, 'nav.doctors')}</a>
-      <a class="link-quiet" href="#patients">{t(locale, 'nav.patients')}</a>
+      <a class="link-quiet" href={localePath(locale, "/patients/how-it-works")}>{t(locale, 'nav.patients')}</a>
     </nav>
     <div class="actions">
       <LangToggle locale={locale} />

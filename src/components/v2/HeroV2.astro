@@ -1,0 +1,45 @@
+---
+import QueueBoard from '../QueueBoard.astro';
+import { t, type Locale } from '../../i18n';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+/* v2 hero: the problem as a photograph (a real waiting hall) and the answer laid over it (the live queue board,
+   sample data). Copy is two lines of headline, one short sentence, two actions. */
+---
+<section id="hero" class="hero2">
+  <div class="container grid">
+    <div class="copy">
+      <h1>{t(locale, 'hero2.h1')}</h1>
+      <p class="lede">{t(locale, 'hero2.sub')}</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#demo" data-track="hero_cta_click" data-audience="facility">{t(locale, 'cta.demo')}</a>
+        <a class="btn btn-secondary" href="#trial" data-track="hero_cta_click" data-audience="doctor">{t(locale, 'cta.free')}</a>
+      </div>
+    </div>
+    <div class="visual">
+      <figure class="photo">
+        <img src="/photos/waiting-hall.webp" width="1400" height="1115" alt={t(locale, 'hero2.photo.alt')} fetchpriority="high" decoding="async" />
+      </figure>
+      <div class="board-float"><QueueBoard locale={locale} /></div>
+    </div>
+  </div>
+</section>
+<style>
+  .hero2 { padding-block: 32px 56px; }
+  .grid { display: grid; gap: 36px; }
+  h1 { font-size: clamp(34px, 3.4vw, 48px); line-height: 1.06; letter-spacing: -0.035em; max-width: 19ch; text-wrap: balance; }
+  :global(html:lang(bn)) h1 { line-height: 1.25; letter-spacing: 0; }
+  .lede { margin-top: 18px; max-width: 40ch; font-size: 18px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .visual { position: relative; }
+  .photo { margin: 0; border-radius: 24px; overflow: hidden; aspect-ratio: 5 / 4; background: var(--bg-alt); }
+  .photo img { width: 100%; height: 100%; object-fit: cover; display: block; filter: grayscale(1) contrast(1.05); }
+  .board-float { position: relative; margin: -56px 0 0 12px; width: min(92%, 380px); box-shadow: 0 30px 60px -24px rgba(9, 26, 58, 0.45); border-radius: 14px; }
+  .board-float :global(.qb-wrap figcaption) { display: none; }
+  @media (min-width: 900px) {
+    .hero2 { min-height: min(calc(100dvh - 68px), 760px); display: flex; align-items: center; padding-block: 40px 64px; }
+    .grid { grid-template-columns: 0.9fr 1.1fr; gap: 64px; align-items: center; }
+    .visual { padding-bottom: 90px; }
+    .board-float { position: absolute; margin: 0; left: -12%; bottom: 0; width: 380px; }
+  }
+</style>

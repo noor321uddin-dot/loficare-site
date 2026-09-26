@@ -1,0 +1,25 @@
+---
+import { t, type Locale } from '../../i18n';
+interface Props { locale: Locale }
+const { locale } = Astro.props;
+/* v2 problem: one centred statement. The before-and-after is carried by strike-through words, not a list. */
+const before = [1, 2, 3, 4].map((i) => t(locale, `problem2.before.${i}`));
+---
+<section id="problem" class="section statement">
+  <div class="container inner">
+    <h2>{t(locale, 'problem2.h2')}</h2>
+    <p class="was" aria-label={t(locale, 'problem2.was')}>
+      {before.map((b) => <span><s>{b}</s></span>)}
+    </p>
+    <p class="now">{t(locale, 'problem2.now')}</p>
+  </div>
+</section>
+<style>
+  .statement { text-align: center; }
+  .inner { display: grid; justify-items: center; gap: 20px; }
+  h2 { font-size: clamp(28px, 3.4vw, 44px); line-height: 1.12; letter-spacing: -0.03em; max-width: 22ch; text-wrap: balance; }
+  :global(html:lang(bn)) h2 { line-height: 1.3; letter-spacing: 0; }
+  .was { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 22px; margin: 8px 0 0; color: var(--fg-muted); font-size: 17px; }
+  .was s { text-decoration-thickness: 1.5px; text-decoration-color: color-mix(in srgb, var(--fg-muted) 70%, transparent); }
+  .now { margin: 0; font-size: 20px; font-weight: 700; color: var(--fg); max-width: 34ch; }
+</style>
