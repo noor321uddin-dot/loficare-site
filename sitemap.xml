@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>http://localhost:8080/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:8080/" />
+    <xhtml:link rel="alternate" hreflang="bn" href="http://localhost:8080/bn/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="http://localhost:8080/" />
+  </url>
+  <url>
+    <loc>http://localhost:8080/bn/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:8080/" />
+    <xhtml:link rel="alternate" hreflang="bn" href="http://localhost:8080/bn/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="http://localhost:8080/" />
+  </url>
+  <url>
+    <loc>http://localhost:8080/patients/how-it-works</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:8080/patients/how-it-works" />
+    <xhtml:link rel="alternate" hreflang="bn" href="http://localhost:8080/bn/patients/how-it-works" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="http://localhost:8080/patients/how-it-works" />
+  </url>
+  <url>
+    <loc>http://localhost:8080/bn/patients/how-it-works</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:8080/patients/how-it-works" />
+    <xhtml:link rel="alternate" hreflang="bn" href="http://localhost:8080/bn/patients/how-it-works" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="http://localhost:8080/patients/how-it-works" />
+  </url>
+  <url>
+    <loc>http://localhost:8080/privacy</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:8080/privacy" />
+    <xhtml:link rel="alternate" hreflang="bn" href="http://localhost:8080/bn/privacy" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="http://localhost:8080/privacy" />
+  </url>
+  <url>
+    <loc>http://localhost:8080/bn/privacy</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:8080/privacy" />
+    <xhtml:link rel="alternate" hreflang="bn" href="http://localhost:8080/bn/privacy" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="http://localhost:8080/privacy" />
+  </url>
+  <url>
+    <loc>http://localhost:8080/terms</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:8080/terms" />
+    <xhtml:link rel="alternate" hreflang="bn" href="http://localhost:8080/bn/terms" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="http://localhost:8080/terms" />
+  </url>
+  <url>
+    <loc>http://localhost:8080/bn/terms</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="http://localhost:8080/terms" />
+    <xhtml:link rel="alternate" hreflang="bn" href="http://localhost:8080/bn/terms" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="http://localhost:8080/terms" />
+  </url>
+</urlset>

@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /thank-you
+Disallow: /bn/thank-you
+
+Sitemap: http://localhost:8080/sitemap.xml

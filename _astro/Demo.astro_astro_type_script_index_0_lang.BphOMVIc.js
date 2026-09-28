@@ -1,0 +1,1 @@
+import{t as e}from"./forms.sOR4avy-.js";var t=document.getElementById(`demo-form`);t&&e(t);
